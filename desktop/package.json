@@ -21,7 +21,8 @@
       "main.cjs",
       "package.json",
       "port.cjs",
-      "user-data.cjs"
+      "user-data.cjs",
+      "update-check.cjs"
     ],
     "extraResources": [
       {

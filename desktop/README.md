@@ -29,3 +29,5 @@ For wider Linux compatibility use the Ubuntu 22.04 build in the workflow. A pack
 A Windows x64 portable executable is included in releases. It bundles official CPython 3.12.10 and Windows wheels. Its backend was smoke-tested under Wine on Linux; this does not verify that the app or camera capture works on Windows. To reproduce that cross-build, run `python desktop/build_windows_backend.py`, then in desktop run `npm run dist -- --win --config windows-builder.json` after generating the shared distribution assets with build_backend.py.
 
 Packaging checks the backend against current source files and stops if it is stale. Re-run the backend build after changing application code, then run `npm run dist`.
+
+The standalone app checks GitHub Releases once on launch and offers to open the download page when a newer stable version exists. Offline or failed checks do not block startup. Nothing is installed automatically.

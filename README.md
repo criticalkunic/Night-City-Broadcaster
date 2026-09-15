@@ -37,6 +37,8 @@ Windows extracts its runtime into a temporary folder while running. You can keep
 
 Windows builds are currently unsigned. Linux builds made by the release workflow target Ubuntu 22.04; locally built AppImages may require a newer distribution.
 
+The standalone app checks GitHub for a newer stable build on launch. If one is available, choose **Open download page** or **Later**. Updates are downloaded manually; a failed check does not block the app.
+
 ### 2. Prepare the artwork
 
 On first launch, the app fetches the current card catalog, downloads card images and alternate references, and prepares recognition. It also downloads the card back used for hidden legends.

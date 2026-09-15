@@ -6,6 +6,10 @@ User-facing changes are recorded here for each release. Development changes belo
 
 ## 1.0.3 — 2026-09-15
 
+### Added
+
+- Desktop startup checks for a newer stable GitHub release and offers to open its download page. Offline checks do not block startup, and updates remain manual.
+
 ### Changed
 
 - Renamed the app to **Night City Broadcaster** across the interface, desktop windows, download filenames, and documentation.

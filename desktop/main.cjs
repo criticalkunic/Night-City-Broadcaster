@@ -2,6 +2,7 @@ const {app,BrowserWindow,dialog,shell}=require('electron');
 const {spawn}=require('node:child_process');
 const path=require('node:path');
 const http=require('node:http');
+const {checkForUpdate}=require('./update-check.cjs');
 const {userDataDirectory}=require('./user-data.cjs');
 const dataDirectory=userDataDirectory(app.getPath('appData'));
 require('node:fs').mkdirSync(dataDirectory,{recursive:true});
@@ -29,6 +30,15 @@ async function start(){
  window.webContents.on('will-navigate',(event,url)=>{if(new URL(url).origin!==origin){event.preventDefault();if(/^https?:/.test(url))shell.openExternal(url);}});
  await window.loadURL(origin+'/operator');
  console.log('Night City Broadcaster window loaded');
+ if(app.isPackaged) void recommendUpdate();
+}
+async function recommendUpdate(){
+ try{
+  const update=await checkForUpdate(app.getVersion());
+  if(!update||quitting||!window||window.isDestroyed())return;
+  const {response}=await dialog.showMessageBox(window,{type:'info',title:'Update available',message:`Night City Broadcaster ${update.version} is available`,detail:`You’re running ${app.getVersion()}. Download the latest build from GitHub, then close this app before opening the new version. Your saved data will be kept.`,buttons:['Open download page','Later'],defaultId:0,cancelId:1});
+  if(response===0&&!quitting)await shell.openExternal(update.url);
+ }catch(error){console.warn('Update check unavailable:',error.message);}
 }
 if(!app.requestSingleInstanceLock()){app.quit();}else{
  app.on('second-instance',()=>{if(window){if(window.isMinimized())window.restore();window.focus();}});
