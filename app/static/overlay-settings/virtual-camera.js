@@ -8,7 +8,7 @@
    const state=await response.json(),select=el('virtual-device'),value=select.value;
    select.replaceChildren(...state.devices.map(d=>{const o=document.createElement('option');o.value=d.path;o.textContent=d.name+' ('+d.path+')'+(d.writable?'':' — no write permission');o.disabled=!d.writable;return o;}));
    if([...select.options].some(o=>o.value===value))select.value=value;
-   else {const preferred=state.devices.find(d=>d.name==='Night City Broadcast Camera');if(preferred)select.value=preferred.path;}
+   else {const preferred=state.devices.find(d=>d.name==='Night City Broadcaster Camera');if(preferred)select.value=preferred.path;}
    const missing=Object.entries(state.dependencies).filter(([,v])=>!v).map(([k])=>k);
    el('virtual-start').disabled=state.running||!select.value||missing.length>0;
    el('virtual-stop').disabled=!state.running;select.disabled=state.running;

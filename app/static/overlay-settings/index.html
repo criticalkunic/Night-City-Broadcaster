@@ -1,6 +1,6 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Night City Broadcast — Stream settings</title><link rel="stylesheet" href="/static/operator/operator.css"><link rel="stylesheet" href="/static/shared/ui.css"></head>
-<body><header id="topbar"><div class="brand"><span class="app-name">Night City Broadcast</span><span class="brand-role">Stream settings</span></div><nav class="page-nav" aria-label="Pages"><a href="/operator">Player console</a><a href="/setup">Camera setup</a><a href="/debug">Troubleshooting</a><a href="/overlay" aria-current="page">Stream settings</a></nav><span id="connection" role="status" aria-live="polite">Connecting…</span></header>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Night City Broadcaster — Stream settings</title><link rel="stylesheet" href="/static/operator/operator.css"><link rel="stylesheet" href="/static/shared/ui.css"></head>
+<body><header id="topbar"><div class="brand"><span class="app-name">Night City Broadcaster</span><span class="brand-role">Stream settings</span></div><nav class="page-nav" aria-label="Pages"><a href="/operator">Player console</a><a href="/setup">Camera setup</a><a href="/debug">Troubleshooting</a><a href="/overlay" aria-current="page">Stream settings</a></nav><span id="connection" role="status" aria-live="polite">Connecting…</span></header>
 <main><h1>Stream settings</h1><p>Copy the live stream URL into an OBS Browser Source at 1920 × 1080.</p><div class="layout"><section>
 <h2>OBS Browser Source</h2><div class="actions"><input id="obs-url" readonly aria-label="OBS overlay URL"><button id="copy">Copy OBS stream link</button></div>
 <p><a id="live-link" href="/broadcast/live" target="_blank" rel="noopener">Open live stream ↗</a></p>
@@ -29,5 +29,5 @@
 <p><label class="switch"><input id="hide_empty_captured_gigs" type="checkbox"> Hide captured gigs when empty</label></p>
 <h3>Full board panels</h3><p><label class="switch"><input id="board_show_fixer" type="checkbox"> Show fixer</label></p><p><label class="switch"><input id="board_show_eddies" type="checkbox"> Show Eddie video panel</label></p><p id="status" role="status" aria-live="polite">Loading settings…</p>
 <p class="muted">Starting a new match clears the latest-card panel. The next stable recognition updates it automatically, including cards already on the table.</p>
-</section><aside><h2>Live preview</h2><div class="preview" id="preview-shell"><div class="board-label">NIGHT CITY BROADCAST</div><iframe id="overlay-preview" src="/broadcast/live" title="Live stream preview"></iframe></div></aside></div></main>
+</section><aside><h2>Live preview</h2><div class="preview" id="preview-shell"><div class="board-label">NIGHT CITY BROADCASTER</div><iframe id="overlay-preview" src="/broadcast/live" title="Live stream preview"></iframe></div></aside></div></main>
 <script src="/static/overlay-settings/settings.js"></script><script src="/static/shared/connection-status.js"></script></body></html>

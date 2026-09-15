@@ -24,7 +24,7 @@ def main():
                 path = root/name
                 if path.resolve() == output or path.is_symlink():
                     continue
-                archive.write(path, 'night-city-broadcast/'+name)
+                archive.write(path, 'night-city-broadcaster/'+name)
     print(output)
 
 

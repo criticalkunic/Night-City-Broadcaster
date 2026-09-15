@@ -11,7 +11,7 @@ The initial setup needs the current catalog, card images, alternate references, 
 - Click **Refresh cameras** in Camera setup.
 - Close other applications using the same device. Some camera drivers allow only one application to open a webcam.
 - Check Windows camera privacy settings or Linux device permissions.
-- If another application supplies the video, select its virtual capture device in Camera setup. Do not select an output produced by Night City Broadcast itself.
+- If another application supplies the video, select its virtual capture device in Camera setup. Do not select an output produced by Night City Broadcaster itself.
 
 ## Video is slow
 
@@ -56,7 +56,7 @@ chmod +x Night\ City\ Broadcast-*.AppImage
 If your system lacks FUSE support, extract it and launch the contents:
 
 ```bash
-./Night\ City\ Broadcast-1.0.0.AppImage --appimage-extract
+./Night\ City\ Broadcaster-1.0.3.AppImage --appimage-extract
 ./squashfs-root/AppRun
 ```
 

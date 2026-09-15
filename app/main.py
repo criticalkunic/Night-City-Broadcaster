@@ -91,7 +91,7 @@ async def lifespan(app: FastAPI):
 from app.first_run import ArtworkSetup, ArtworkGate
 from app.game.art_download import art_download
 artwork_setup = ArtworkSetup(runtime.card_db, CARD_IMAGES_DIR, runtime.recognizer, art_download)
-app = FastAPI(title="Night City Broadcast", lifespan=lifespan)
+app = FastAPI(title="Night City Broadcaster", lifespan=lifespan)
 app.add_middleware(ArtworkGate, setup=artwork_setup)
 
 @app.get('/first-run', include_in_schema=False)

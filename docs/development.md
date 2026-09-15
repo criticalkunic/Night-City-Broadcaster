@@ -66,6 +66,8 @@ No card catalog or artwork should be included in either package.
 
 ## Preparing a GitHub release
 
+Before packaging, move completed entries from `CHANGELOG.md`’s **Unreleased** section into a dated version heading. Use those entries for the GitHub release notes and keep the version in `desktop/package.json` and its lockfile in sync.
+
 1. Create the GitHub repository and push the source. Review `git status` before committing; `.gitignore` excludes personal data, artwork, dependencies, and build outputs.
 2. Run **Build desktop applications** from the Actions tab. It builds on Ubuntu and Windows and uploads application artifacts. It does not publish a release automatically.
 3. Test the downloaded applications, including first launch with an empty data directory and a real camera on each supported system.
@@ -76,7 +78,7 @@ Do not commit the binaries: they exceed GitHub’s normal Git file-size limit. `
 To prepare a clean source ZIP without a GitHub repository:
 
 ```bash
-python3 scripts/source_archive.py /tmp/night-city-broadcast-source.zip
+python3 scripts/source_archive.py /tmp/night-city-broadcaster-source.zip
 ```
 
 This requires Git and uses the repository’s ignore rules. It includes source and documentation, not application binaries. Add the standalone files separately as GitHub release assets.

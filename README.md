@@ -1,4 +1,4 @@
-# Night City Broadcast
+# Night City Broadcaster
 
 ![Live minimalist stream showing the latest card, revealed legends, and controlled gigs](docs/assets/readme-preview.png)
 
@@ -6,7 +6,7 @@
 
 **A webcam companion for Cyberpunk TCG.** Track your latest play, revealed legends, and controlled gigs, then send your board to OBS through one browser source.
 
-Night City Broadcast runs locally on Linux and Windows. Use automatic card recognition, manual match controls, or both.
+Night City Broadcaster runs locally on Linux and Windows. Use automatic card recognition, manual match controls, or both.
 
 [Download](https://github.com/criticalkunic/Night-City-Broadcaster/releases/latest) · [Getting started](#getting-started) · [Linux from source](#linux-from-source) · [OBS setup](#obs-setup) · [Troubleshooting](docs/troubleshooting.md) · [Building releases](desktop/README.md)
 
@@ -28,8 +28,8 @@ Download the file for your system from the [Releases page](https://github.com/cr
 
 | System | Download | Launch |
 | --- | --- | --- |
-| Windows x64 | `Night City Broadcast-<version>-Windows.exe` | Double-click to launch. Saved data stays in AppData. |
-| Linux x64 | `Night City Broadcast-<version>.AppImage` | Mark it executable in file properties, then double-click. |
+| Windows x64 | `Night City Broadcaster-<version>-Windows.exe` | Double-click to launch. Saved data stays in AppData. |
+| Linux x64 | `Night City Broadcaster-<version>.AppImage` | Mark it executable in file properties, then double-click. |
 
 Windows extracts its runtime into a temporary folder while running. You can keep the `.exe` wherever you like; settings and artwork are stored in AppData. Close the app before replacing it with a newer version.
 
@@ -74,7 +74,7 @@ Recognition depends on camera resolution, sleeves, lighting, and the available a
 1. Open **Stream settings** and click **Copy OBS stream link**.
 2. In OBS, add a **Browser Source** and paste the URL.
 3. Set its size to **1920 × 1080** and its frame rate to your camera’s rate, such as **30 FPS**.
-4. Keep Night City Broadcast running while streaming.
+4. Keep Night City Broadcaster running while streaming.
 
 The usual URL is `http://127.0.0.1:8766/broadcast/live`. The desktop app selects another port if that one is occupied, so use the link shown in the app.
 
@@ -113,7 +113,7 @@ PORT=9000 ./start.sh
 HOST=0.0.0.0 ./start.sh
 
 # Keep downloaded artwork and configuration outside the source folder.
-NCB_DATA_DIR="$HOME/.local/share/night-city-broadcast" ./start.sh
+NCB_DATA_DIR="$HOME/.local/share/night-city-broadcaster" ./start.sh
 ```
 
 The default is local access only. LAN mode has no login or access control; use it only on a trusted network. On the OBS computer, replace `localhost` in the stream URL with the host computer’s LAN address.
@@ -122,14 +122,20 @@ The default is local access only. LAN mode has no login or access control; use i
 
 | Launch method | Saved data |
 | --- | --- |
-| Windows standalone | `%APPDATA%\Night City Broadcast` |
-| Linux standalone | `~/.config/Night City Broadcast` |
+| Windows standalone | `%APPDATA%\Night City Broadcaster` |
+| Linux standalone | `~/.config/Night City Broadcaster` |
 | `start.sh` | `config/`, `app/cards/`, and `captures/` inside the source folder |
 | Custom `NCB_DATA_DIR` | The directory you specify |
+
+Existing desktop installs continue using their original `Night City Broadcast` data folder, so settings, artwork, and saved player names carry over. Fresh installs use `Night City Broadcaster`.
 
 Back up these folders to preserve camera settings, downloaded images, and learned artwork. Match state is not a saved-game file. Your player name is stored in browser cookies.
 
 In **Debug**, use **Check for new cards** to fetch the current catalog, add new card identities, and download their images and alternate artwork. Progress is shown while it runs, and recognition refreshes automatically—no restart or terminal required. Existing cards, images, and learned references are preserved. **Download missing card art** remains available to repair images for cards already in your catalog.
+
+## Release notes
+
+See [CHANGELOG.md](CHANGELOG.md) for changes in each release.
 
 ## Development and support
 
@@ -146,6 +152,6 @@ Project code is licensed under [GNU GPL v3.0](LICENSE) (`GPL-3.0-only`). Third-p
 
 ## Artwork and trademarks
 
-Night City Broadcast is an unofficial community project. Cyberpunk TCG, Cyberpunk, and their associated artwork and trademarks belong to their respective owners, including CD PROJEKT RED, WeirdCo, and R. Talsorian Games. This project is not affiliated with or endorsed by CD PROJEKT RED, WeirdCo, or R. Talsorian Games.
+Night City Broadcaster is an unofficial community project. Cyberpunk TCG, Cyberpunk, and their associated artwork and trademarks belong to their respective owners, including CD PROJEKT RED, WeirdCo, and R. Talsorian Games. This project is not affiliated with or endorsed by CD PROJEKT RED, WeirdCo, or R. Talsorian Games.
 
 Card metadata and images are downloaded from external services at runtime. The downloadable artwork library is excluded from source archives and standalone builds. Card artwork shown in the README screenshots belongs to its respective owners and is not covered by the code license. Download availability depends on those services.

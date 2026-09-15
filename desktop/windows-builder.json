@@ -3,7 +3,8 @@
   "files": [
     "main.cjs",
     "package.json",
-    "port.cjs"
+    "port.cjs",
+    "user-data.cjs"
   ],
   "extraResources": [
     {
@@ -23,7 +24,7 @@
       "AppImage"
     ],
     "category": "AudioVideo",
-    "maintainer": "Night City Broadcast"
+    "maintainer": "Night City Broadcaster"
   },
   "win": {
     "target": [
@@ -33,7 +34,7 @@
   },
   "afterAllArtifactBuild": "./publish-releases.cjs",
   "portable": {
-    "artifactName": "Night City Broadcast-${version}-Windows.exe"
+    "artifactName": "Night City Broadcaster-${version}-Windows.exe"
   },
   "beforePack": "./check-backend.cjs"
 }

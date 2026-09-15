@@ -22,7 +22,7 @@ def camera_sources(output):
     if sys.platform == 'win32':
         from pygrabber.dshow_graph import FilterGraph
         return [{'path': str(i), 'name': name} for i, name in enumerate(FilterGraph().get_input_devices())
-                if name != 'Night City Broadcast Camera']
+                if name not in ('Night City Broadcaster Camera', 'Night City Broadcast Camera')]
     devices = []
     for item in sorted(Path('/sys/class/video4linux').glob('video*')):
         path = '/dev/'+item.name

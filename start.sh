@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Start Night City Broadcast.
+# Start Night City Broadcaster.
 #
 # Usage:
 #   ./start.sh                 # local access at 127.0.0.1:8766

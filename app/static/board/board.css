@@ -24,7 +24,7 @@ footer.with-eddies{grid-template-columns:400px 1fr 1fr 320px}footer>#eddies{heig
 #stage>.economy{grid-column:1/-1;width:100%;justify-self:stretch}
 #stage>.reserve{grid-row:3/5}
 
-/* Night City Broadcast: one wide economy bar, a generous table, quiet framing. */
+/* Night City Broadcaster: one wide economy bar, a generous table, quiet framing. */
 #stage{--economy-height:126px;--footer-height:270px;--reserve-width:104px;padding:24px;gap:12px;grid-template-columns:var(--reserve-width) minmax(0,1fr);grid-template-rows:56px var(--economy-height) minmax(0,1fr) var(--footer-height)}
 #stage.play-focus{--footer-height:220px}
 #stage.camera-economy{--economy-height:160px;--reserve-width:140px}

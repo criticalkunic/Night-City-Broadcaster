@@ -10,7 +10,8 @@ For code changes:
 2. Keep each pull request focused on one behavior or fix.
 3. Add a regression test when changing recognition, state handling, or first-launch downloads.
 4. Run the relevant Python and JavaScript tests.
-5. Describe the change and how you tested it. Include screenshots for interface changes.
+5. Add user-facing changes to the **Unreleased** section of [CHANGELOG.md](CHANGELOG.md).
+6. Describe the change and how you tested it. Include screenshots for interface changes.
 
 Keep camera captures, downloaded artwork, card catalogs, personal settings, and build products out of pull requests. Synthetic images are preferred for recognition tests. Do not add card artwork to the application bundle.
 
