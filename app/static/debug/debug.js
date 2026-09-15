@@ -270,12 +270,16 @@ async function pollArtworkDownload(){
   if(!response.ok)throw Error('Artwork status unavailable');
   const data=await response.json();
   $('download-artwork').disabled=data.running;
-  $('download-artwork-status').textContent=data.message+' '+data.completed+'/'+data.total+' cards checked · '+data.downloaded+' images downloaded'+(data.finished_at?' · Last finished '+new Date(data.finished_at).toLocaleString():'')+(data.errors.length?' · '+data.errors.length+' errors: '+data.errors.slice(0,3).join('; '):'');
+  $('update-catalog').disabled=data.running;
+  $('download-artwork-status').textContent=data.message+' '+(data.added ? data.added+' new cards added · ' : '')+data.completed+'/'+data.total+' cards checked · '+data.downloaded+' images downloaded'+(data.finished_at?' · Last finished '+new Date(data.finished_at).toLocaleString():'')+(data.errors.length?' · '+data.errors.length+' errors: '+data.errors.slice(0,3).join('; '):'');
  }catch(error){$('download-artwork-status').textContent=error.message;}
 }
-$('download-artwork').onclick=async()=>{
+async function startCardDownload(endpoint){
  $('download-artwork').disabled=true;
- try{await api('/api/cards/artwork/download',{});await pollArtworkDownload();}
- catch(error){$('download-artwork-status').textContent=error.message;$('download-artwork').disabled=false;}
-};
+ $('update-catalog').disabled=true;
+ try{await api(endpoint,{});await pollArtworkDownload();}
+ catch(error){$('download-artwork-status').textContent=error.message;$('download-artwork').disabled=false;$('update-catalog').disabled=false;}
+}
+$('download-artwork').onclick=()=>startCardDownload('/api/cards/artwork/download');
+$('update-catalog').onclick=()=>startCardDownload('/api/cards/catalog/update');
 pollArtworkDownload();setInterval(pollArtworkDownload,3000);

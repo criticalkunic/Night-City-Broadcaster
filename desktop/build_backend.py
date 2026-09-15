@@ -21,3 +21,6 @@ subprocess.run([sys.executable, '-m', 'PyInstaller', '--noconfirm', '--clean',
     '--add-data', f'{assets / "static"}:app/static',
     '--add-data', f'{seed}:config',
     str(root/'desktop/server.py')], check=True)
+
+from build_manifest import stamp
+stamp(root, root/'desktop/backend/ncb-server')

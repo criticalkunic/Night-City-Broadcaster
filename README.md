@@ -129,7 +129,7 @@ The default is local access only. LAN mode has no login or access control; use i
 
 Back up these folders to preserve camera settings, downloaded images, and learned artwork. Match state is not a saved-game file. Your player name is stored in browser cookies.
 
-In **Debug**, use **Download missing card art** to repair images and fetch alternate references for the local catalog. This does not import newly added card identities. Source users can refresh the catalog with the [maintenance commands](docs/development.md#refreshing-the-card-catalog).
+In **Debug**, use **Check for new cards** to fetch the current catalog, add new card identities, and download their images and alternate artwork. Progress is shown while it runs, and recognition refreshes automatically—no restart or terminal required. Existing cards, images, and learned references are preserved. **Download missing card art** remains available to repair images for cards already in your catalog.
 
 ## Development and support
 
@@ -146,6 +146,6 @@ Project code is licensed under [GNU GPL v3.0](LICENSE) (`GPL-3.0-only`). Third-p
 
 ## Artwork and trademarks
 
-Night City Broadcast is an unofficial community project. Cyberpunk TCG, Cyberpunk, and their associated artwork and trademarks belong to their respective owners. This project is not affiliated with or endorsed by CD PROJEKT RED or WeirdCo.
+Night City Broadcast is an unofficial community project. Cyberpunk TCG, Cyberpunk, and their associated artwork and trademarks belong to their respective owners, including CD PROJEKT RED, WeirdCo, and R. Talsorian Games. This project is not affiliated with or endorsed by CD PROJEKT RED, WeirdCo, or R. Talsorian Games.
 
 Card metadata and images are downloaded from external services at runtime. The downloadable artwork library is excluded from source archives and standalone builds. Card artwork shown in the README screenshots belongs to its respective owners and is not covered by the code license. Download availability depends on those services.

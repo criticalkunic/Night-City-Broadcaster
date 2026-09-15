@@ -19,3 +19,6 @@ shutil.copytree(root/'desktop/build/distribution-assets/static',out/'app/static'
 (out/'config').mkdir(exist_ok=True)
 shutil.copy2(root/'desktop/server.py',out/'server.py')
 print('Windows backend ready:',out)
+
+from build_manifest import stamp
+stamp(root, out)

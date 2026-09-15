@@ -34,5 +34,6 @@
   "afterAllArtifactBuild": "./publish-releases.cjs",
   "portable": {
     "artifactName": "Night City Broadcast-${version}-Windows.exe"
-  }
+  },
+  "beforePack": "./check-backend.cjs"
 }

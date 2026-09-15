@@ -44,7 +44,9 @@ Node.js 22 is used for the JavaScript checks. Other Python tests cover detection
 
 ## Refreshing the card catalog
 
-Stop the service before updating the catalog. From the repository root:
+For normal use, open **Debug → Check for new cards**. This fetches the current catalog, adds new identities, downloads artwork, and refreshes recognition without restarting.
+
+For command-line maintenance instead, stop the service before updating the catalog. From the repository root:
 
 ```bash
 .venv/bin/python -m scripts.import_cards --source cyberpunktcg

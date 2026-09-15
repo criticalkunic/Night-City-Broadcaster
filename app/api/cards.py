@@ -27,6 +27,13 @@ def download_artwork():
     return art_download.status()
 
 
+@router.post("/cards/catalog/update")
+def update_catalog():
+    from app.game.art_download import art_download
+    art_download.start(runtime.card_db, runtime.recognizer, refresh_catalog=True)
+    return art_download.status()
+
+
 @router.get("/cards/{card_id}")
 def get_card(card_id: str):
     card = runtime.card_db.get(card_id)

@@ -20,7 +20,7 @@ jobs:
         run: >-
           python -m pytest -q
           tests/test_first_run.py tests/test_card_back.py
-          tests/test_import_cards.py tests/test_art_download.py tests/test_broadcast_url.py
+          tests/test_import_cards.py tests/test_art_download.py tests/test_broadcast_url.py tests/test_catalog_update.py
       - name: Browser and desktop tests
         run: for test in tests/*.cjs; do node "$test" || exit 1; done
       - name: Check launcher syntax

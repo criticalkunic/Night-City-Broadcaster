@@ -1,7 +1,7 @@
 {
   "name": "night-city-broadcast",
   "productName": "Night City Broadcast",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Webcam board tracking and streaming companion",
   "author": "Night City Broadcast",
   "private": true,
@@ -51,7 +51,8 @@
     "afterAllArtifactBuild": "./publish-releases.cjs",
     "portable": {
       "artifactName": "Night City Broadcast-${version}-Windows.exe"
-    }
+    },
+    "beforePack": "./check-backend.cjs"
   },
   "homepage": "http://127.0.0.1:8766",
   "license": "GPL-3.0-only"
