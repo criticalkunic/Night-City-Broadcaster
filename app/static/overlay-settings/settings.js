@@ -42,7 +42,7 @@ for(const key of fields){
   finally{saving=false;render();}
  };
 }
-$("obs-url").value=location.origin+"/overlay/live";
+$("obs-url").value=location.origin+"/broadcast/live";
 $("copy").onclick=async()=>{
  try{await navigator.clipboard.writeText($("obs-url").value);$("status").textContent="OBS overlay link copied.";}
  catch{$("obs-url").select();$("status").textContent="Copy the selected OBS overlay URL.";}

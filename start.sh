@@ -28,7 +28,7 @@ fi
 echo "[start] serving on http://${HOST}:${PORT}"
 echo "[start]   operator: http://localhost:${PORT}/operator"
 echo "[start]   overlay:  http://localhost:${PORT}/overlay   (settings and copy link)"
-echo "[start]   OBS:      http://localhost:${PORT}/overlay/live"
+echo "[start]   OBS:      http://localhost:${PORT}/broadcast/live"
 echo "[start]   setup:    http://localhost:${PORT}/setup"
 echo "[start]   debug:    http://localhost:${PORT}/debug"
 exec .venv/bin/uvicorn app.main:app --host "$HOST" --port "$PORT"

@@ -2,7 +2,8 @@
 
 Pages:
   /operator - scorekeeper / manual control (authoritative for dice)
-  /overlay  - transparent OBS Browser Source (reads state only)
+  /overlay  - stream settings
+  /broadcast/live - OBS Browser Source (reads state only)
   /setup    - camera calibration
   /debug    - vision debug (detection + recognition)
 """
@@ -141,18 +142,20 @@ app.mount("/captures", StaticFiles(directory=CAPTURES_DIR), name="captures")
 _PAGES = {
     "/operator": STATIC_DIR / "operator" / "index.html",
     "/overlay": STATIC_DIR / "overlay-settings" / "index.html",
-    "/overlay/live": STATIC_DIR / "shared" / "active-overlay.html",
+    "/broadcast/live": STATIC_DIR / "shared" / "active-overlay.html",
     "/setup": STATIC_DIR / "setup" / "index.html",
     "/debug": STATIC_DIR / "debug" / "index.html",
 }
 
 
+@app.get("/broadcast", include_in_schema=False)
+@app.get("/overlay/live", include_in_schema=False)
 @app.get("/overlay/board", include_in_schema=False)
 @app.get("/overlay/feed/play", include_in_schema=False)
 @app.get("/overlay/feed/eddies", include_in_schema=False)
 async def legacy_overlay(request: Request):
     suffix = "?" + request.url.query if request.url.query else ""
-    return RedirectResponse("/overlay/live" + suffix, status_code=307)
+    return RedirectResponse("/broadcast/live" + suffix, status_code=307)
 
 
 def _page_route(path: str):

@@ -80,7 +80,7 @@ $("clear").onclick=action(()=>api("/solo/card/clear",{}));
 $("reset").onclick=action(async()=>{await api("/solo/match/new",{});notice("New match started. Cards, legends, and gigs cleared. Undo restores the previous match. Card tracking continues automatically.");});
 $("camera").onclick=action(async()=>{await api("/vision/start",{});await status();});
 $("stop").onclick=action(async()=>{await api("/vision/stop",{});await status();});
-$("overlay-url").value=location.origin+"/overlay/live";
+$("overlay-url").value=location.origin+"/broadcast/live";
 $("copy").onclick=action(async()=>{try{await navigator.clipboard.writeText($("overlay-url").value);notice("OBS URL copied.");}catch{$("overlay-url").select();notice("Select and copy the highlighted OBS URL.");}});
 async function status(){
  try{const data=await api("/vision/status");$("vision").textContent=data.error?"Camera: "+data.error:data.running?"Webcam running"+(data.paused?" · paused":"")+" · "+data.fps+" fps":"Webcam stopped · configure your board in Camera setup.";}catch{$("vision").textContent="Camera status unavailable.";}

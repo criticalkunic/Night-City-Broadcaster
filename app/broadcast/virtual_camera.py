@@ -17,7 +17,7 @@ from urllib.parse import urlsplit
 
 from app.config import BASE_DIR
 
-LAYOUTS = {name: '/overlay/live' for name in ('board', 'play', 'eddies')}  # Legacy selections use the one output.
+LAYOUTS = {name: '/broadcast/live' for name in ('board', 'play', 'eddies')}  # Legacy selections use the one output.
 
 
 def devices():

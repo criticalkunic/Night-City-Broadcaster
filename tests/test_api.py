@@ -408,11 +408,11 @@ def test_learn_artwork_uses_frozen_crop_and_checks_paths(client, tmp_path, monke
 
 def test_legacy_overlays_redirect_to_one_output(client):
     from app.broadcast.virtual_camera import LAYOUTS
-    assert set(LAYOUTS.values()) == {'/overlay/live'}
+    assert set(LAYOUTS.values()) == {'/broadcast/live'}
     for path in ('/overlay/board', '/overlay/feed/play', '/overlay/feed/eddies'):
         response = client.get(path+'?renderer=test', follow_redirects=False)
         assert response.status_code == 307
-        assert response.headers['location'] == '/overlay/live?renderer=test'
+        assert response.headers['location'] == '/broadcast/live?renderer=test'
 
 
 def test_arm_current_cards_opens_gate_and_requests_fresh_detection(client, monkeypatch):

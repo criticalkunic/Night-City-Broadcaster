@@ -120,14 +120,14 @@ def test_manual_play_is_allowed_at_start_of_game():
 def test_overlay_default_is_settings_and_obs_url_is_clean():
     from app.main import _PAGES
     settings = _PAGES["/overlay"].read_text()
-    shell = _PAGES["/overlay/live"].read_text()
+    shell = _PAGES["/broadcast/live"].read_text()
     assert "active-overlay.js" in shell
     assert "/overlay/board" not in _PAGES
     assert "board-url" not in settings and "play-feed-url" not in settings
     assert settings.count('id="preview-layout"') == 1
-    live = (_PAGES["/overlay/live"].parent.parent / "overlay" / "index.html").read_text()
+    live = (_PAGES["/broadcast/live"].parent.parent / "overlay" / "index.html").read_text()
     assert "Copy OBS stream link" in settings
-    assert 'src="/overlay/live"' in settings
+    assert 'src="/broadcast/live"' in settings
     assert 'id="latest"' in live
     assert "Copy OBS stream link" not in live
 
@@ -157,7 +157,7 @@ def test_debug_available_on_main_pages():
     from app.main import _PAGES
     for route in ("/operator", "/setup", "/overlay"):
         assert 'href="/debug"' in _PAGES[route].read_text()
-    assert 'href="/debug"' not in _PAGES["/overlay/live"].read_text()
+    assert 'href="/debug"' not in _PAGES["/broadcast/live"].read_text()
 
 
 def test_legend_debug_images_show_current_regions(tmp_path):

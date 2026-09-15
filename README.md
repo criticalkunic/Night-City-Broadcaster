@@ -1,5 +1,9 @@
 # Night City Broadcast
 
+![Live minimalist stream showing the latest card, revealed legends, and controlled gigs](docs/assets/readme-preview.png)
+
+*Minimal layout during webcam play.*
+
 **A webcam companion for Cyberpunk TCG.** Track your latest play, revealed legends, and controlled gigs, then send your board to OBS through one browser source.
 
 Night City Broadcast runs locally on Linux and Windows. Use automatic card recognition, manual match controls, or both.
@@ -24,7 +28,7 @@ Download the file for your system from the [Releases page](https://github.com/cr
 
 | System | Download | Launch |
 | --- | --- | --- |
-| Windows x64 | `Night City Broadcast-<version>-Windows.exe` | Double-click. No installer or administrator access required. |
+| Windows x64 | `Night City Broadcast-<version>-Windows.exe` | Double-click to launch. Saved data stays in AppData. |
 | Linux x64 | `Night City Broadcast-<version>.AppImage` | Mark it executable in file properties, then double-click. |
 
 Windows extracts its runtime into a temporary folder while running. You can keep the `.exe` wherever you like; settings and artwork are stored in AppData. Close the app before replacing it with a newer version.
@@ -44,6 +48,10 @@ Keep an internet connection until setup finishes. The app stays on the progress 
 3. Select **Played cards** and draw a region covering the area where you play cards. It can contain multiple cards; it is not a single-card presentation slot.
 4. Select **Legends** and align the region with your three legend positions. Configure **Eddies**, **Gigs**, and **Fixer** if you use their video panels.
 5. Click **Save camera setup**.
+
+![Camera setup showing the played-card, legend, gig, fixer, and Eddie regions](docs/assets/board-setup.png)
+
+*Board region setup. Drag the highlighted area and its corner handles to fit your board; this example shows the regions without a camera signal.*
 
 Use even lighting and keep card faces clear of glare. Brightness and contrast controls adjust the image used for recognition without changing the broadcast video. For camera and frame-rate problems, see [Troubleshooting](docs/troubleshooting.md).
 
@@ -66,7 +74,7 @@ Recognition depends on camera resolution, sleeves, lighting, and the available a
 3. Set its size to **1920 × 1080** and its frame rate to your camera’s rate, such as **30 FPS**.
 4. Keep Night City Broadcast running while streaming.
 
-The usual URL is `http://127.0.0.1:8766/overlay/live`. The desktop app selects another port if that one is occupied, so use the link shown in the app.
+The usual URL is `http://127.0.0.1:8766/broadcast/live`. The desktop app selects another port if that one is occupied, so use the link shown in the app.
 
 Choose **Minimal** or **Full board** in Stream settings. Both use the same output URL and share the card, legend, and gig visibility settings. Minimal supports all four corners and a scale control. Full board can hide the fixer and Eddie panels and use tracked dice instead of video for gigs.
 
@@ -138,4 +146,4 @@ Project code is licensed under [GNU GPL v3.0](LICENSE) (`GPL-3.0-only`). Third-p
 
 Night City Broadcast is an unofficial community project. Cyberpunk TCG, Cyberpunk, and their associated artwork and trademarks belong to their respective owners. This project is not affiliated with or endorsed by CD PROJEKT RED or WeirdCo.
 
-Card metadata and images are downloaded from external services at runtime. Artwork is not included in source archives or standalone builds. Download availability depends on those services.
+Card metadata and images are downloaded from external services at runtime. The downloadable artwork library is excluded from source archives and standalone builds. Card artwork shown in the README screenshots belongs to its respective owners and is not covered by the code license. Download availability depends on those services.

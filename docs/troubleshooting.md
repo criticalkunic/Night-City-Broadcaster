@@ -39,7 +39,9 @@ Check the three numbered crops under **Live legend detection** in Debug. Align t
 
 ## Nothing appears in OBS
 
-Use **Copy OBS stream link** in Stream settings. The URL must end in `/overlay/live`; `/overlay` is the settings page.
+Use **Copy OBS stream link** in Stream settings. The URL must end in `/broadcast/live`; `/overlay` is the settings page.
+
+Existing `/overlay/live` sources redirect to `/broadcast/live`, but newly copied links use the new address.
 
 Keep the service running. Confirm the preview in the app, then refresh the OBS source. Check the display toggles and whether a card has been recognized or selected. The desktop app may choose a different port if 8766 was already occupied.
 
@@ -69,10 +71,6 @@ PORT=9000 ./start.sh
 ```
 
 Then copy the stream link from the newly opened service.
-
-## Windows asks to install or close an old installation
-
-The current Windows download ends in `-Windows.exe`. It is portable and does not run an installation wizard. A file with `Setup` in its name is an older installer. Cancel that installer and use the portable download instead. Close an already running copy before launching an updated version.
 
 ## Reporting a bug
 

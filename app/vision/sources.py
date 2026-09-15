@@ -14,7 +14,7 @@ def service_source(source, output):
         return canonical in excluded or (label.exists() and label.read_text().strip().startswith('Cyberpunk Board'))
     parsed = urlsplit(path)
     return (parsed.hostname in ('localhost', '127.0.0.1', '::1') and
-            (parsed.path.startswith('/api/vision/') or parsed.path.startswith('/overlay/')))
+            (parsed.path.startswith('/api/vision/') or parsed.path.startswith('/overlay/') or parsed.path == '/broadcast' or parsed.path.startswith('/broadcast/')))
 
 
 def camera_sources(output):
