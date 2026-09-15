@@ -1,0 +1,58 @@
+{
+  "name": "night-city-broadcast",
+  "productName": "Night City Broadcast",
+  "version": "1.0.0",
+  "description": "Webcam board tracking and streaming companion",
+  "author": "Night City Broadcast",
+  "private": true,
+  "main": "main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder",
+    "pack": "electron-builder --dir"
+  },
+  "devDependencies": {
+    "electron": "^41.0.0",
+    "electron-builder": "^26.0.0"
+  },
+  "build": {
+    "appId": "com.nightcity.broadcast",
+    "files": [
+      "main.cjs",
+      "package.json",
+      "port.cjs"
+    ],
+    "extraResources": [
+      {
+        "from": "backend/ncb-server",
+        "to": "backend"
+      },
+      {
+        "from": "../LICENSE",
+        "to": "LICENSE"
+      }
+    ],
+    "directories": {
+      "output": "build/packages"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "AudioVideo",
+      "maintainer": "Night City Broadcast"
+    },
+    "win": {
+      "target": [
+        "portable"
+      ],
+      "signAndEditExecutable": false
+    },
+    "afterAllArtifactBuild": "./publish-releases.cjs",
+    "portable": {
+      "artifactName": "Night City Broadcast-${version}-Windows.exe"
+    }
+  },
+  "homepage": "http://127.0.0.1:8766",
+  "license": "GPL-3.0-only"
+}

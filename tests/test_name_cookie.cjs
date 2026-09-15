@@ -1,0 +1,14 @@
+const assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs');
+let cookie='cyberpunk_player_name=Kunic%20%26%20V',writes=0,calls=[];
+const document={get cookie(){return cookie;},set cookie(value){cookie=value;writes++;}};
+const ctx=vm.createContext({document,location:{protocol:'http:'},api:async(path,body)=>calls.push({path,body}),notice(){}});
+vm.runInContext(fs.readFileSync('app/static/operator/name-cookie.js','utf8'),ctx);
+assert.equal(ctx.rememberedPlayerName(),'Kunic & V');
+ctx.syncRememberedPlayerName({match:{player1_name:'Player 1',player2_name:'Player 2'}});
+assert.equal(calls[0].body.player1_name,'Kunic & V');
+ctx.syncRememberedPlayerName({match:{player1_name:'Kunic & V'}});
+assert(cookie.includes('Max-Age=31536000')&&cookie.includes('SameSite=Lax'));
+ctx.syncRememberedPlayerName({match:{player1_name:'Kunic & V'}});assert.equal(writes,1);
+ctx.rememberPlayerName('V; other=bad');assert(cookie.includes('V%3B%20other%3Dbad'));
+cookie='cyberpunk_player_name=%broken';assert.equal(ctx.rememberedPlayerName(),'');
+console.log('Name cookie: restore, encoding, persistence, and no repeated writes passed.');

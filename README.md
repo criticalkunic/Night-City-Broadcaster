@@ -1,1 +1,141 @@
-# Night-City-Broadcaster
+# Night City Broadcast
+
+**A webcam companion for Cyberpunk TCG.** Track your latest play, revealed legends, and controlled gigs, then send your board to OBS through one browser source.
+
+Night City Broadcast runs locally on Linux and Windows. Use automatic card recognition, manual match controls, or both.
+
+[Download](https://github.com/criticalkunic/Night-City-Broadcaster/releases/latest) · [Getting started](#getting-started) · [Linux from source](#linux-from-source) · [OBS setup](#obs-setup) · [Troubleshooting](docs/troubleshooting.md) · [Building releases](desktop/README.md)
+
+## Features
+
+- **Live card recognition.** Cards can be placed anywhere inside your configured play area. The latest recognized play appears as artwork, with a glitch reveal animation.
+- **Three legend slots.** Track revealed legends, their positions and orientation, with animated flips and manual corrections.
+- **Your gigs and captured gigs.** Edit dice values, return captured dice, and choose which panels appear on stream.
+- **Two stream layouts.** Minimal places match information over your webcam. Full board arranges cropped play and Eddie video alongside legends, gigs, and an optional fixer panel.
+- **One OBS URL.** Switch layouts without replacing your browser source. Choose Cyberpunk, Arasaka, or Edgerunners colours.
+- **Match controls.** Start a new match, select cards manually, and step back through up to 100 recent card plays.
+- **Recognition tools.** Inspect detections, adjust the image used by vision, and teach alternate artwork from a camera sample.
+
+## Getting started
+
+### 1. Download and launch
+
+Download the file for your system from the [Releases page](https://github.com/criticalkunic/Night-City-Broadcaster/releases). Choose the application asset, not GitHub’s automatically generated source ZIP.
+
+| System | Download | Launch |
+| --- | --- | --- |
+| Windows x64 | `Night City Broadcast-<version>-Windows.exe` | Double-click. No installer or administrator access required. |
+| Linux x64 | `Night City Broadcast-<version>.AppImage` | Mark it executable in file properties, then double-click. |
+
+Windows extracts its runtime into a temporary folder while running. You can keep the `.exe` wherever you like; settings and artwork are stored in AppData. Close the app before replacing it with a newer version.
+
+Windows builds are currently unsigned. Native Windows camera hardware testing is still needed. Linux builds made by the release workflow target Ubuntu 22.04; locally built AppImages may require a newer distribution.
+
+### 2. Prepare the artwork
+
+On first launch, the app fetches the current card catalog, downloads card images and alternate references, and prepares recognition. It also downloads the card back used for hidden legends.
+
+Keep an internet connection until setup finishes. The app stays on the progress screen until all required artwork is ready. If a download fails, retry; completed downloads are reused. There is no fixed card-count limit and no artwork bundled with the app.
+
+### 3. Set up your camera
+
+1. Open **Camera setup**, choose your webcam or capture device, and click **Start camera**.
+2. Select **Camera framing** and adjust the visible board area. Use **Straighten the board** if the camera views it at an angle.
+3. Select **Played cards** and draw a region covering the area where you play cards. It can contain multiple cards; it is not a single-card presentation slot.
+4. Select **Legends** and align the region with your three legend positions. Configure **Eddies**, **Gigs**, and **Fixer** if you use their video panels.
+5. Click **Save camera setup**.
+
+Use even lighting and keep card faces clear of glare. Brightness and contrast controls adjust the image used for recognition without changing the broadcast video. For camera and frame-rate problems, see [Troubleshooting](docs/troubleshooting.md).
+
+### 4. Run your match
+
+Open **Player console** to set your name and manage the board.
+
+- Play cards within the configured area. Tracking runs continuously; starting a new match does not require an empty-board calibration.
+- Use **Choose a card manually** to correct a match or display a card without camera recognition.
+- Assign legends and use their flip controls when a detection needs correcting.
+- Add your gig dice and set their values. Add an opponent’s die only when you capture its gig; remove it when you no longer control it.
+- Use **Undo** to step back or **Start new match** to reset match state. Cards still visible on the table can be detected again after a reset.
+
+Recognition depends on camera resolution, sleeves, lighting, and the available artwork references. Manual controls remain available during play.
+
+## OBS setup
+
+1. Open **Stream settings** and click **Copy OBS stream link**.
+2. In OBS, add a **Browser Source** and paste the URL.
+3. Set its size to **1920 × 1080** and its frame rate to your camera’s rate, such as **30 FPS**.
+4. Keep Night City Broadcast running while streaming.
+
+The usual URL is `http://127.0.0.1:8766/overlay/live`. The desktop app selects another port if that one is occupied, so use the link shown in the app.
+
+Choose **Minimal** or **Full board** in Stream settings. Both use the same output URL and share the card, legend, and gig visibility settings. Minimal supports all four corners and a scale control. Full board can hide the fixer and Eddie panels and use tracked dice instead of video for gigs.
+
+The webcam video rate and the card-detection rate are separate. Recognition can run more slowly than the video without reducing the stream to that detection rate.
+
+## Linux from source
+
+Requires **Python 3.12 or newer**, Python’s `venv` support, and an internet connection for dependencies and first-launch artwork. Node.js and Electron are not needed for this method.
+
+Download and extract the source, or clone the repository. Open a terminal in its folder:
+
+```bash
+chmod +x start.sh
+./start.sh
+```
+
+`start.sh` creates `.venv`, installs the Python requirements, and starts the service. Open **http://localhost:8766/operator** in your browser. The same first-launch artwork setup and camera workflow apply. Stop the service with **Ctrl+C** in the terminal.
+
+On Ubuntu or Debian, install the Python venv package if it is missing:
+
+```bash
+sudo apt install python3-venv
+```
+
+Check `python3 --version` first; older distributions may need a newer Python installation. On Fedora, Python normally includes venv support.
+
+### Launch options
+
+```bash
+# Use another port if 8766 is occupied.
+PORT=9000 ./start.sh
+
+# Allow OBS on another computer to reach the service.
+HOST=0.0.0.0 ./start.sh
+
+# Keep downloaded artwork and configuration outside the source folder.
+NCB_DATA_DIR="$HOME/.local/share/night-city-broadcast" ./start.sh
+```
+
+The default is local access only. LAN mode has no login or access control; use it only on a trusted network. On the OBS computer, replace `localhost` in the stream URL with the host computer’s LAN address.
+
+## Settings and downloads
+
+| Launch method | Saved data |
+| --- | --- |
+| Windows standalone | `%APPDATA%\Night City Broadcast` |
+| Linux standalone | `~/.config/Night City Broadcast` |
+| `start.sh` | `config/`, `app/cards/`, and `captures/` inside the source folder |
+| Custom `NCB_DATA_DIR` | The directory you specify |
+
+Back up these folders to preserve camera settings, downloaded images, and learned artwork. Match state is not a saved-game file. Your player name is stored in browser cookies.
+
+In **Debug**, use **Download missing card art** to repair images and fetch alternate references for the local catalog. This does not import newly added card identities. Source users can refresh the catalog with the [maintenance commands](docs/development.md#refreshing-the-card-catalog).
+
+## Development and support
+
+- [Troubleshooting and bug reports](docs/troubleshooting.md)
+- [Development, tests, and source releases](docs/development.md)
+- [Desktop packaging](desktop/README.md)
+- [Contributing](CONTRIBUTING.md)
+
+When reporting a recognition problem, include the app version, operating system, camera model, and a Debug crop showing the problem. Check captures for anything private before attaching them.
+
+## License
+
+Project code is licensed under [GNU GPL v3.0](LICENSE) (`GPL-3.0-only`). Third-party dependencies retain their own licenses.
+
+## Artwork and trademarks
+
+Night City Broadcast is an unofficial community project. Cyberpunk TCG, Cyberpunk, and their associated artwork and trademarks belong to their respective owners. This project is not affiliated with or endorsed by CD PROJEKT RED or WeirdCo.
+
+Card metadata and images are downloaded from external services at runtime. Artwork is not included in source archives or standalone builds. Download availability depends on those services.

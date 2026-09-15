@@ -1,0 +1,15 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+let timers=[],requests=0,visible=true,now=0;
+const img={getClientRects:()=>visible?[{}]:[],set src(value){requests++;this.url=value;},removeAttribute(){this.url=null;}};
+const document={hidden:false};
+const ctx=vm.createContext({document,URLSearchParams,location:{search:''},Date:{now:()=>now},setTimeout:(fn,delay)=>timers.push({fn,delay})});
+vm.runInContext(fs.readFileSync(require('node:path').join(__dirname,'../app/static/board/camera-feed.js'),'utf8'),ctx);
+ctx.startBoardFeed(img,'play');
+assert.equal(requests,1);assert.match(img.url,/area-stream\/play/);
+timers.shift().fn();assert.equal(requests,1,'Keep one continuous connection');
+visible=false;timers.shift().fn();assert.equal(img.url,null,'Disconnect hidden panels');
+visible=true;document.hidden=true;timers.shift().fn();assert.equal(requests,1);
+document.hidden=false;timers.shift().fn();assert.equal(requests,2);
+img.onerror();timers.shift().fn();assert.equal(requests,2,'Back off errors');
+now=1501;timers.shift().fn();assert.equal(requests,3,'Reconnect after retry delay');
+console.log('Continuous feed passed: shared stream URL, no repeated requests, hidden disconnect, retry.');

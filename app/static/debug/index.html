@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Night City Broadcast — Troubleshooting</title>
+<link rel="stylesheet" href="/static/debug/debug.css">
+<link rel="stylesheet" href="/static/shared/ui.css"></head>
+<body>
+
+<a href="#main" class="skip-link">Skip to vision controls</a>
+
+<header id="topbar">
+  <div class="brand">
+
+    <span class="app-name">Night City Broadcast</span><span class="brand-role">Troubleshooting</span>
+  </div>
+  <nav class="page-nav" aria-label="Pages"><a href="/operator">Player console</a><a href="/setup">Camera setup</a><a href="/debug" aria-current="page">Troubleshooting</a><a href="/overlay">Stream settings</a></nav><span id="connection" role="status" aria-live="polite">Connecting…</span>
+</header>
+<section class="camera-controls">
+  <div class="controls" role="group" aria-label="Vision controls">
+    <button id="btn-start" class="btn accent">Start</button>
+    <button id="btn-stop" class="btn">Stop</button>
+    <button id="btn-pause" class="btn">Pause recognition</button>
+    <button id="btn-resume" class="btn">Resume</button>
+    <label class="visually-hidden" for="save-view">View to save</label>
+    <select id="save-view">
+      <option value="raw">Original webcam</option>
+      <option value="p1_crop">Board framing</option>
+      <option value="p1_corrected">Recognition image</option>
+    </select>
+    <button id="btn-save-frame" class="btn">Save webcam image</button>
+    <button id="btn-scan" class="btn accent" title="Inspect legend slots without changing latest play">Scan Table</button>
+  </div>
+</section>
+
+<div id="statusbar" role="status" aria-live="polite">
+  <span id="st-run">stopped</span>
+  <span id="st-fps"></span>
+  <span id="st-res"></span>
+  <span id="st-src"></span>
+  <span id="st-msg"></span>
+</div>
+
+<main id="main">
+  <section class="panel">
+    <h2>Card artwork</h2>
+    <p>The card catalog is imported manually. Download missing images and alternate artwork for cards in your local catalog. Existing images and learned artwork are preserved. Recognition refreshes when downloads finish.</p>
+    <button id="download-artwork" class="btn accent">Download missing card art</button>
+    <p id="download-artwork-status" role="status" aria-live="polite"></p>
+  </section>
+  <details class="panel"><summary>Camera views</summary>
+  <section class="views">
+    <div class="viewbox wide">
+      <h2>Board webcam <span class="hint">(camera rectangles overlaid)</span></h2>
+      <img id="img-raw" alt="Raw combined camera feed with player rectangles">
+    </div>
+    <div class="viewbox">
+      <h2 class="p1">Board framing</h2>
+      <img id="img-p1_crop" alt="My board cropped feed">
+    </div>
+
+    <div class="viewbox">
+      <h2 class="p1">Recognition areas</h2>
+      <img id="img-p1_corrected" alt="My board perspective-corrected feed with regions">
+    </div>
+
+  </section>
+
+  </details>
+  <section class="panel" role="region" aria-label="Card detection">
+    <div class="panel-title">Card recognition <span id="det-fps" class="hint"></span></div>
+    <p id="play-gate" role="status">Card tracking is always active while vision is running.</p>
+    <div class="det-grid">
+      <div class="det-box" id="det-p1">
+        <h3 class="p1">My board</h3>
+        <img id="crop-p1" alt="My board detected card crop" width="150" height="210">
+        <details><summary>Detection details</summary><dl class="det-stats" id="stats-p1"></dl></details>
+        <div class="det-match" id="match-p1" aria-live="polite"></div>
+        <div class="det-match det-legends" id="legends-p1"></div>
+        <div class="det-actions">
+          <button class="btn" id="btn-crop-p1">Save card image</button>
+          <button class="btn accent" id="btn-rec-p1">Check card now</button>
+        </div>
+        <img id="detdbg-p1" class="det-dbg" alt="My board card-play region candidates (grey rejected, green accepted)">
+      </div>
+
+    </div>
+    <p id="visible-play-cards" role="status"></p>
+    <section class="legend-diagnostics" aria-label="Live legend detection">
+      <h2>Live legend detection</h2>
+      <p>These are the actual webcam crops used for each slot. Align the numbered boxes with your three legends in <a href="/setup">Camera setup</a>. Low-confidence guesses are rejected and retried. If your printing uses different artwork, assign the known legend in the <a href="/operator">player console</a> and use the flip controls.</p>
+      <img id="legend-region-preview" class="legend-region-preview" alt="Current board with numbered legend detection boxes">
+      <div id="legend-diagnostics-grid"></div>
+      <p id="legend-diagnostics-status" role="status"></p>
+    </section>
+    <details><summary>Advanced recognition settings</summary><p>Adjust these only when troubleshooting missed cards.</p>
+    <form id="tuning" class="tuning" aria-label="Detection tuning">
+      <span class="tuning-title">TUNING</span>
+      <label>min area <input type="number" step="0.005" min="0.001" max="0.9" name="min_area_frac"></label>
+      <label>max area <input type="number" step="0.05" min="0.1" max="1" name="max_area_frac"></label>
+      <label>aspect tol <input type="number" step="0.05" min="0.05" max="1" name="aspect_tol"></label>
+      <label>min rect <input type="number" step="0.05" min="0.3" max="1" name="min_rectangularity"></label>
+      <label title="Expected single-card area as fraction of the corrected view (read 'area (view)' with one card placed alone). 0 = off.">card area <input type="number" step="0.005" min="0" max="0.5" name="card_area_frac"></label>
+      <label>stable frames <input type="number" step="1" min="1" max="60" name="stable_frames"></label>
+      <label>fps <input type="number" step="1" min="1" max="30" name="fps"></label>
+      <button class="btn accent" type="submit">Apply</button>
+      <span id="tuning-msg" role="status"></span>
+    </form>
+    <form id="rec-tuning" class="tuning" aria-label="Recognition tuning">
+      <span class="tuning-title">RECOGNITION <span id="rec-ready" class="hint"></span></span>
+      <label title="Matches below this confidence are shown here but never applied to the game state.">min confidence <input type="number" step="0.05" min="0" max="1" name="min_confidence"></label>
+      <label title="Geometric inliers needed for a confident feature match.">min inliers <input type="number" step="1" min="4" max="100" name="min_inliers"></label>
+      <label title="Candidate card identities checked with ORB, SIFT, and RANSAC.">shortlist <input type="number" step="1" min="1" max="60" name="shortlist"></label>
+      <label title="Try crop halves only for manual recognition. Live detection checks separate card candidates.">manual crop splits <input type="checkbox" name="try_splits"></label>
+      <label title="Hide a revealed legend again after repeated back observations with no recognized face. Off: only the operator hides legends.">auto hide legends <input type="checkbox" name="legend_auto_hide"></label>
+      <label title="Lowe ratio test threshold.">ratio <input type="number" step="0.02" min="0.5" max="0.95" name="ratio_test"></label>
+      <label title="Set the latest card automatically when a stable card is recognized. Off = recognition only reports (use Check card now or the scan).">auto apply <input type="checkbox" name="auto_apply"></label>
+      <button class="btn accent" type="submit">Apply</button>
+      <span id="rec-tuning-msg" role="status"></span>
+    </form>
+    </details>
+    <p class="placeholder">Green outlines mean a card was recognized. Cyan outlines mean it is still being checked. Use Save card image to keep a sample for troubleshooting.</p>
+  </section>
+<section class="panel" style="padding:20px">
+<h2>Teach a different card artwork</h2>
+<p>Place one upright card in the play area. Capture it, check the frozen image, then choose its exact card identity. This adds a recognition reference without changing overlay artwork.</p>
+<button id="art-capture" class="btn">Capture artwork sample</button>
+<img id="art-sample" hidden alt="Frozen artwork sample to label" style="display:block;max-width:180px;max-height:250px;margin:12px 0">
+<label>Find card <input id="art-search" type="search" placeholder="Card name"></label>
+<label>Card identity <select id="art-card"><option value="">Search for a card…</option></select></label>
+<button id="art-learn" class="btn accent" disabled>Learn this artwork</button>
+<p id="art-message" role="status"></p>
+</section></main>
+
+<script src="/static/debug/debug.js"></script>
+<script src="/static/shared/connection-status.js"></script></body>
+</html>

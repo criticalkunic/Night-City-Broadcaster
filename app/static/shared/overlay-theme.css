@@ -1,0 +1,22 @@
+/* Shared palette; colour transitions never filter camera video or card art. */
+:root{--theme-primary:#22d3ee;--theme-accent:#ffd23f;--theme-bg:#0b1017;--theme-panel:#12151c;--theme-line:#30414b;--theme-text:#eef1f6;--theme-muted:#8a91a0;--theme-border:#386a73}
+:root[data-theme="arasaka"]{--theme-primary:#f13c49;--theme-accent:#f4f1ee;--theme-bg:#10090c;--theme-panel:#1c1015;--theme-line:#542630;--theme-text:#fff3f1;--theme-muted:#bc939a;--theme-border:#a9424d}
+:root{--cyan:var(--theme-primary);--p1:var(--theme-primary);--yellow:var(--theme-accent);--accent:var(--theme-accent);--line:var(--theme-line);--panel:var(--theme-panel);--panel-bg:var(--theme-panel);--panel-bg-2:var(--theme-panel);--text:var(--theme-text);--muted:var(--theme-muted)}
+#stage{background:var(--theme-bg);color:var(--theme-text);transition:background-color .65s ease,color .65s ease}
+#hud,#stage .panel{background-color:var(--theme-panel);border-color:var(--theme-line);border-top-color:var(--theme-primary)}
+#hud{background:color-mix(in srgb,var(--theme-panel) 94%,transparent)}
+#stage #eddies{border-top-color:var(--theme-accent)}
+#hud,#stage .panel,#stage header,#stage .panel-head,#stage .cred,#stage .match-status,#stage .signal,#stage h1,#stage h2,#stage .brand span,#stage .brand b,#rail .eyebrow,#rail #legend-count,#rail #total,#rail .gig-header,#rail #gigs,#stolen-row,.legend span,.legend-tile small,.die,.gslot{transition:background-color .65s ease,border-color .65s ease,color .65s ease}
+#stage .brand b{color:var(--theme-text)}
+#art img,.legend img,.legend-tile img{border-color:var(--theme-border);transition:border-color .65s ease,rotate .45s ease}
+.legend.revealed img,.legend-tile.flipped img{border-color:var(--theme-primary)}
+.die-shape .body,.die-shape .ghost{transition:stroke .65s ease,fill .65s ease}
+#hud::before,#stage .panel::before{background:linear-gradient(90deg,transparent,var(--theme-primary),transparent)}
+#stage #eddies::before{background:linear-gradient(90deg,transparent,var(--theme-accent),transparent)}
+#rail .eyebrow::before,#stage .panel-head::before{background:repeating-linear-gradient(0deg,transparent 0 3px,color-mix(in srgb,var(--theme-primary) 5%,transparent) 3px 4px)}
+#rail .eyebrow::after,#stage .panel-head::after{background:linear-gradient(105deg,transparent 40%,color-mix(in srgb,var(--theme-primary) 9%,transparent) 50%,transparent 60%)}
+@media(prefers-reduced-motion:reduce){#stage,#stage *,#rail,#rail *{transition:none!important}}
+#stage .brand img{transition:filter .65s ease}
+:root[data-theme="arasaka"] #stage .brand img{filter:grayscale(1) brightness(2)}
+
+:root[data-theme="edgerunners"]{--theme-primary:#e9db0c;--theme-accent:#ff4b91;--theme-bg:#0b1210;--theme-panel:#14201b;--theme-line:#3c5336;--theme-text:#f6ffe7;--theme-muted:#a6bb92;--theme-border:#9fbd38}

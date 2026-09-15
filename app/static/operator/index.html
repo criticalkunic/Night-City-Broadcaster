@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Night City Broadcast — Player console</title><link rel="stylesheet" href="/static/operator/operator.css"><link rel="stylesheet" href="/static/shared/ui.css"></head><body>
+<header id="topbar"><div class="brand"><span class="app-name">Night City Broadcast</span><span class="brand-role">Player console</span></div><nav class="page-nav" aria-label="Pages"><a href="/operator" aria-current="page">Player console</a><a href="/setup">Camera setup</a><a href="/debug">Troubleshooting</a><a href="/overlay">Stream settings</a></nav><span id="connection" role="status" aria-live="polite">Connecting…</span></header>
+<main><div class="intro"><div><h1>Match controls</h1><p>Latest play, legend flips, and gigs for your broadcast.</p></div><div class="history"><button id="reset" class="primary">Start new match</button><button id="undo">Undo</button><button id="redo">Redo</button></div></div>
+<div id="notice" role="status" aria-live="polite"></div>
+<div class="layout"><div class="controls">
+<section><div class="section-head"><h2>Latest play</h2><span class="tag">LIVE TRACKING</span></div>
+<p>Cards anywhere in your calibrated play region are tracked automatically. Removing the card from the play region clears it from the overlay after a brief delay.</p>
+<p>Card tracking is always active while vision is running.</p>
+<label for="search">Choose a card manually</label><input id="search" type="search" placeholder="Search by card name…" autocomplete="off"><div id="results" aria-live="polite"></div>
+<div class="current"><img id="current-art" alt="" hidden><div><strong id="current-name">Waiting for your first play</strong><p id="current-source">Start your webcam or choose a card above.</p></div></div>
+<div class="actions"><button id="camera">Start webcam</button><button id="stop">Stop webcam</button><button id="clear">Clear card</button><button id="undo-card" disabled>Previous play (0 / 100)</button></div><p id="vision" class="muted" role="status"></p>
+</section>
+<section><div class="section-head"><h2>My legends</h2><label class="switch"><input type="checkbox" id="show-legends" checked> Show on stream</label></div>
+<p>Assign your three legends, then flip them as they are revealed. Webcam recognition also records flips in the calibrated legend region. Hidden artwork stays private.</p>
+<div id="legend-slots"></div>
+<label for="legend-slot">Assign to slot</label><select id="legend-slot"><option value="0">Legend 1</option><option value="1">Legend 2</option><option value="2">Legend 3</option></select>
+<label for="legend-search">Find a legend</label><input id="legend-search" type="search" placeholder="Search legend cards…" autocomplete="off"><div id="legend-results" aria-live="polite"></div>
+</section>
+<section><div class="section-head"><h2>My gigs</h2><label class="switch"><input type="checkbox" id="show-gigs"> Show on stream</label></div><p>Track only gigs you control. Add an opponent die when you steal its gig.</p>
+<div id="controlled"></div>
+<form id="gig-form"><div class="fields"><label>Gig die<select id="die" required></select></label><label>Value<input id="value" type="number" min="1" max="20" value="1" required></label></div><button type="submit" class="primary">Add / update gig</button></form>
+</section>
+<section><h2>Broadcast settings</h2><form id="name-form" class="actions"><label>Your name<input id="player-name" maxlength="50" placeholder="Your name"></label><button>Save name</button></form><label class="switch"><input id="show-art" type="checkbox" checked> Show latest card</label><p>OBS Browser Source · 1920 × 1080 · live webcam + overlay</p><div class="actions"><input id="overlay-url" readonly aria-label="OBS overlay URL"><button id="copy">Copy OBS stream link</button></div><p class="muted">Choose your camera in Camera setup.</p></section>
+</div><aside><div class="section-head"><h2>On your stream</h2><span class="tag">LIVE PREVIEW</span></div><div class="preview"><div class="board-label">NIGHT CITY BROADCAST<br><small>Your selected overlay with live video.</small></div><iframe src="/overlay/live" title="Live broadcast overlay preview"></iframe></div><p class="muted">Choose Minimal or Full board in Stream settings.</p></aside></div></main><script src="/static/operator/name-cookie.js"></script><script src="/static/operator/operator.js"></script><script src="/static/shared/connection-status.js"></script></body></html>

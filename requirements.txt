@@ -1,0 +1,15 @@
+# Milestone 1 — server + manual operator
+fastapi>=0.115
+uvicorn[standard]>=0.30
+pydantic>=2.7
+
+# Testing
+pytest>=8.0
+httpx>=0.27
+
+# Milestone 2 — vision pipeline
+opencv-python>=4.10
+numpy>=1.26
+
+# Windows camera names (DirectShow)
+pygrabber>=0.2; sys_platform == "win32"

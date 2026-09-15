@@ -1,0 +1,13 @@
+#art img.cyber-glitch,#latest-art.cyber-glitch{animation:cyber-card-reveal 650ms ease-out both}
+@keyframes cyber-card-reveal{
+ 0%{opacity:0;transform:translate(0,10px) scale(.97);filter:brightness(1.7)}
+ 12%{opacity:1;transform:translate(-7px,0);clip-path:inset(12% 0 37% 0);filter:drop-shadow(8px 0 #22d3ee) drop-shadow(-6px 0 #ff365c)}
+ 22%{clip-path:inset(0);transform:translate(5px,0)}
+ 31%{clip-path:inset(48% 0 10% 0);transform:translate(-4px,0);filter:brightness(1.35) drop-shadow(-7px 0 #22d3ee)}
+ 42%{clip-path:inset(0);transform:translate(2px,0);filter:brightness(1.1)}
+ 55%{transform:translate(-1px,0)}
+ 100%{opacity:1;clip-path:inset(0);transform:none;filter:none}
+}
+@media(prefers-reduced-motion:reduce){#art img.cyber-glitch,#latest-art.cyber-glitch{animation:none}}
+
+.legend img,.legend-tile img{rotate:0deg;transition:rotate .45s ease}.legend img.upside-down,.legend-tile img.upside-down{rotate:180deg}@media(prefers-reduced-motion:reduce){.legend img,.legend-tile img{transition:none}}

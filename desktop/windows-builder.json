@@ -1,0 +1,38 @@
+{
+  "appId": "com.nightcity.broadcast",
+  "files": [
+    "main.cjs",
+    "package.json",
+    "port.cjs"
+  ],
+  "extraResources": [
+    {
+      "from": "backend-windows/ncb-server",
+      "to": "backend"
+    },
+    {
+      "from": "../LICENSE",
+      "to": "LICENSE"
+    }
+  ],
+  "directories": {
+    "output": "build/packages"
+  },
+  "linux": {
+    "target": [
+      "AppImage"
+    ],
+    "category": "AudioVideo",
+    "maintainer": "Night City Broadcast"
+  },
+  "win": {
+    "target": [
+      "portable"
+    ],
+    "signAndEditExecutable": false
+  },
+  "afterAllArtifactBuild": "./publish-releases.cjs",
+  "portable": {
+    "artifactName": "Night City Broadcast-${version}-Windows.exe"
+  }
+}

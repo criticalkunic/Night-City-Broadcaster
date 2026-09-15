@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Night City Broadcast — Camera setup</title>
+<link rel="stylesheet" href="/static/setup/setup.css">
+<link rel="stylesheet" href="/static/shared/ui.css"></head>
+<body>
+
+<a href="#main" class="skip-link">Skip to camera controls</a>
+
+<header id="topbar">
+  <div class="brand">
+
+    <span class="app-name">Night City Broadcast</span><span class="brand-role">Camera Setup</span>
+  </div>
+  <nav class="page-nav" aria-label="Pages"><a href="/operator">Player console</a><a href="/setup" aria-current="page">Camera setup</a><a href="/debug">Troubleshooting</a><a href="/overlay">Stream settings</a></nav><span id="connection" role="status" aria-live="polite">Connecting…</span>
+</header>
+<section class="camera-controls">
+  <div class="vision-controls" role="group" aria-label="Vision source">
+    <label for="src-type">Source</label>
+    <select id="src-type">
+      <option value="camera">Webcam / capture device</option>
+      <option value="video">Video file</option><option value="stream">Network stream</option>
+    </select>
+    <label for="camera-list">Available cameras</label><select id="camera-list"><option value="">Enter device manually…</option></select><button id="refresh-sources" class="btn">Refresh cameras</button>
+    <details><summary>More source options</summary><label for="src-device" id="src-device-label">Device (index or /dev/video*)</label>
+    <input id="src-device" value="0" size="14">
+    <label for="capture-mode">Capture mode</label><select id="capture-mode"><option value="auto">Automatic (recommended)</option><option value="mjpeg1080">1080p · 30 FPS</option><option value="mjpeg720">720p · 30 FPS</option><option value="native">Camera default</option></select>
+</details>
+    <button id="btn-vision-start" class="btn accent">Start camera</button>
+    <button id="btn-vision-stop" class="btn">Stop</button>
+  </div>
+  <div id="vision-status" role="status" aria-live="polite">vision: stopped</div>
+</section>
+
+<section class="vision-controls" aria-label="Vision image adjustments" style="padding:12px 24px">
+<strong>Recognition image</strong>
+<label>Brightness <input id="vision-brightness" type="range" min="-100" max="100" value="0"><output id="brightness-value">0</output></label>
+<label>Contrast <input id="vision-contrast" type="range" min="0.5" max="2" step="0.05" value="1"><output id="contrast-value">1</output></label>
+<button id="vision-reset" class="btn">Reset image</button>
+<span>Helps recognition in dark or bright lighting. Saves when you release the slider; your broadcast keeps its original colours.</span>
+</section>
+<main id="main">
+  <section class="panel" id="edit-panel" role="region" aria-label="Calibration editor">
+    <div class="panel-title">CHOOSE AN AREA</div>
+    <label class="visually-hidden" for="target-select">Element to edit</label>
+    <select id="target-select"></select>
+    <p id="target-help" aria-live="polite"></p>
+    <details><summary>Fine adjustments</summary><div id="numeric-inputs" role="group" aria-label="Coordinates (normalized 0 to 1)"></div></details>
+    <div class="edit-actions">
+      <button id="btn-clear-corners" class="btn hidden">Reset perspective</button>
+      <button id="btn-save" class="btn accent">Save camera setup</button>
+      <button id="btn-reload" class="btn">Undo unsaved changes</button>
+    </div>
+    <p id="save-status" role="status" aria-live="polite"></p>
+  </section>
+
+  <section class="views">
+    <div class="viewbox wide" data-view="raw">
+      <h2>Board webcam <span class="hint">Drag the highlighted area to adjust it</span></h2>
+      <div class="frame">
+        <img id="img-raw" alt="Board webcam">
+        <canvas id="cv-raw" aria-hidden="true"></canvas>
+      </div>
+    </div>
+
+    <div class="viewbox" data-view="p1_crop" hidden>
+      <h2>Board webcam <span class="hint">Drag the highlighted area to adjust it</span></h2>
+      <div class="frame">
+        <img id="img-p1_crop" alt="Board webcam for perspective adjustment">
+        <canvas id="cv-p1_crop" aria-hidden="true"></canvas>
+      </div>
+    </div>
+
+
+
+    <div class="viewbox" data-view="p1_corrected" hidden>
+      <h2>Board webcam <span class="hint">Drag the highlighted area to adjust it</span></h2>
+      <div class="frame">
+        <img id="img-p1_corrected" alt="Board webcam with editable play areas">
+        <canvas id="cv-p1_corrected" aria-hidden="true"></canvas>
+      </div>
+    </div>
+
+
+  </section>
+</main>
+
+<script src="/static/board/camera-feed.js"></script><script src="/static/setup/setup.js"></script>
+<script src="/static/shared/connection-status.js"></script></body>
+</html>

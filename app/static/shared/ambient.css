@@ -1,0 +1,46 @@
+/* Ambient motion stays on the UI chrome, away from artwork and camera feeds.
+   Animate only small layers' opacity/transform; no continuous blur or layout. */
+#hud::before,
+#stage .panel::before{
+ content:"";position:absolute;left:0;right:0;top:0;height:2px;
+ background:linear-gradient(90deg,transparent,rgba(34,211,238,.8),transparent);
+ opacity:.25;pointer-events:none;z-index:2;
+ animation:ambient-edge 9s ease-in-out infinite;
+}
+#stage .reserve::before{animation-delay:-3s}
+#stage #eddies::before{background:linear-gradient(90deg,transparent,rgba(255,210,63,.7),transparent);animation-delay:-6s}
+#rail .eyebrow,
+#stage .panel-head{position:relative;overflow:hidden}
+#rail .eyebrow::before,
+#stage .panel-head::before{
+ content:"";position:absolute;inset:0;pointer-events:none;
+ background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(34,211,238,.045) 3px 4px);
+ opacity:.5;animation:ambient-texture 13s ease-in-out infinite;
+}
+#rail .eyebrow::after,
+#stage .panel-head::after{
+ content:"";position:absolute;inset:0;pointer-events:none;
+ background:linear-gradient(105deg,transparent 40%,rgba(34,211,238,.09) 50%,transparent 60%);
+ opacity:0;transform:translateX(-110%);
+ animation:ambient-sweep 24s ease-in-out infinite;
+}
+#rail #gigs .eyebrow::after,
+#stage .economy .panel-head::after{animation-delay:-8s}
+#stage .legends .panel-head::after{animation-delay:-16s}
+#stage .signal,#rail #legend-count{animation:ambient-signal 17s ease-in-out infinite}
+@keyframes ambient-edge{0%,100%{opacity:.2}50%{opacity:.65}}
+@keyframes ambient-texture{0%,100%{opacity:.3}50%{opacity:.7}}
+@keyframes ambient-sweep{
+ 0%,70%{opacity:0;transform:translateX(-110%)}
+ 74%{opacity:1}
+ 88%{opacity:1;transform:translateX(110%)}
+ 90%,100%{opacity:0;transform:translateX(110%)}
+}
+@keyframes ambient-signal{0%,88%,96%,100%{opacity:1}92%{opacity:.65}}
+@media(prefers-reduced-motion:reduce){
+ #hud::before,#stage .panel::before,
+ #rail .eyebrow::before,#stage .panel-head::before,
+ #rail .eyebrow::after,#stage .panel-head::after,
+ #stage .signal,#rail #legend-count{animation:none!important}
+ #rail .eyebrow::after,#stage .panel-head::after{display:none}
+}

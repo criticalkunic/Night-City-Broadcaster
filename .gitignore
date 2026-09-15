@@ -1,0 +1,32 @@
+# Python and editor files
+.venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+.coverage
+htmlcov/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+.env
+.env.*
+*.log
+
+# Local settings, downloads and camera captures
+/config/*.json
+/app/cards/
+/app/static/assets/*.webp
+/app/static/assets/*.png
+/app/static/assets/*.jpg
+/captures/
+/tests/fixtures/
+/tests/sample_match.avi
+/tools/
+
+# Desktop dependencies and build products
+/desktop/node_modules/
+/desktop/backend/
+/desktop/backend-windows/
+/desktop/build/
+/releases/
