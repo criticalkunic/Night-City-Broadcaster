@@ -33,7 +33,9 @@ Download the file for your system from the [Releases page](https://github.com/cr
 
 Windows extracts its runtime into a temporary folder while running. You can keep the `.exe` wherever you like; settings and artwork are stored in AppData. Close the app before replacing it with a newer version.
 
-Windows builds are currently unsigned. Native Windows camera hardware testing is still needed. Linux builds made by the release workflow target Ubuntu 22.04; locally built AppImages may require a newer distribution.
+**Platform support:** I use Linux and can only test the app on Linux. A Windows build is provided and should work in theory, but I can’t verify it on Windows. Reports from Windows users are welcome.
+
+Windows builds are currently unsigned. Linux builds made by the release workflow target Ubuntu 22.04; locally built AppImages may require a newer distribution.
 
 ### 2. Prepare the artwork
 
