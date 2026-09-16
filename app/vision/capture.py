@@ -36,6 +36,7 @@ class CaptureThread(threading.Thread):
         self.backend_name = "unknown"
         self.exposure = None
         self.auto_exposure = None
+        self.exposure_units = None
         self.capture_warning = None
         self.resolution: Optional[tuple[int, int]] = None
         self._pace = 0.0
@@ -89,24 +90,41 @@ class CaptureThread(threading.Thread):
         if request_mjpeg and (self.pixel_format not in ('MJPG', 'JPEG') or reported < 29):
             self.capture_warning = f"Camera negotiated {self.pixel_format} at {reported:g} FPS instead of MJPEG / 30 FPS. Try MJPEG 720p or check camera/USB settings."
 
-        if local_camera and sys.platform == 'win32':
-            exposure_mode = self.source.get('exposure_mode', 'keep')
-            if exposure_mode in ('auto', 'motion'):
-                accepted = cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1 if exposure_mode == 'auto' else 0)
-                if exposure_mode == 'motion':
-                    # DirectShow exposure is log2(seconds): -6 = 1/64 second.
-                    exposure_accepted = cap.set(cv2.CAP_PROP_EXPOSURE, -6)
-                    accepted = accepted and exposure_accepted
-                if not accepted:
-                    warning = 'Camera rejected the exposure request. Use its manufacturer controls to adjust exposure.'
-                    self.capture_warning = ' '.join(filter(None, [self.capture_warning, warning]))
-            self.exposure = cap.get(cv2.CAP_PROP_EXPOSURE)
-            self.auto_exposure = cap.get(cv2.CAP_PROP_AUTO_EXPOSURE)
+        if local_camera and (sys.platform == 'win32' or sys.platform.startswith('linux')):
+            self._configure_exposure(cap)
         self.native_fps = reported if 1 <= reported <= 120 else 30.0
         self.error = None
         log.info("CAPTURE_STARTED source=%r video_file=%s backend=%s format=%s reported_fps=%s",
                  target, self.is_video_file, self.backend_name, self.pixel_format, self.native_fps)
         return cap
+
+    def _configure_exposure(self, cap):
+        mode = self.source.get('exposure_mode', 'keep')
+        linux = sys.platform.startswith('linux')
+        # V4L2 uses raw control enums and 100-microsecond exposure units.
+        # Disable OpenCV's optional normalization before reading or writing them.
+        if linux and cap.get(cv2.CAP_PROP_MODE) != 0:
+            if not cap.set(cv2.CAP_PROP_MODE, 0):
+                self._exposure_warning()
+                return
+        self.exposure_units = '100 µs' if linux else 'log₂ seconds'
+        if mode in ('auto', 'motion'):
+            automatic = (3 if linux else 1) if mode == 'auto' else (1 if linux else 0)
+            accepted = cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, automatic)
+            if linux and mode == 'auto' and not accepted:
+                # Some devices support full auto, others aperture-priority auto.
+                accepted = cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0)
+            if mode == 'motion' and accepted:
+                # Approx. 1/64 second: V4L2 156 * 100 µs; DirectShow 2**-6 s.
+                accepted = cap.set(cv2.CAP_PROP_EXPOSURE, 156 if linux else -6)
+            if not accepted:
+                self._exposure_warning()
+        self.exposure = cap.get(cv2.CAP_PROP_EXPOSURE)
+        self.auto_exposure = cap.get(cv2.CAP_PROP_AUTO_EXPOSURE)
+
+    def _exposure_warning(self):
+        warning = 'Camera rejected the exposure request. Use its manufacturer controls to adjust exposure.'
+        self.capture_warning = ' '.join(filter(None, [self.capture_warning, warning]))
 
     def run(self) -> None:
         cap = None

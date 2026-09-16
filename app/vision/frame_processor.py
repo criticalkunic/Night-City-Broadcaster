@@ -147,6 +147,7 @@ class VisionService:
             "backend": getattr(cap, "backend_name", "unknown"),
             "exposure": getattr(cap, "exposure", None),
             "auto_exposure": getattr(cap, "auto_exposure", None),
+            "exposure_units": getattr(cap, "exposure_units", None),
             "capture_warning": getattr(cap, "capture_warning", None),
             "resolution": list(cap.resolution) if cap and cap.resolution else None,
             "error": cap.error if cap else None,

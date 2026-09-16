@@ -4,6 +4,12 @@ User-facing changes are recorded here for each release. Development changes belo
 
 ## Unreleased
 
+## 1.0.9 — 2026-09-16
+
+### Added
+
+- Camera exposure controls now support Linux V4L2 cameras, including short exposure and restoring automatic exposure. Troubleshooting labels exposure readings with the correct units for each platform.
+
 ## 1.0.8 — 2026-09-16
 
 ### Added
