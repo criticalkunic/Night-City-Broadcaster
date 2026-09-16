@@ -39,6 +39,8 @@ Windows builds are currently unsigned. Linux builds made by the release workflow
 
 The standalone app checks GitHub for a newer stable build on launch. If one is available, choose **Open download page** or **Later**. Updates are downloaded manually; a failed check does not block the app.
 
+**First launch may take a little while before any window appears.** Wait for the app to open rather than launching it again. Windows first unpacks the portable application into a temporary folder; a launch notice appears during extraction, followed by the startup screen. Python and required packages are included; nothing needs to be installed separately.
+
 ### 2. Prepare the artwork
 
 On first launch, the app fetches the current card catalog, downloads card images and alternate references, and prepares recognition. It also downloads the card back used for hidden legends.

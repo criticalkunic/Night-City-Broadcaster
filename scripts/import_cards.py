@@ -200,7 +200,7 @@ def download_images(cards: list[dict], force: bool = False) -> tuple[int, int]:
 def write_cards(cards: list[dict]) -> None:
     clean = [{k: v for k, v in card.items() if not k.startswith("_")} for card in cards]
     CARDS_FILE.parent.mkdir(parents=True, exist_ok=True)
-    CARDS_FILE.write_text(json.dumps(clean, indent=2, ensure_ascii=False) + "\n")
+    CARDS_FILE.write_text(json.dumps(clean, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
 def prune_images(cards: list[dict]) -> int:
@@ -234,7 +234,7 @@ def import_cyberpunktcg(force: bool = False, prune: bool = False) -> int:
 
 def validate() -> int:
     """Validate cards.json entries and confirm every referenced image exists."""
-    cards = json.loads(CARDS_FILE.read_text())
+    cards = json.loads(CARDS_FILE.read_text(encoding="utf-8"))
     errors = 0
     seen_ids = set()
     for card in cards:

@@ -4,6 +4,16 @@ User-facing changes are recorded here for each release. Development changes belo
 
 ## Unreleased
 
+## 1.0.5 — 2026-09-16
+
+### Fixed
+
+- First-launch artwork setup and catalog updates save and read UTF-8 explicitly, fixing Windows failures on card names containing characters such as ☆.
+
+### Added
+
+- A Windows portable extraction notice and an immediate desktop startup activity screen while the local service starts. First-launch artwork progress now distinguishes catalog fetching and recognition preparation.
+
 ## 1.0.4 — 2026-09-16
 
 ### Added

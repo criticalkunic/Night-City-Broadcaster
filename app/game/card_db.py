@@ -20,7 +20,7 @@ class CardDatabase:
             self.cards = []
             self._by_id = {}
             return
-        self.cards = json.loads(self.path.read_text())
+        self.cards = json.loads(self.path.read_text(encoding="utf-8"))
         self._by_id = {card["id"]: card for card in self.cards}
         log.info("CARD_DB_LOADED path=%s cards=%s", self.path, len(self.cards))
 

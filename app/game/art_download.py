@@ -54,7 +54,7 @@ class ArtDownload:
             if added:
                 database.path.parent.mkdir(parents=True, exist_ok=True)
                 temporary = database.path.with_suffix('.json.download')
-                temporary.write_text(json.dumps(merged, ensure_ascii=False, indent=2))
+                temporary.write_text(json.dumps(merged, ensure_ascii=False, indent=2), encoding="utf-8")
                 temporary.replace(database.path)
                 database.reload()
             self.update(added=added, total=len(merged), message=f'Found {added} new cards. Checking artwork…')

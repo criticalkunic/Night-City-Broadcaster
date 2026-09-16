@@ -71,7 +71,7 @@ def import_card_printings(card):
 
 
 def main():
-    cards = json.loads(CARDS_FILE.read_text())
+    cards = json.loads(CARDS_FILE.read_text(encoding="utf-8"))
     def run(card):
         try:
             return import_card_printings(card)

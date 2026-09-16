@@ -1,7 +1,7 @@
 {
   "name": "night-city-broadcaster",
   "productName": "Night City Broadcaster",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Webcam board tracking and streaming companion",
   "author": "Night City Broadcaster",
   "private": true,
@@ -22,7 +22,8 @@
       "package.json",
       "port.cjs",
       "user-data.cjs",
-      "update-check.cjs"
+      "update-check.cjs",
+      "startup.html"
     ],
     "extraResources": [
       {
@@ -52,7 +53,8 @@
     },
     "afterAllArtifactBuild": "./publish-releases.cjs",
     "portable": {
-      "artifactName": "Night City Broadcaster-${version}-Windows.exe"
+      "artifactName": "Night City Broadcaster-${version}-Windows.exe",
+      "splashImage": "assets/portable-splash.bmp"
     },
     "beforePack": "./check-backend.cjs"
   },

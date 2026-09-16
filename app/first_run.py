@@ -51,7 +51,7 @@ class ArtworkSetup:
             path = self.database.path
             path.parent.mkdir(parents=True, exist_ok=True)
             temporary = path.with_suffix('.json.download')
-            temporary.write_text(json.dumps(clean, ensure_ascii=False, indent=2))
+            temporary.write_text(json.dumps(clean, ensure_ascii=False, indent=2), encoding="utf-8")
             temporary.replace(path)
             self.database.reload()
             self.downloader.update(total=len(clean), message='Downloading artwork…')
@@ -63,6 +63,7 @@ class ArtworkSetup:
             ensure_card_back(self.images)
             if not self.complete():
                 raise RuntimeError('Some required card images are missing or unreadable. Retry to continue.')
+            self.downloader.update(message="Preparing card recognition…")
             self.recognizer.build()
             if not self.recognizer.ready:
                 raise RuntimeError('Recognition could not be prepared. Retry to continue.')

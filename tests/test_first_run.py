@@ -89,3 +89,23 @@ def test_failed_catalog_fetch_does_not_replace_saved_catalog(tmp_path,monkeypatc
     s.run()
     assert not s.ready and s.database.path.read_bytes()==original
     s.downloader.run.assert_not_called()
+
+
+def test_first_launch_unicode_catalog_on_windows_locale(tmp_path, monkeypatch):
+    from pathlib import Path
+    original_open = Path.open
+    def windows_open(self, mode='r', buffering=-1, encoding=None, errors=None, newline=None):
+        if 'b' not in mode and encoding is None:
+            encoding = 'cp1252'
+        return original_open(self, mode, buffering, encoding, errors, newline)
+    monkeypatch.setattr(Path, 'open', windows_open)
+    s = setup(tmp_path)
+    s.database.path.unlink()
+    s.database.reload()
+    monkeypatch.setattr(import_cards, 'transform_items', lambda _: [
+        {'id': 'a', 'name': 'Star ☆ — Álvarez 日本', 'image': '/cards/images/a.webp'}])
+    s.downloader.run.side_effect = lambda *a, **kw: write_art(s)
+    s.run()
+    assert s.ready, s.error
+    assert CardDatabase(s.database.path).get('a')['name'] == 'Star ☆ — Álvarez 日本'
+    assert '☆' in s.database.path.read_bytes().decode('utf-8')
