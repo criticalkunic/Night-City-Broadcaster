@@ -121,7 +121,7 @@ class VisionService:
         self._frozen = None
 
     def pause(self) -> dict:
-        frame = self._raw_frame()
+        frame = self._capture_frame()
         with self._lock:
             self.paused = True
             self._frozen = frame
@@ -144,6 +144,7 @@ class VisionService:
             "fps": round(cap.fps, 1) if cap else 0.0,
             "native_fps": getattr(cap, "native_fps", 30.0) if cap else 30.0,
             "pixel_format": getattr(cap, "pixel_format", "unknown"),
+            "backend": getattr(cap, "backend_name", "unknown"),
             "capture_warning": getattr(cap, "capture_warning", None),
             "resolution": list(cap.resolution) if cap and cap.resolution else None,
             "error": cap.error if cap else None,
@@ -152,12 +153,19 @@ class VisionService:
 
     # ------------------------------------------------------------ rendering
 
-    def _raw_frame(self) -> Optional[np.ndarray]:
+    def _capture_frame(self) -> Optional[np.ndarray]:
         if self.paused and self._frozen is not None:
             return self._frozen
         if self.capture is None:
             return None
         frame, _ = self.capture.latest()
+        return frame
+
+    def _raw_frame(self) -> Optional[np.ndarray]:
+        """Orient the shared source before calibration, vision and broadcast crops."""
+        frame = self._capture_frame()
+        if frame is not None and self.store.cameras.get("rotate_source_180") is True:
+            return cv2.rotate(frame, cv2.ROTATE_180)
         return frame
 
     def _corrected(self, frame: np.ndarray, player: int) -> np.ndarray:

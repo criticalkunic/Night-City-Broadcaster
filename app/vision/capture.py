@@ -33,6 +33,7 @@ class CaptureThread(threading.Thread):
         self.fps = 0.0
         self.native_fps = 30.0
         self.pixel_format = "unknown"
+        self.backend_name = "unknown"
         self.capture_warning = None
         self.resolution: Optional[tuple[int, int]] = None
         self._pace = 0.0
@@ -63,12 +64,23 @@ class CaptureThread(threading.Thread):
         request_mjpeg = local_camera and (mode in ('mjpeg1080', 'mjpeg720') or (mode == 'auto' and not virtual))
         if request_mjpeg:
             width, height = (1280, 720) if mode == 'mjpeg720' else (1920, 1080)
-            # Negotiate compression BEFORE resolution/FPS; uncompressed 1080p
-            # can otherwise constrain USB cameras to single-digit frame rates.
-            cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
-            cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
-            cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
-            cap.set(cv2.CAP_PROP_FPS, 30)
+            if sys.platform == 'win32':
+                # DirectShow's FPS setter reopens the device without a FOURCC.
+                # Set the rate first and force MJPEG after size negotiation.
+                cap.set(cv2.CAP_PROP_FPS, 30)
+                cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+                cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+                cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
+            else:
+                # V4L2 needs compression before size/rate negotiation.
+                cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
+                cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+                cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+                cap.set(cv2.CAP_PROP_FPS, 30)
+        try:
+            self.backend_name = cap.getBackendName()
+        except (AttributeError, cv2.error):
+            self.backend_name = 'unknown'
         fourcc = int(cap.get(cv2.CAP_PROP_FOURCC) or 0)
         self.pixel_format = ''.join(chr((fourcc >> (8*i)) & 255) for i in range(4)).strip('\x00') or 'unknown'
         reported = cap.get(cv2.CAP_PROP_FPS)
@@ -77,7 +89,8 @@ class CaptureThread(threading.Thread):
 
         self.native_fps = reported if 1 <= reported <= 120 else 30.0
         self.error = None
-        log.info("CAPTURE_STARTED source=%r video_file=%s", target, self.is_video_file)
+        log.info("CAPTURE_STARTED source=%r video_file=%s backend=%s format=%s reported_fps=%s",
+                 target, self.is_video_file, self.backend_name, self.pixel_format, self.native_fps)
         return cap
 
     def run(self) -> None:

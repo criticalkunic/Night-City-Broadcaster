@@ -56,7 +56,7 @@ def _check_view(view: str) -> None:
 
 @router.get("/status")
 def status():
-    return runtime.vision_service.status()
+    return {**runtime.vision_service.status(), "broadcast_feeds": board_feeds.status()}
 
 
 @router.post("/start")

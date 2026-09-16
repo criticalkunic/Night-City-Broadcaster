@@ -40,3 +40,26 @@ def test_files_streams_and_native_mode_are_not_reconfigured(monkeypatch):
         monkeypatch.setattr(cv2,'VideoCapture',lambda *args:fake)
         CaptureThread(source)._open()
         assert not fake.calls
+
+
+def test_windows_dshow_keeps_mjpeg_after_fps_reopens_device(monkeypatch):
+    from app.vision import capture as module
+    class DirectShow(Camera):
+        def set(self, key, value):
+            super().set(key, value)
+            # DirectShow reopens without the requested media subtype on FPS change.
+            if key == cv2.CAP_PROP_FPS:
+                self.props[cv2.CAP_PROP_FOURCC] = cv2.VideoWriter_fourcc(*'YUY2')
+            return True
+        def getBackendName(self):return 'DSHOW'
+    monkeypatch.setattr(module.sys, 'platform', 'win32')
+    fake=DirectShow()
+    opened=[]
+    monkeypatch.setattr(cv2,'VideoCapture',lambda *args: opened.append(args) or fake)
+    capture=CaptureThread({'type':'camera','index':0,'capture_mode':'mjpeg1080'})
+    capture._open()
+    assert opened == [(0, cv2.CAP_DSHOW)]
+    assert capture.pixel_format == 'MJPG'
+    assert capture.native_fps == 30
+    assert capture.backend_name == 'DSHOW'
+    assert capture.capture_warning is None

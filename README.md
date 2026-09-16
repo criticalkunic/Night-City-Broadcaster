@@ -8,7 +8,15 @@
 
 Night City Broadcaster runs locally on Linux and Windows. Use automatic card recognition, manual match controls, or both.
 
-[Download](https://github.com/criticalkunic/Night-City-Broadcaster/releases/latest) · [Getting started](#getting-started) · [Linux from source](#linux-from-source) · [OBS setup](#obs-setup) · [Troubleshooting](docs/troubleshooting.md) · [Building releases](desktop/README.md)
+[Download](https://github.com/criticalkunic/Night-City-Broadcaster/releases/latest) · [Quick start](#quick-start) · [Getting started](#getting-started) · [Linux from source](#linux-from-source) · [OBS setup](#obs-setup) · [Troubleshooting](docs/troubleshooting.md) · [Building releases](desktop/README.md)
+
+## Quick start
+
+1. [Download the latest release](https://github.com/criticalkunic/Night-City-Broadcaster/releases/latest) and launch the Windows `.exe` or Linux `.AppImage` (make it executable first).
+2. Wait for the app to open—first launch can take a little while before a window appears. Stay connected to the internet until the artwork download finishes.
+3. In **Camera setup**, choose your webcam, start the camera, and set your board regions. See [camera setup](#3-set-up-your-camera) for details.
+4. In **Player console**, set your name and manage your legends and gigs. In **Stream settings**, choose Minimal or Full board and click **Copy OBS stream link**.
+5. In OBS, add a **Browser Source** and paste the link. **Set its Width and Height to the same resolution as your OBS output so the layout looks right**—for example, **1920 × 1080** for a 1080p output. Match its frame rate to your webcam and keep the app running while streaming.
 
 ## Features
 
@@ -80,7 +88,7 @@ Alternate artwork can be enabled under **Stream settings → Match artwork to th
 
 1. Open **Stream settings** and click **Copy OBS stream link**.
 2. In OBS, add a **Browser Source** and paste the URL.
-3. Set its size to **1920 × 1080** and its frame rate to your camera’s rate, such as **30 FPS**.
+3. Set the Browser Source **Width** and **Height** to match your OBS output resolution so the layout looks right. For example, use **1920 × 1080** for a 1080p output. Set its frame rate to your camera’s rate, such as **30 FPS**.
 4. Keep Night City Broadcaster running while streaming.
 
 The usual URL is `http://127.0.0.1:8766/broadcast/live`. The desktop app selects another port if that one is occupied, so use the link shown in the app.

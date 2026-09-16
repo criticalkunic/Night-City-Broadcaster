@@ -65,6 +65,7 @@ function setSaveStatus(msg, isError = false) {
 async function loadCalibration() {
   const res = await fetch("/api/vision/calibration");
   cal = await res.json();
+  $("rotate-source-180").checked=cal.cameras.rotate_source_180===true;
   for(const key of ['brightness','contrast']){
     $('vision-'+key).value=cal.cameras.vision_adjustments?.[key]??(key==='contrast'?1:0);
     $(key+'-value').textContent=$('vision-'+key).value;
@@ -88,7 +89,7 @@ async function pollStatus() {
     const el = $("vision-status");
     if (st.running) {
       el.className = "running";
-      el.textContent = `Camera on · ${st.fps} FPS` +
+      el.textContent = `Camera on · ${st.fps} FPS · ${st.pixel_format||'unknown format'}` +
         (st.resolution ? ` @ ${st.resolution[0]}x${st.resolution[1]}` : "") +
 
         (st.capture_warning ? " · "+st.capture_warning : "") +
@@ -499,4 +500,20 @@ for(const key of ['brightness','contrast']){
 $('vision-reset').onclick=()=>{
   for(const key of ['brightness','contrast']){$('vision-'+key).value=key==='contrast'?1:0;$(key+'-value').textContent=$('vision-'+key).value;}
   saveVisionImage();
+};
+
+$('rotate-source-180').onchange=async()=>{
+  const toggle=$('rotate-source-180');toggle.disabled=true;
+  try{
+    const response=await fetch('/api/vision/calibration');
+    if(!response.ok)throw new Error('Could not load camera settings');
+    const current=await response.json();
+    current.cameras.rotate_source_180=toggle.checked;
+    const saved=await api('/api/vision/calibration',{cameras:current.cameras});
+    cal.cameras=saved.cameras;
+    $('rotation-status').textContent='Rotation saved. Check and reposition your board areas.';
+  }catch(error){
+    toggle.checked=cal.cameras.rotate_source_180===true;
+    $('rotation-status').textContent='Could not save rotation: '+error.message;
+  }finally{toggle.disabled=false;}
 };

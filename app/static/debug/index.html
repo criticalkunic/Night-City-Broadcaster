@@ -36,7 +36,7 @@
 
 <div id="statusbar" role="status" aria-live="polite">
   <span id="st-run">stopped</span>
-  <span id="st-fps"></span>
+  <span id="st-fps"></span><span id="st-format"></span>
   <span id="st-res"></span>
   <span id="st-src"></span>
   <span id="st-msg"></span>
@@ -50,6 +50,7 @@
     <button id="download-artwork" class="btn accent">Download missing card art</button>
     <p id="download-artwork-status" role="status" aria-live="polite"></p>
   </section>
+  <section class="panel"><h2>Video performance</h2><p id="feed-performance">Open a preview or OBS source to measure broadcast processing.</p><p>Camera FPS measures incoming frames. Feed FPS measures images prepared for broadcast, not frames displayed by OBS. If camera FPS is low, try 720p · 30 FPS in Camera setup. If only feed FPS is low, include these measurements when reporting the issue.</p></section>
   <details class="panel"><summary>Camera views</summary>
   <section class="views">
     <div class="viewbox wide">

@@ -35,6 +35,11 @@
   <div id="vision-status" role="status" aria-live="polite">vision: stopped</div>
 </section>
 
+<section style="padding:12px 24px" aria-label="Camera orientation">
+<label><input id="rotate-source-180" type="checkbox"> Rotate camera 180°</label>
+<p>Turn an upside-down overhead camera upright. Applies to the preview, recognition, and both stream layouts. Set this before marking your board areas; reposition the areas if you change it later.</p>
+<p id="rotation-status" role="status" aria-live="polite"></p>
+</section>
 <section class="vision-controls" aria-label="Vision image adjustments" style="padding:12px 24px">
 <strong>Recognition image</strong>
 <label>Brightness <input id="vision-brightness" type="range" min="-100" max="100" value="0"><output id="brightness-value">0</output></label>

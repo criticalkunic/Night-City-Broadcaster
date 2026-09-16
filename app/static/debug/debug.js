@@ -47,6 +47,9 @@ async function pollStatus() {
     else { run.textContent = "STOPPED"; run.className = ""; }
     $("st-fps").textContent = st.running ? `${st.fps} fps` : "";
     $("st-res").textContent = st.resolution ? `${st.resolution[0]}x${st.resolution[1]}` : "";
+    $('st-format').textContent=st.running?`${st.backend||'unknown'} · ${st.pixel_format||'unknown'} · driver reports ${st.native_fps} FPS`:'';
+    const feeds=Object.entries(st.broadcast_feeds||{});
+    $('feed-performance').textContent=feeds.length?feeds.map(([area,feed])=>`${area}: ${feed.fps} feed FPS · ${feed.encode_ms} ms processing · ${feed.users} viewers`).join(' | '):'Open a preview or OBS source to measure broadcast processing.';
     const src = st.source || {};
     $("st-src").textContent = src.type
       ? `src: ${src.type === "video" ? src.path : (src.path || `camera ${src.index}`)}`

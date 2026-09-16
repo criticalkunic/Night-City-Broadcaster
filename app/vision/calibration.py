@@ -16,6 +16,7 @@ log = logging.getLogger("app.vision.calibration")
 DEFAULT_CAMERAS = {
     "source": {"type": "camera", "index": 0, "path": ""},
     "corrected_size": [800, 600],
+    "rotate_source_180": False,
     # Card detection tuning — single source of truth is DEFAULT_DETECTION in
     # app/vision/card_detector.py; never duplicate values here.
     "detection": dict(DEFAULT_DETECTION),
@@ -96,6 +97,7 @@ class CalibrationStore:
     def save_cameras(self, data: dict) -> dict:
         merged = json.loads(json.dumps(DEFAULT_CAMERAS))
         merged.update(data)
+        merged["rotate_source_180"] = merged.get("rotate_source_180") is True
         size = merged.get("corrected_size", [800, 600])
         merged["corrected_size"] = [max(64, int(size[0])), max(64, int(size[1]))]
         adjustments = merged.get("vision_adjustments", {})

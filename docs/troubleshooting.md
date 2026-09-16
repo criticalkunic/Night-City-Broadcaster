@@ -77,3 +77,12 @@ Then copy the stream link from the newly opened service.
 Include your app version, operating system, camera model, capture mode, and steps to reproduce. For recognition issues, attach the relevant Debug crop and the correct card name or printing. For startup issues, include the error message or terminal output.
 
 Do not upload the full AppData folder, browser cookies, or a downloaded card library. Review camera captures before sharing them.
+
+
+## Low camera or broadcast frame rate
+
+In **Troubleshooting**, compare the incoming camera FPS with **Video performance**. Include the capture backend, pixel format, driver-reported FPS, resolution, and feed processing times when reporting a problem. Feed FPS measures prepared images, not frames actually displayed by OBS.
+
+If incoming camera FPS is low, try **Camera setup → Capture mode → 720p · 30 FPS**, then restart the camera. Report whether this improves it. A high driver-reported rate does not guarantee that frames are arriving at that rate.
+
+If camera FPS is healthy but feed FPS is low, include which layout and preview windows are open. This helps separate capture issues from broadcast processing issues.

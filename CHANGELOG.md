@@ -4,6 +4,22 @@ User-facing changes are recorded here for each release. Development changes belo
 
 ## Unreleased
 
+## 1.0.7 — 2026-09-16
+
+### Fixed
+
+- Windows camera negotiation now requests MJPEG after setting the frame rate and resolution, preventing DirectShow from discarding the requested compressed format during its FPS change.
+
+### Added
+
+- Troubleshooting video-performance measurements show capture backend, pixel format, reported FPS, and per-feed processing throughput and time.
+
+## 1.0.6 — 2026-09-16
+
+### Added
+
+- **Camera setup → Rotate camera 180°** turns upside-down overhead feeds upright for preview, recognition, and both broadcast layouts.
+
 ## 1.0.5 — 2026-09-16
 
 ### Fixed
