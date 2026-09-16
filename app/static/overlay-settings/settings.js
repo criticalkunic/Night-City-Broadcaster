@@ -1,6 +1,6 @@
 "use strict";
 const $=id=>document.getElementById(id);
-const fields=["show_card_art","show_legends","show_dice","hide_empty_captured_gigs","board_show_eddies","board_show_fixer"];
+const fields=["show_matched_art","show_card_art","show_legends","show_dice","hide_empty_captured_gigs","board_show_eddies","board_show_fixer"];
 let config={},saving=false;
 function render(){
  $("minimal-position").value=config.minimal_position||"bottom-right";
@@ -9,7 +9,7 @@ function render(){
  $("overlay-theme").value=config.overlay_theme||"cyberpunk";
  $("preview-layout").value=config.overlay_style||"compact";
  $("preview-shell").classList.toggle("board-preview",config.overlay_style==="board");
- for(const key of fields){$(key).checked=config[key]!==false;$(key).disabled=saving;}
+ for(const key of fields){$(key).checked=key==="show_matched_art"?config[key]===true:config[key]!==false;$(key).disabled=saving;}
  for(const id of ["overlay_scale","scale-number"]){$(id).value=config.overlay_scale??100;$(id).disabled=saving;}
  $("scale-reset").disabled=saving;
  for(const key of ["board_dice_mode","board_focus"]){$(key).value=config[key]||(key==="board_focus"?"balanced":"tracked");$(key).disabled=saving;}

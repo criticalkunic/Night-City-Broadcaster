@@ -186,6 +186,7 @@ class StateManager:
         image: str = "",
         source: str = "manual",
         confidence: Optional[float] = None,
+        matched_image: str = "",
     ) -> GameEvent:
         with self._lock:
             if player not in (1, 2):
@@ -204,6 +205,7 @@ class StateManager:
                 name=name,
                 subtitle=subtitle,
                 image=image,
+                matched_image=matched_image,
                 source=source,
                 confidence=confidence,
                 timestamp=_now(),
@@ -231,6 +233,17 @@ class StateManager:
             self._state.latest_cards["1"] = previous.model_copy(deep=True) if previous else None
             self._state.last_played_card = previous.model_copy(deep=True) if previous else None
             return self._record_event("card_play_undone", "Stepped back one card play", {})
+
+    def update_latest_artwork(self, player: int, card_id: str, matched_image: str):
+        """Refine the same play's printing without adding an undo/history entry."""
+        with self._lock:
+            card = self._state.latest_cards[str(player)]
+            if card is None or card.card_id != card_id or card.matched_image == matched_image:
+                return None
+            card.matched_image = matched_image
+            if player == 1 and self._state.last_played_card and self._state.last_played_card.card_id == card_id:
+                self._state.last_played_card.matched_image = matched_image
+            return self._record_event("card_artwork_updated", "Recognized card artwork updated", {"card_id": card_id})
 
     def clear_latest_card(self) -> GameEvent:
         with self._lock:
@@ -295,6 +308,7 @@ class StateManager:
                 legend.card_id = None
                 legend.name = ""
                 legend.subtitle = ""
+                legend.matched_image = ""
                 legend.image = ""
                 legend.revealed = False
             else:
@@ -305,6 +319,7 @@ class StateManager:
                 legend.card_id = card_id
                 legend.name = name
                 legend.subtitle = subtitle
+                legend.matched_image = ""
                 legend.image = image
                 if revealed is not None:
                     legend.revealed = revealed
@@ -315,13 +330,13 @@ class StateManager:
             log.info("LEGEND_SET player=%s slot=%s card=%s", player, slot, card_id)
             return event
 
-    def observe_legend(self, player, slot, card_id, name="", subtitle="", image="", upside_down=False):
+    def observe_legend(self, player, slot, card_id, name="", subtitle="", image="", upside_down=False, matched_image=""):
         """Apply identity, position and orientation together; never duplicate a moved card."""
         with self._lock:
             current = self._legend_slot(player, slot)
             slots = self._state.legends[str(player)]
             source = next((i for i, item in enumerate(slots) if item.card_id == card_id), None)
-            if current.card_id == card_id and current.revealed and current.upside_down == upside_down:
+            if current.card_id == card_id and current.revealed and current.upside_down == upside_down and current.matched_image == matched_image:
                 return None
             description = f"P{player} legend {slot + 1} observed: {name}"
             self._push_undo(description)
@@ -329,6 +344,7 @@ class StateManager:
                 slots[source], slots[slot] = slots[slot], slots[source]
             elif current.card_id != card_id:
                 slots[slot] = LegendSlot(card_id=card_id, name=name, subtitle=subtitle, image=image)
+            slots[slot].matched_image = matched_image
             slots[slot].revealed = True
             slots[slot].upside_down = bool(upside_down)
             return self._record_event("legend_observed", description,

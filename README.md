@@ -71,6 +71,9 @@ Open **Player console** to set your name and manage the board.
 
 Recognition depends on camera resolution, sleeves, lighting, and the available artwork references. Manual controls remain available during play.
 
+
+Alternate artwork can be enabled under **Stream settings → Match artwork to the detected card**. This applies to the latest card and revealed legends in both layouts and the player console. When no official alternate artwork matches, regular artwork is used.
+
 ## OBS setup
 
 1. Open **Stream settings** and click **Copy OBS stream link**.

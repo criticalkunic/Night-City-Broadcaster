@@ -4,6 +4,10 @@ User-facing changes are recorded here for each release. Development changes belo
 
 ## Unreleased
 
+### Added
+
+- **Stream settings → Match artwork to the detected card** shows the recognized official printing for card reveals and legends in both layouts and the player console. Regular artwork remains the default.
+
 ## 1.0.3 — 2026-09-15
 
 ### Added

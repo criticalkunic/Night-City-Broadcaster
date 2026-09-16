@@ -100,7 +100,7 @@ def apply_latest_card_match(player: int, match: Match) -> Optional[GameEvent]:
     state = runtime.state_manager.get_state()
     current = state.latest_cards[str(player)]
     if current is not None and current.card_id == match.card_id:
-        return None
+        return runtime.state_manager.update_latest_artwork(player, match.card_id, match.matched_image)
     card = runtime.card_db.get(match.card_id) or {}
     return runtime.state_manager.set_latest_card(
         player=player,
@@ -110,6 +110,7 @@ def apply_latest_card_match(player: int, match: Match) -> Optional[GameEvent]:
         image=card.get("image", match.image),
         source="vision",
         confidence=match.confidence,
+        matched_image=match.matched_image,
     )
 
 
@@ -119,7 +120,7 @@ def apply_legend_match(player: int, slot: int, match: Match) -> list[str]:
     event = runtime.state_manager.observe_legend(
         player, slot, match.card_id, name=card.get("name", match.name),
         subtitle=card.get("subtitle", match.subtitle), image=card.get("image", match.image),
-        upside_down=match.rotated,
+        upside_down=match.rotated, matched_image=match.matched_image,
     )
     if not event:
         return []

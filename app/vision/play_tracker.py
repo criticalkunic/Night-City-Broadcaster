@@ -53,11 +53,14 @@ class PlayTracker:
                      and t['current'] is not None and t['match'] is not None}
         previous_id = track.get('identity')
         is_new = (previous_id != match.card_id) and match.card_id not in other_ids
+        previous = track.get('match')
+        artwork_changed = (self.latest_id == match.card_id and previous is not None
+                           and getattr(previous, 'matched_image', '') != getattr(match, 'matched_image', ''))
         track.update(match=match, identity=match.card_id, checked=now, failures=0)
         if is_new:
             self.latest_id = match.card_id
             self.absent_since = None
-        return is_new
+        return is_new or artwork_changed
 
     def removed(self, now, delay, stable_frames):
         if self.latest_id is None and any(t['current'] is not None for t in self.tracks):

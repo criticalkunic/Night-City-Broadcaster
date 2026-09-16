@@ -65,6 +65,7 @@ DEFAULT_OVERLAY_CONFIG = {
     "overlay_theme": "cyberpunk",
     "minimal_position": "bottom-right",
     "show_card_art": True,
+    "show_matched_art": False,
     "show_dice": False,
     "show_legends": True,
     "show_roll_values": True,

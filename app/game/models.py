@@ -31,6 +31,7 @@ class LatestCard(BaseModel):
     name: str
     subtitle: str = ""
     image: str = ""
+    matched_image: str = ""
     source: str = "manual"  # "manual" | "vision"
     confidence: Optional[float] = None
     timestamp: str
@@ -57,6 +58,7 @@ class LegendSlot(BaseModel):
     name: str = ""
     subtitle: str = ""
     image: str = ""
+    matched_image: str = ""
     revealed: bool = False
     upside_down: bool = False
 

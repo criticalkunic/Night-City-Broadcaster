@@ -1,5 +1,5 @@
 """Singletons shared by API routers and the WebSocket endpoint."""
-from app.config import CAMERAS_FILE, CAPTURES_DIR, CARD_IMAGES_DIR, CARDS_FILE, REGIONS_FILE
+from app.config import load_overlay_config, CAMERAS_FILE, CAPTURES_DIR, CARD_IMAGES_DIR, CARDS_FILE, REGIONS_FILE
 from app.game.card_db import CardDatabase
 from app.game.events import ConnectionManager
 from app.game.state_manager import StateManager
@@ -17,10 +17,18 @@ vision_service = VisionService(calibration_store, CAPTURES_DIR, recognizer=recog
 
 def snapshot_payload(event=None) -> dict:
     """Full-state broadcast payload. Clients render exclusively from this."""
+    state = state_manager.get_state().model_dump()
+    if load_overlay_config().get("show_matched_art", False):
+        cards = [*state["latest_cards"].values(), state["last_played_card"],
+                 *state["card_play_history"],
+                 *(card for slots in state["legends"].values() for card in slots)]
+        for card in cards:
+            if card and card.get("matched_image"):
+                card["image"] = card["matched_image"]
     return {
         "type": event.type if event is not None else "state_snapshot",
         "event": event.model_dump() if event is not None else None,
-        "state": state_manager.get_state().model_dump(),
+        "state": state,
         "history": state_manager.history_info(),
     }
 

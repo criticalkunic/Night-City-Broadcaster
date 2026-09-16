@@ -62,6 +62,7 @@ class Match:
     card_type: str = ""
     runner_up_inliers: int = 0
     votes: int = 0
+    matched_image: str = ""   # Clean artwork for the recognized printing, never a camera sample.
     source: str = ""           # which crop produced it (live: "quad0", "split-top", ...)
 
     def as_dict(self) -> dict:
@@ -70,6 +71,7 @@ class Match:
             "name": self.name,
             "subtitle": self.subtitle,
             "image": self.image,
+            "matched_image": self.matched_image,
             "confidence": round(self.confidence, 3),
             "inliers": self.inliers,
             "thumb_score": round(self.thumb_score, 3),
@@ -87,6 +89,7 @@ class _Entry:
     thumb: np.ndarray          # flattened float32, normalized
     features: dict             # scale (w, h) -> (keypoints, descriptors)
     sift: tuple = (None, None)
+    matched_image: str = ""
 
 
 def _thumb_vector(image: np.ndarray) -> np.ndarray:
@@ -157,8 +160,7 @@ class CardRecognizer:
                 if not image_path.startswith("/cards/images/"):
                     continue
                 local = self.images_dir / image_path.removeprefix("/cards/images/")
-                # Confirmed alternate art and camera references share the canonical
-                # identity; the overlay still uses the clean database artwork.
+                # Preserve clean official printing art separately from camera samples.
                 references = sorted((self.images_dir / "recognition" / card["id"]).glob("*.png"))
                 for reference in [local, *references]:
                     image = cv2.imread(str(reference), cv2.IMREAD_COLOR)
@@ -167,7 +169,9 @@ class CardRecognizer:
                         continue
                     prepared = _prepare(image)
                     entries.append(_Entry(card=card, thumb=_thumb_vector(prepared),
-                                          features=self._features(prepared), sift=self._sift_features(prepared)))
+                                          features=self._features(prepared), sift=self._sift_features(prepared),
+                                          matched_image=("/cards/images/" + reference.relative_to(self.images_dir).as_posix()
+                                                         if reference.name.startswith("official-") else image_path)))
             self._entries = entries
             self._thumbs = np.stack([e.thumb for e in entries]) if entries else None
             pooled = [(i, e.features[VOTE_SCALE][1]) for i, e in enumerate(entries)
@@ -367,6 +371,7 @@ class CardRecognizer:
         best = Match(
             card_id=card["id"], name=card.get("name", ""),
             subtitle=card.get("subtitle", ""), image=card.get("image", ""),
+            matched_image=entries[best_index].matched_image,
             confidence=confidence,
             inliers=inliers, thumb_score=sim, rotated=bool(orientation) if cfg.get("legend_geometry") else sim_by_entry[best_index][1],
             card_type=card.get("card_type", ""), runner_up_inliers=runner_up, votes=n_votes,

@@ -188,7 +188,7 @@ def get_config():
 @router.post("/config")
 async def set_config(body: OverlayConfigRequest):
     merged = save_overlay_config(body.config)
-    await runtime.ws_manager.broadcast({"type": "config_updated", "config": merged})
+    await runtime.ws_manager.broadcast({**runtime.snapshot_payload(), "type": "config_updated", "config": merged})
     return merged
 
 
