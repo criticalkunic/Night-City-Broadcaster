@@ -13,10 +13,10 @@ Night City Broadcaster runs locally on Linux and Windows. Use automatic card rec
 ## Quick start
 
 1. [Download the latest release](https://github.com/criticalkunic/Night-City-Broadcaster/releases/latest) and launch the Windows `.exe` or Linux `.AppImage` (make it executable first).
-2. Wait for the app to open—first launch can take a little while before a window appears. Stay connected to the internet until the artwork download finishes.
+2. Wait for the app to open. First launch can take a little while before a window appears. Stay connected to the internet until the artwork download finishes.
 3. In **Camera setup**, choose your webcam, start the camera, and set your board regions. See [camera setup](#3-set-up-your-camera) for details.
 4. In **Player console**, set your name and manage your legends and gigs. In **Stream settings**, choose Minimal or Full board and click **Copy OBS stream link**.
-5. In OBS, add a **Browser Source** and paste the link. **Set its Width and Height to the same resolution as your OBS output so the layout looks right**—for example, **1920 × 1080** for a 1080p output. Match its frame rate to your webcam and keep the app running while streaming.
+5. In OBS, add a **Browser Source** and paste the link. **Set its Width and Height to the same resolution as your OBS output so the layout looks right**. For example, use **1920 × 1080** for a 1080p output. Match its frame rate to your webcam and keep the app running while streaming.
 
 ## Features
 
@@ -146,7 +146,7 @@ Existing desktop installs continue using their original `Night City Broadcast` d
 
 Back up these folders to preserve camera settings, downloaded images, and learned artwork. Match state is not a saved-game file. Your player name is stored in browser cookies.
 
-In **Debug**, use **Check for new cards** to fetch the current catalog, add new card identities, and download their images and alternate artwork. Progress is shown while it runs, and recognition refreshes automatically—no restart or terminal required. Existing cards, images, and learned references are preserved. **Download missing card art** remains available to repair images for cards already in your catalog.
+In **Debug**, use **Check for new cards** to fetch the current catalog, add new card identities, and download their images and alternate artwork. Progress is shown while it runs, and recognition refreshes automatically. No restart or terminal is required. Existing cards, images, and learned references are preserved. **Download missing card art** remains available to repair images for cards already in your catalog.
 
 ## Release notes
 
