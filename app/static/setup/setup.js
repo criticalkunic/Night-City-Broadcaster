@@ -8,6 +8,8 @@ const P1 = "#23d2c3", P2 = "#ff4d5e", ACCENT = "#ffd23f";
 
 let cal = null;      // {cameras, regions} — local working copy
 let target = "p1_rect";
+let guideTargets = null;
+let cameraResolution = null;
 
 /* Target registry: where each editable element lives and how to edit it. */
 const TARGETS = {
@@ -31,7 +33,7 @@ const TARGETS = {
 const HELP = {
   rect: "Drag a corner handle to resize, drag inside the box to move it, or drag on " +
         "empty space to draw a new box. Choose another area from the menu when finished.",
-  corners: "Drag the four corner handles onto the table corners " +
+  corners: "Drag the four corner handles onto the four corners of your game mat " +
            "(1 top-left, 2 top-right, 3 bottom-right, 4 bottom-left). " +
            "Save to apply the new perspective.",
 };
@@ -87,6 +89,7 @@ async function pollStatus() {
     const res = await fetch("/api/vision/status");
     const st = await res.json();
     const el = $("vision-status");
+    if (st.resolution) cameraResolution = st.resolution;
     if (st.running) {
       el.className = "running";
       el.textContent = `Camera on · ${st.fps} FPS · ${st.pixel_format||'unknown format'}` +
@@ -436,7 +439,9 @@ function drawRois(player) {
   const regions = cal.regions[`player${player}`].regions;
   const colors = { card_play_region: ACCENT, fixer_region: P1, gig_region: P2, legend_region: "#c064ff" };
   for (const [name, rect] of Object.entries(regions)) {
-    const active = target === `p${player}_${ROI_KEYS[name] || name}`;
+    const id = `p${player}_${ROI_KEYS[name] || name}`;
+    if (guideTargets && !guideTargets.includes(id)) continue;
+    const active = target === id;
     strokeRect(ctx, rect, w, h, colors[name] || "#ccc", active);
     ctx.fillStyle = colors[name] || "#ccc";
     ctx.font = "11px monospace";
@@ -446,10 +451,21 @@ function drawRois(player) {
 }
 
 /* ---------------- save / reload ---------------- */
+async function saveSetup() {
+  if (target === 'p1_corners') {
+    const status = await fetch('/api/vision/status').then(r=>r.json());
+    const resolution = status.resolution || cameraResolution;
+    if (!resolution) throw Error('Start your camera before saving perspective.');
+    cal.cameras.corrected_size = CameraSetupGeometry.correctedSize(
+      resolution, cal.regions.player1.source_rect, cal.regions.player1.homography_points);
+  }
+  await api('/api/vision/calibration', {cameras:cal.cameras, regions:cal.regions});
+  setSaveStatus('Camera setup saved.');
+}
+
 
 $("btn-save").addEventListener("click", async () => {
-  await api("/api/vision/calibration", { cameras: cal.cameras, regions: cal.regions });
-  setSaveStatus("Camera setup saved.");
+  try { await saveSetup(); } catch(error) { setSaveStatus(error.message,true); }
 });
 
 $("btn-reload").addEventListener("click", async () => {
@@ -465,11 +481,23 @@ loadCalibration().then(() => {
   const src = cal.cameras.source || {};
   $("src-type").value = src.type || "camera";
   $("capture-mode").value = src.capture_mode || "auto";
-  $("exposure-mode").value = src.exposure_mode || "keep";
+  $("exposure-mode").value = src.exposure_mode || "motion";
   $("src-device").value = src.type !== "camera" && src.type ? (src.path || "") : (src.path || String(src.index ?? 0));
   $("src-type").dispatchEvent(new Event("change"));
   refreshSources();
-});
+  window.initCameraGuide({
+    selectTarget(id){
+      target=id;$("target-select").value=id;
+      if(id==='p1_corners'&&!cal.regions.player1.homography_points){
+        cal.regions.player1.homography_points=[[0.05,0.05],[0.95,0.05],[0.95,0.95],[0.05,0.95]];
+      }
+      renderNumericInputs();
+    },
+    save:saveSetup,
+    setVisibleTargets(ids){guideTargets=ids;},
+    async cameraReady(){const r=await fetch('/api/vision/status');if(!r.ok)return false;const s=await r.json();return s.running&&!s.paused&&s.resolution&&s.fps>0;}
+  });
+}).catch(error=>setSaveStatus('Could not load camera setup. Reload this page to try again.',true));
 attachStreams();
 
 pollStatus();

@@ -4,6 +4,20 @@ User-facing changes are recorded here for each release. Development changes belo
 
 ## Unreleased
 
+## 1.0.10 — 2026-09-16
+
+### Added
+
+- Guided camera setup in a focused window, offered on first use and reopenable from Camera setup. Short instructions, animated examples and automatic area selection walk through mat framing, perspective and zones. Adjustments save before advancing.
+- Minimal and full-board streams share circuit-grid details, cut-corner accents and theme-aware panel styling.
+
+### Changed
+
+- Short camera exposure is now the default; camera setup explains automatic exposure’s brightness and frame-rate tradeoff.
+- Removed redundant walkthrough steps. Each zone appears in sequence, with earlier zones shown as dotted outlines.
+- Saving perspective now sizes the corrected board from the mat corners instead of forcing 4:3. Camera previews preserve their image proportions.
+
+
 ## 1.0.9 — 2026-09-16
 
 ### Added

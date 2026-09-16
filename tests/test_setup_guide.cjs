@@ -1,0 +1,40 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+async function harness(seen=false){
+ const elements={},targets=[],saves=[],requests=[],visibility=[];let ready=false,failSave=false;
+ for(const id of ['guide-progress','guide-title','guide-text','guide-back','guide-next','guide-close','guide-open','camera-guide','guide-error','guide-source','guide-camera','guide-meter','guide-demo-label','guide-copy'])elements[id]={hidden:true,dataset:{},append(){},animate(){},addEventListener(){},showModal(){this.open=true;},close(){this.open=false;},focus(){this.focused=true;}};
+ const context={window:{},document:{getElementById:id=>elements[id],querySelector:()=>({before(){}}),createComment:()=>({replaceWith(){}})},matchMedia:()=>({matches:false}),location:{search:''},URLSearchParams,fetch:async(url,opts)=>{requests.push(opts);return{ok:true,json:async()=>({camera_guide_seen:seen})};}};
+ vm.runInNewContext(fs.readFileSync('app/static/setup/guide.js','utf8'),context);
+ context.window.initCameraGuide({selectTarget:id=>targets.push(id),save:async()=>{if(failSave)throw Error('Save failed');saves.push(targets.at(-1));},cameraReady:async()=>ready,setVisibleTargets:ids=>visibility.push(ids)});
+ await new Promise(setImmediate);
+ return{elements,targets,saves,requests,visibility,setReady:()=>ready=true,fail:value=>failSave=value};
+}
+(async()=>{
+ const h=await harness();const e=h.elements;
+ assert.equal(e['camera-guide'].hidden,false);
+ await e['guide-next'].onclick();assert.match(e['guide-progress'].textContent,/Step 1/);
+ await e['guide-next'].onclick();assert.match(e['guide-error'].textContent,/Start your camera/);
+ assert.match(e['guide-progress'].textContent,/Step 1/);
+ h.setReady();await e['guide-next'].onclick();assert.equal(h.targets.at(-1),'p1_corners');
+ assert.match(e['guide-progress'].textContent,/Step 2 of 8/);
+ h.fail(true);await e['guide-next'].onclick();assert.match(e['guide-progress'].textContent,/Step 2/);assert.equal(e['guide-error'].textContent,'Save failed');
+ h.fail(false);await e['guide-next'].onclick();assert.equal(h.targets.at(-1),'p1_card');assert.deepEqual(h.saves,['p1_corners']);
+ assert.equal(e['guide-title'].textContent,'Your played cards go here');
+ assert(!h.visibility.at(-1).includes('p1_legend'));
+ await e['guide-next'].onclick();assert.equal(h.targets.at(-1),'p1_legend');
+ assert(h.visibility.at(-1).includes('p1_card'));
+ assert(!h.visibility.at(-1).includes('p1_eddie'));
+ await e['guide-next'].onclick();assert.equal(h.targets.at(-1),'p1_eddie');
+ assert(h.visibility.at(-1).includes('p1_card')&&h.visibility.at(-1).includes('p1_legend'));
+ assert(!h.visibility.at(-1).includes('p1_gig'));
+ e['guide-back'].onclick();assert.equal(h.targets.at(-1),'p1_legend');
+ assert(!h.visibility.at(-1).includes('p1_eddie'));
+ for(let n=0;n<5;n++)await e['guide-next'].onclick();
+ assert.equal(h.visibility.at(-1),null);
+ assert.equal(e['camera-guide'].hidden,true);
+ assert(h.requests.some(r=>r&&JSON.parse(r.body).config.camera_guide_seen===true));
+ assert(h.targets.includes('p1_legend')&&h.targets.includes('p1_eddie')&&h.targets.includes('p1_gig')&&h.targets.includes('p1_fixer'));
+ const returning=await harness(true);assert.equal(returning.elements['camera-guide'].hidden,true);
+ returning.elements['guide-open'].onclick();assert.equal(returning.elements['camera-guide'].hidden,false);
+ await returning.elements['guide-close'].onclick();assert.equal(returning.elements['camera-guide'].hidden,true);
+ console.log('Setup guide: first offer, reopen, camera gate, save-before-advance, failure recovery, zones and completion passed.');
+})().catch(e=>{console.error(e);process.exit(1);});

@@ -57,6 +57,8 @@ Keep an internet connection until setup finishes. The app stays on the progress 
 
 ### 3. Set up your camera
 
+First time? Accept the **camera setup walkthrough** on the Player console, or open **Camera setup → Camera setup walkthrough** any time. A focused setup window shows your webcam with short instructions and animated examples. It selects each area for you and saves as you continue through framing, mat corners and zones. A game mat with clearly defined zones is recommended.
+
 1. Open **Camera setup**, choose your webcam or capture device, and click **Start camera**.
 2. Select **Camera framing** and adjust the visible board area. Use **Straighten the board** if the camera views it at an angle.
 3. Select **Played cards** and draw a region covering the area where you play cards. It can contain multiple cards; it is not a single-card presentation slot.

@@ -60,6 +60,7 @@ def env_vision_source() -> dict | None:
     return None
 
 DEFAULT_OVERLAY_CONFIG = {
+    "camera_guide_seen": False,
     # Card removal is confirmed by vision before clearing the latest artwork.
     "overlay_style": "compact",
     "overlay_theme": "cyberpunk",

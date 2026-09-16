@@ -99,7 +99,7 @@ class CaptureThread(threading.Thread):
         return cap
 
     def _configure_exposure(self, cap):
-        mode = self.source.get('exposure_mode', 'keep')
+        mode = self.source.get('exposure_mode', 'motion')
         linux = sys.platform.startswith('linux')
         # V4L2 uses raw control enums and 100-microsecond exposure units.
         # Disable OpenCV's optional normalization before reading or writing them.

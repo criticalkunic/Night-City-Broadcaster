@@ -14,7 +14,7 @@ from app.vision.perspective import clamp01
 log = logging.getLogger("app.vision.calibration")
 
 DEFAULT_CAMERAS = {
-    "source": {"type": "camera", "index": 0, "path": ""},
+    "source": {"type": "camera", "index": 0, "path": "", "exposure_mode": "motion"},
     "corrected_size": [800, 600],
     "rotate_source_180": False,
     # Card detection tuning — single source of truth is DEFAULT_DETECTION in

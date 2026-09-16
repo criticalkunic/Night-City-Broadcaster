@@ -17,6 +17,17 @@
   </div>
   <nav class="page-nav" aria-label="Pages"><a href="/operator">Player console</a><a href="/setup" aria-current="page">Camera setup</a><a href="/debug">Troubleshooting</a><a href="/overlay">Stream settings</a></nav><span id="connection" role="status" aria-live="polite">Connecting…</span>
 </header>
+<div class="guide-launch"><button id="guide-open" class="btn">Camera setup walkthrough</button></div>
+<dialog id="camera-guide" hidden aria-labelledby="guide-title">
+<div class="guide-top"><span>CAMERA SETUP / GUIDED</span><button id="guide-close" class="btn" aria-label="Close walkthrough">Close</button></div>
+<progress id="guide-meter" max="8" value="0" aria-label="Setup progress"></progress>
+<div class="guide-layout"><aside class="guide-instructions">
+<div id="guide-copy"><p id="guide-progress"></p><h2 id="guide-title" tabindex="-1"></h2><p id="guide-text"></p></div>
+<div id="guide-demo" aria-hidden="true"><div class="demo-mat"><div class="demo-zone"></div><i></i><i></i><i></i><i></i><b></b><b></b><b></b></div><span class="demo-pointer">↖</span></div>
+<p id="guide-demo-label" class="hint"></p><p id="guide-error" role="alert"></p>
+<div class="guide-actions"><button id="guide-back" class="btn">Back</button><button id="guide-next" class="btn accent">Start walkthrough</button></div>
+</aside><div class="guide-workspace"><div id="guide-camera"></div><div id="guide-source"></div></div></div>
+</dialog>
 <section class="camera-controls">
   <div class="vision-controls" role="group" aria-label="Vision source">
     <label for="src-type">Source</label>
@@ -28,8 +39,8 @@
     <details><summary>More source options</summary><label for="src-device" id="src-device-label">Device (index or /dev/video*)</label>
     <input id="src-device" value="0" size="14">
     <label for="capture-mode">Capture mode</label><select id="capture-mode"><option value="auto">Automatic (recommended)</option><option value="mjpeg1080">1080p · 30 FPS</option><option value="mjpeg720">720p · 30 FPS</option><option value="native">Camera default</option></select>
-<label for="exposure-mode">Camera exposure</label><select id="exposure-mode"><option value="keep">Keep camera settings</option><option value="motion">Short exposure · prioritize motion (1/64 s)</option><option value="auto">Automatic exposure</option></select>
-<p>For cameras stuck near 15 FPS, try short exposure, then click Start camera. It may darken the image; add light to the board. Applies to the camera and broadcast. Choose Automatic exposure and restart to restore automatic adjustment. Supported for local cameras on Linux and Windows; video files and network streams ignore this control.</p>
+<label for="exposure-mode">Camera exposure</label><select id="exposure-mode"><option value="motion">Short exposure · smoother motion (recommended)</option><option value="keep">Keep camera settings</option><option value="auto">Automatic exposure</option></select>
+<p>Short exposure helps keep motion smooth but may darken the image; add light to your mat. Automatic exposure can improve brightness, but may lower camera FPS in dim light. Click Start camera to apply. Supported cameras on Linux and Windows only.</p>
 </details>
     <button id="btn-vision-start" class="btn accent">Start camera</button>
     <button id="btn-vision-stop" class="btn">Stop</button>
@@ -95,6 +106,6 @@
   </section>
 </main>
 
-<script src="/static/board/camera-feed.js"></script><script src="/static/setup/setup.js"></script>
+<script src="/static/board/camera-feed.js"></script><script src="/static/setup/geometry.js"></script><script src="/static/setup/guide.js"></script><script src="/static/setup/setup.js"></script>
 <script src="/static/shared/connection-status.js"></script></body>
 </html>

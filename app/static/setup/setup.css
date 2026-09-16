@@ -138,7 +138,67 @@ main {
 .viewbox h2.p2 { color: var(--p2); }
 .viewbox .hint { font-weight: 400; font-size: 12px; color: var(--muted); letter-spacing: 0; }
 .frame { position: relative; }
-.frame img { display: block; width: 100%; background: #000; min-height: 120px; }
+.frame img { display: block; width: 100%; height: auto; background: #000; min-height: 0; }
 .frame canvas { position: absolute; inset: 0; cursor: crosshair; }
 
 [hidden]{display:none!important}.views{display:block}.viewbox{width:100%}details{margin:12px 0}summary{cursor:pointer;color:#b8c4cf}details[open]>summary{margin-bottom:12px}
+
+.guide-launch { margin:16px 24px; }
+.guide-panel { margin:16px 24px; padding:20px 24px; border:1px solid var(--accent, #ffd23f); border-left:4px solid var(--accent, #ffd23f); background:var(--panel); border-radius:8px; }
+.guide-panel[hidden] { display:none; }
+.guide-panel h2 { margin:8px 0; }
+.guide-panel p { line-height:1.6; max-width:90ch; }
+.guide-actions { display:flex; flex-wrap:wrap; gap:10px; }
+#guide-progress { color:#23d2c3; font-size:13px; }
+#guide-error { color:#ff8791; }
+/* Focused setup window: reuse the live editor, without a second camera feed. */
+#camera-guide{width:min(1400px,96vw);max-height:94vh;padding:0;color:var(--text);background:#0b1016;border:1px solid var(--p1);border-radius:0;overflow:auto;box-shadow:0 24px 100px #000b}
+#camera-guide::backdrop{background:#030609dd}
+.guide-top{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;font:12px monospace;letter-spacing:2px;border-bottom:1px solid var(--border)}
+#guide-meter{display:block;width:100%;height:3px;border:0;accent-color:var(--p1)}
+.guide-layout{display:grid;grid-template-columns:290px minmax(0,1fr);gap:24px;padding:24px}
+.guide-instructions{display:flex;flex-direction:column;min-width:0}
+#guide-title{font-size:27px;line-height:1.15;margin:12px 0}
+#guide-text{font-size:15px;line-height:1.6;color:#bac8d2;min-height:110px}
+#guide-progress{font:11px monospace;letter-spacing:2px;text-transform:uppercase}
+.guide-actions{margin-top:auto;display:flex;gap:10px;padding-top:16px}
+.guide-actions .accent{background:var(--p1);border-color:var(--p1);color:#061012;font-weight:700;flex:1}
+#guide-error:empty{display:none}
+#guide-camera .viewbox{padding:0;border:1px solid #2b414d;border-radius:0;overflow:hidden}
+#guide-camera h2{padding:12px;font-size:11px;text-transform:uppercase;color:var(--p1)}
+#guide-camera .frame img{width:100%}
+#guide-source{padding-top:16px}#guide-source .camera-controls{padding:0}
+#guide-source [aria-label="Camera orientation"]{padding:12px 0!important}
+#guide-source [aria-label="Camera orientation"] p{display:none}
+#guide-demo{height:150px;position:relative;overflow:hidden;border:1px solid #263946;background:repeating-linear-gradient(0deg,transparent 0 19px,#ffffff05 19px 20px),repeating-linear-gradient(90deg,#0b1016 0 19px,#ffffff05 19px 20px)}
+.demo-mat{position:absolute;inset:25px 30px;background:#182531;border:1px solid #527080}
+.demo-zone{position:absolute;inset:8px;border:2px solid var(--p1);animation:guide-box 3.6s ease-in-out infinite}
+.demo-mat i{position:absolute;width:7px;height:7px;background:var(--accent);border-radius:50%}
+.demo-mat i:nth-of-type(1){left:-4px;top:-4px}.demo-mat i:nth-of-type(2){right:-4px;top:-4px}.demo-mat i:nth-of-type(3){right:-4px;bottom:-4px}.demo-mat i:nth-of-type(4){left:-4px;bottom:-4px}
+.demo-mat b{position:absolute;top:40%;width:22px;height:32px;background:#234653;border:1px solid var(--p1);left:20%;animation:guide-card 3.6s ease-in-out infinite}
+.demo-mat b:nth-of-type(2){left:44%;animation-delay:.3s}.demo-mat b:nth-of-type(3){left:68%;animation-delay:.6s}
+.demo-pointer{position:absolute;right:22px;bottom:16px;color:var(--accent);font-size:24px;animation:guide-pointer 3.6s ease-in-out infinite}
+#camera-guide[data-demo="perspective"] .demo-mat{animation:guide-perspective 3.6s ease-in-out infinite}
+#camera-guide[data-demo="perspective"] b,#camera-guide[data-demo="frame"] b{display:none}
+#camera-guide[data-demo="legends"] .demo-zone{inset:30% 8%;animation:none;background:linear-gradient(90deg,transparent 32%,#23d2c355 33%,transparent 34% 65%,#23d2c355 66%,transparent 67%)}
+#camera-guide[data-demo="gigs"] .demo-zone{inset:5% 5% 72%;animation:none}
+#camera-guide[data-demo="fixer"] .demo-zone{inset:5% 74% 5% 5%;animation:none}
+#camera-guide[data-demo="eddies"] .demo-zone{inset:72% 5% 5%;animation:none}
+#guide-demo-label{font-size:11px;color:var(--muted);margin:8px 0}
+@keyframes guide-box{0%,15%{transform:scale(.7)}55%,85%{transform:scale(1)}100%{transform:scale(.7)}}
+@keyframes guide-card{0%,15%{opacity:0;transform:translateY(-16px) rotate(-8deg)}35%,85%{opacity:1;transform:none}100%{opacity:0}}
+@keyframes guide-pointer{0%,15%,100%{transform:translate(-25px,-20px)}55%,85%{transform:none}}
+@keyframes guide-perspective{0%,15%,100%{transform:perspective(180px) rotateX(25deg) rotateZ(-5deg)}55%,85%{transform:none}}
+@media(max-width:850px){.guide-layout{grid-template-columns:1fr;padding:16px;gap:16px}.guide-instructions{display:grid;grid-template-columns:1fr 150px;gap:8px 16px}#guide-text{min-height:0}#guide-demo{height:125px}.guide-actions,#guide-error{grid-column:1/-1}#guide-demo-label{display:none}}
+#camera-guide{height:90vh;overflow:hidden}
+.guide-layout{height:calc(100% - 70px);min-height:0}
+.guide-workspace{min-height:0;overflow:auto;display:flex;flex-direction:column;gap:12px}
+#guide-source{order:-1;padding:0}
+.guide-instructions{overflow:auto}
+#guide-title:focus{outline:none}
+@media(max-width:850px){#camera-guide{overflow:auto}.guide-layout{height:auto}.guide-workspace{overflow:visible}}
+.guide-instructions{overflow-x:hidden}
+#guide-camera{width:min(100%,calc((90vh - 170px)*1.6));align-self:center;flex:none}
+#camera-guide[data-demo="camera"] #guide-camera{width:min(100%,calc((90vh - 330px)*1.6))}
+#guide-meter::-webkit-progress-bar{background:#23343c}#guide-meter::-webkit-progress-value{background:var(--p1)}#guide-meter::-moz-progress-bar{background:var(--p1)}
+@media(max-width:850px){#guide-camera,#camera-guide[data-demo="camera"] #guide-camera{width:100%}}

@@ -16,7 +16,7 @@ class Camera:
 def test_mjpeg_negotiated_before_size_and_rate(monkeypatch):
     fake=Camera()
     monkeypatch.setattr(cv2,'VideoCapture',lambda *args:fake)
-    capture=CaptureThread({'type':'camera','path':'/dev/video1','capture_mode':'mjpeg1080'})
+    capture=CaptureThread({'type':'camera','path':'/dev/video1','capture_mode':'mjpeg1080','exposure_mode':'keep'})
     capture._open()
     assert [key for key,_ in fake.calls]==[cv2.CAP_PROP_FOURCC,cv2.CAP_PROP_FRAME_WIDTH,cv2.CAP_PROP_FRAME_HEIGHT,cv2.CAP_PROP_FPS]
     assert capture.pixel_format=='MJPG'
@@ -35,7 +35,7 @@ def test_rejected_mode_reports_actual_camera_rate(monkeypatch):
 
 
 def test_files_streams_and_native_mode_are_not_reconfigured(monkeypatch):
-    for source in ({'type':'video','path':'clip.avi'}, {'type':'stream','path':'rtsp://camera/live'}, {'type':'camera','index':1,'capture_mode':'native'}):
+    for source in ({'type':'video','path':'clip.avi'}, {'type':'stream','path':'rtsp://camera/live'}, {'type':'camera','index':1,'capture_mode':'native','exposure_mode':'keep'}):
         fake=Camera()
         monkeypatch.setattr(cv2,'VideoCapture',lambda *args:fake)
         CaptureThread(source)._open()
@@ -56,7 +56,7 @@ def test_windows_dshow_keeps_mjpeg_after_fps_reopens_device(monkeypatch):
     fake=DirectShow()
     opened=[]
     monkeypatch.setattr(cv2,'VideoCapture',lambda *args: opened.append(args) or fake)
-    capture=CaptureThread({'type':'camera','index':0,'capture_mode':'mjpeg1080'})
+    capture=CaptureThread({'type':'camera','index':0,'capture_mode':'mjpeg1080','exposure_mode':'keep'})
     capture._open()
     assert opened == [(0, cv2.CAP_DSHOW)]
     assert capture.pixel_format == 'MJPG'
@@ -65,7 +65,7 @@ def test_windows_dshow_keeps_mjpeg_after_fps_reopens_device(monkeypatch):
     assert capture.capture_warning is None
 
 
-def test_windows_short_exposure_is_opt_in_and_can_restore_auto(monkeypatch):
+def test_windows_exposure_choices_and_restore_auto(monkeypatch):
     from app.vision import capture as module
     monkeypatch.setattr(module.sys, 'platform', 'win32')
     for mode, expected in [('keep', []), ('motion', [(cv2.CAP_PROP_AUTO_EXPOSURE,0),(cv2.CAP_PROP_EXPOSURE,-6)]), ('auto', [(cv2.CAP_PROP_AUTO_EXPOSURE,1)])]:
@@ -130,3 +130,13 @@ def test_linux_rejected_manual_mode_does_not_change_exposure(monkeypatch):
     capture._open()
     assert fake.calls == [(cv2.CAP_PROP_AUTO_EXPOSURE,1)]
     assert 'rejected' in capture.capture_warning
+
+
+def test_default_exposure_is_short_on_linux_and_windows(monkeypatch):
+    from app.vision import capture as module
+    for platform, exposure in [('linux',156),('win32',-6)]:
+        monkeypatch.setattr(module.sys,'platform',platform)
+        fake=Camera()
+        monkeypatch.setattr(cv2,'VideoCapture',lambda *args:fake)
+        CaptureThread({'type':'camera','index':0,'capture_mode':'native'})._open()
+        assert (cv2.CAP_PROP_EXPOSURE,exposure) in fake.calls

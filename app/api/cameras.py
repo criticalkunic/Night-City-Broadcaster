@@ -28,7 +28,7 @@ class SourceModel(BaseModel):
     index: int = 0
     path: str = ""
     capture_mode: Literal["auto", "mjpeg1080", "mjpeg720", "native"] = "auto"
-    exposure_mode: Literal["keep", "auto", "motion"] = "keep"
+    exposure_mode: Literal["keep", "auto", "motion"] = "motion"
 
 
 class StartRequest(BaseModel):

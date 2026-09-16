@@ -1,0 +1,17 @@
+/* Broadcast furniture inspired by circuit grids and cut-corner hardware panels. */
+#stage{background-image:linear-gradient(#ffffff03 1px,transparent 1px),linear-gradient(90deg,#ffffff03 1px,transparent 1px);background-size:32px 32px}
+#hud,#stage .panel{border-radius:0;background-image:radial-gradient(circle at 1px 1px,color-mix(in srgb,var(--theme-primary) 7%,transparent) 1px,transparent 0);background-size:6px 6px;box-shadow:inset 3px 0 0 color-mix(in srgb,var(--theme-primary) 12%,transparent)}
+#hud{border-top-width:3px;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));padding-top:16px}
+#stage .panel-head{background:linear-gradient(90deg,color-mix(in srgb,var(--theme-primary) 12%,var(--theme-bg)),var(--theme-bg));border-bottom:1px solid var(--theme-line)}
+#stage h1,#stage h2,#rail .eyebrow{font-family:ui-monospace,monospace;letter-spacing:2px}
+#stage .panel-head h1::before,#stage .panel-head h2::before{content:'//';color:var(--theme-primary);margin-right:9px;opacity:.7}
+#stage header{border-bottom:1px solid var(--theme-primary);background:linear-gradient(90deg,color-mix(in srgb,var(--theme-primary) 4%,transparent),transparent)}
+#stage .broadcast-wordmark{letter-spacing:3px;color:var(--theme-primary)}
+#stage .broadcast-wordmark em{color:var(--theme-accent)}
+#stage .match-status{padding:7px 12px;border:1px solid var(--theme-line);font-family:monospace;letter-spacing:2px}
+#stage .cred{border-left:3px solid var(--theme-accent)}
+#rail .gig-header,#stage .stolen-label{clip-path:polygon(0 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%);font-family:monospace;letter-spacing:2px}
+#rail #legend-count{font-family:monospace;letter-spacing:1px}
+#rail #gigs{border-top-style:dashed}
+#stage .legend img,#rail .legend-tile img{border-radius:2px}
+#stage #latest-art,#rail #art img{border-radius:2px;box-shadow:3px 3px 0 color-mix(in srgb,var(--theme-primary) 20%,transparent)}
