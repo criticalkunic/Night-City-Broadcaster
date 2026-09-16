@@ -118,6 +118,7 @@ $("btn-vision-start").addEventListener("click", async () => {
       ? { type: "camera", index: parseInt(device, 10), path: "" }
       : { type: "camera", index: 0, path: device };
   source.capture_mode=$("capture-mode").value;
+  source.exposure_mode=$("exposure-mode").value;
   try { await api("/api/vision/start", { source }); }
   catch(error){$("vision-status").textContent=error.message;return;}
   // Persist the chosen source so start.sh runs pick it up next time.
@@ -138,6 +139,7 @@ $("src-type").addEventListener("change", () => {
     : $("src-type").value === "stream" ? "Stream URL" : "Device (index or /dev/video*)";
   $("camera-list").disabled = $("src-type").value !== "camera";
   $("capture-mode").disabled = $("src-type").value !== "camera";
+  $("exposure-mode").disabled = $("src-type").value !== "camera";
 });
 
 /* ---------------- target selection ---------------- */
@@ -463,6 +465,7 @@ loadCalibration().then(() => {
   const src = cal.cameras.source || {};
   $("src-type").value = src.type || "camera";
   $("capture-mode").value = src.capture_mode || "auto";
+  $("exposure-mode").value = src.exposure_mode || "keep";
   $("src-device").value = src.type !== "camera" && src.type ? (src.path || "") : (src.path || String(src.index ?? 0));
   $("src-type").dispatchEvent(new Event("change"));
   refreshSources();

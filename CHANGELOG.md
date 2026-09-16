@@ -4,6 +4,12 @@ User-facing changes are recorded here for each release. Development changes belo
 
 ## Unreleased
 
+## 1.0.8 — 2026-09-16
+
+### Added
+
+- Optional Windows camera exposure modes: keep existing settings, automatic, or short exposure (1/64 second) to test exposure-limited capture rates. Troubleshooting reports the driver exposure values.
+
 ## 1.0.7 — 2026-09-16
 
 ### Fixed

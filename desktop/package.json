@@ -1,7 +1,7 @@
 {
   "name": "night-city-broadcaster",
   "productName": "Night City Broadcaster",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Webcam board tracking and streaming companion",
   "author": "Night City Broadcaster",
   "private": true,

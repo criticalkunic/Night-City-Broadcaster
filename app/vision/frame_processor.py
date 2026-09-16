@@ -145,6 +145,8 @@ class VisionService:
             "native_fps": getattr(cap, "native_fps", 30.0) if cap else 30.0,
             "pixel_format": getattr(cap, "pixel_format", "unknown"),
             "backend": getattr(cap, "backend_name", "unknown"),
+            "exposure": getattr(cap, "exposure", None),
+            "auto_exposure": getattr(cap, "auto_exposure", None),
             "capture_warning": getattr(cap, "capture_warning", None),
             "resolution": list(cap.resolution) if cap and cap.resolution else None,
             "error": cap.error if cap else None,

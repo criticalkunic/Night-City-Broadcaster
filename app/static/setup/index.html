@@ -28,6 +28,8 @@
     <details><summary>More source options</summary><label for="src-device" id="src-device-label">Device (index or /dev/video*)</label>
     <input id="src-device" value="0" size="14">
     <label for="capture-mode">Capture mode</label><select id="capture-mode"><option value="auto">Automatic (recommended)</option><option value="mjpeg1080">1080p · 30 FPS</option><option value="mjpeg720">720p · 30 FPS</option><option value="native">Camera default</option></select>
+<label for="exposure-mode">Camera exposure (Windows)</label><select id="exposure-mode"><option value="keep">Keep camera settings</option><option value="motion">Short exposure · prioritize motion (1/64 s)</option><option value="auto">Automatic exposure</option></select>
+<p>For cameras stuck near 15 FPS, try short exposure, then click Start camera. It may darken the image; add light to the board. Applies to the camera and broadcast. Choose Automatic exposure and restart to restore automatic adjustment. Non-Windows sources ignore this control.</p>
 </details>
     <button id="btn-vision-start" class="btn accent">Start camera</button>
     <button id="btn-vision-stop" class="btn">Stop</button>

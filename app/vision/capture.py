@@ -34,6 +34,8 @@ class CaptureThread(threading.Thread):
         self.native_fps = 30.0
         self.pixel_format = "unknown"
         self.backend_name = "unknown"
+        self.exposure = None
+        self.auto_exposure = None
         self.capture_warning = None
         self.resolution: Optional[tuple[int, int]] = None
         self._pace = 0.0
@@ -87,6 +89,19 @@ class CaptureThread(threading.Thread):
         if request_mjpeg and (self.pixel_format not in ('MJPG', 'JPEG') or reported < 29):
             self.capture_warning = f"Camera negotiated {self.pixel_format} at {reported:g} FPS instead of MJPEG / 30 FPS. Try MJPEG 720p or check camera/USB settings."
 
+        if local_camera and sys.platform == 'win32':
+            exposure_mode = self.source.get('exposure_mode', 'keep')
+            if exposure_mode in ('auto', 'motion'):
+                accepted = cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1 if exposure_mode == 'auto' else 0)
+                if exposure_mode == 'motion':
+                    # DirectShow exposure is log2(seconds): -6 = 1/64 second.
+                    exposure_accepted = cap.set(cv2.CAP_PROP_EXPOSURE, -6)
+                    accepted = accepted and exposure_accepted
+                if not accepted:
+                    warning = 'Camera rejected the exposure request. Use its manufacturer controls to adjust exposure.'
+                    self.capture_warning = ' '.join(filter(None, [self.capture_warning, warning]))
+            self.exposure = cap.get(cv2.CAP_PROP_EXPOSURE)
+            self.auto_exposure = cap.get(cv2.CAP_PROP_AUTO_EXPOSURE)
         self.native_fps = reported if 1 <= reported <= 120 else 30.0
         self.error = None
         log.info("CAPTURE_STARTED source=%r video_file=%s backend=%s format=%s reported_fps=%s",

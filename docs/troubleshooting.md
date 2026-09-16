@@ -86,3 +86,12 @@ In **Troubleshooting**, compare the incoming camera FPS with **Video performance
 If incoming camera FPS is low, try **Camera setup → Capture mode → 720p · 30 FPS**, then restart the camera. Report whether this improves it. A high driver-reported rate does not guarantee that frames are arriving at that rate.
 
 If camera FPS is healthy but feed FPS is low, include which layout and preview windows are open. This helps separate capture issues from broadcast processing issues.
+
+
+### Incoming camera stays near 15 FPS at both resolutions
+
+This places the slowdown before broadcast encoding. One possible cause is automatic exposure using too much time per frame. First try lighting the board more brightly and check the incoming camera FPS again.
+
+On Windows, **Camera setup → More source options → Camera exposure → Short exposure · prioritize motion (1/64 s)** requests a shorter manual exposure. Click **Start camera** to apply it. This can darken both the preview and broadcast; increase board lighting. Select **Automatic exposure** and restart the camera to restore automatic adjustment. **Keep camera settings** makes no exposure changes and does not undo a previous manual setting.
+
+The driver may reject exposure controls; the app reports this in Camera setup. A short exposure is a diagnostic option, not a guaranteed FPS fix. If capture remains slow, report the Troubleshooting driver FPS, exposure, and video-performance readings.
