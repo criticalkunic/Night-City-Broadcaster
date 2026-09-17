@@ -8,7 +8,7 @@
 
 Night City Broadcaster runs locally on Linux and Windows. Use automatic card recognition, manual match controls, or both.
 
-[Download](https://github.com/criticalkunic/Night-City-Broadcaster/releases/latest) · [Quick start](#quick-start) · [Getting started](#getting-started) · [Linux from source](#linux-from-source) · [OBS setup](#obs-setup) · [Troubleshooting](docs/troubleshooting.md) · [Building releases](desktop/README.md)
+[Download](https://github.com/criticalkunic/Night-City-Broadcaster/releases/latest) · [Quick start](#quick-start) · [Illustrated guide](docs/getting-started.md) · [Video walkthrough](docs/assets/walkthrough.mp4) · [Getting started](#getting-started) · [Linux from source](#linux-from-source) · [OBS setup](#obs-setup) · [Troubleshooting](docs/troubleshooting.md) · [Building releases](desktop/README.md)
 
 ## Quick start
 
@@ -17,6 +17,10 @@ Night City Broadcaster runs locally on Linux and Windows. Use automatic card rec
 3. In **Camera setup**, choose your webcam, start the camera, and set your board regions. See [camera setup](#3-set-up-your-camera) for details.
 4. In **Player console**, set your name and manage your legends and gigs. In **Stream settings**, choose Minimal or Full board and click **Copy OBS stream link**.
 5. In OBS, add a **Browser Source** and paste the link. **Set its Width and Height to the same resolution as your OBS output so the layout looks right**. For example, use **1920 × 1080** for a 1080p output. Match its frame rate to your webcam and keep the app running while streaming.
+
+## Video walkthrough
+
+[Watch the five-minute setup walkthrough](docs/assets/walkthrough.mp4), or follow the [illustrated guide](docs/getting-started.md) for camera zones, legend controls, gigs, and OBS.
 
 ## Features
 
@@ -57,7 +61,7 @@ Keep an internet connection until setup finishes. The app stays on the progress 
 
 ### 3. Set up your camera
 
-First time? Accept the **camera setup walkthrough** on the Player console, or open **Camera setup → Camera setup walkthrough** any time. A focused setup window shows your webcam with short instructions and animated examples. It selects each area for you and saves as you continue through framing, mat corners and zones. A game mat with clearly defined zones is recommended.
+First time? Accept the **camera setup walkthrough** on the Player console, or open **Camera setup → Camera setup walkthrough** any time. A focused setup window shows your webcam with short instructions and animated examples. It selects each area for you and saves as you continue through mat corners and zones. A game mat with clearly defined zones is recommended.
 
 1. Open **Camera setup**, choose your webcam or capture device, and click **Start camera**.
 2. Select **Camera framing** and adjust the visible board area. Use **Straighten the board** if the camera views it at an angle.
@@ -65,9 +69,9 @@ First time? Accept the **camera setup walkthrough** on the Player console, or op
 4. Select **Legends** and align the region with your three legend positions. Configure **Eddies**, **Gigs**, and **Fixer** if you use their video panels.
 5. Click **Save camera setup**.
 
-![Camera setup showing the played-card, legend, gig, fixer, and Eddie regions](docs/assets/board-setup.png)
+![Camera setup with the played-card area aligned to a game mat](docs/assets/setup-zones.png)
 
-*Board region setup. Drag the highlighted area and its corner handles to fit your board; this example shows the regions without a camera signal.*
+*Match the regions to your mat’s printed zones. See the [illustrated guide](docs/getting-started.md) for each step.*
 
 Use even lighting and keep card faces clear of glare. Brightness and contrast controls adjust the image used for recognition without changing the broadcast video. For camera and frame-rate problems, see [Troubleshooting](docs/troubleshooting.md).
 
@@ -78,7 +82,7 @@ Open **Player console** to set your name and manage the board.
 - Play cards within the configured area. Tracking runs continuously; starting a new match does not require an empty-board calibration.
 - Use **Choose a card manually** to correct a match or display a card without camera recognition.
 - Assign legends and use their flip controls when a detection needs correcting.
-- Add your gig dice and set their values. Add an opponent’s die only when you capture its gig; remove it when you no longer control it.
+- Click a die in **My gigs** or **Captured gigs**, then choose its value from the visual picker. Use the die with the red X to remove it. Add an opponent’s die only when you capture its gig.
 - Use **Undo** to step back or **Start new match** to reset match state. Cards still visible on the table can be detected again after a reset.
 
 Recognition depends on camera resolution, sleeves, lighting, and the available artwork references. Manual controls remain available during play.

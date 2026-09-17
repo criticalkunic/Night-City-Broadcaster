@@ -4,6 +4,8 @@ User-facing changes are recorded here for each release. Development changes belo
 
 ## Unreleased
 
+- Added a video walkthrough and an illustrated getting-started guide covering camera zones, legends, visual gig controls, and OBS.
+
 ## 1.0.11 — 2026-09-17
 
 ### Added
