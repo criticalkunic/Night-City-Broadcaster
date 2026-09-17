@@ -1,6 +1,6 @@
 # Night City Broadcaster
 
-![Minimalist stream showing Panam Palmer, one revealed legend, two face-down legends, and gig trays](docs/assets/readme-preview.png)
+![Minimalist stream showing Panam Palmer, one revealed legend, two face-down legends, and gig trays](docs/assets/minimal-stream-panam.png)
 
 *Minimal layout during webcam play.*
 
@@ -28,15 +28,15 @@ Night City Broadcaster runs locally on Linux and Windows. Use automatic card rec
 - **Three legend slots.** Track revealed legends, their positions and orientation, with animated flips and manual corrections.
 - **Your gigs and captured gigs.** Edit dice values, return captured dice, and choose which panels appear on stream.
 - **Two stream layouts.** Minimal places match information over your webcam. Full board arranges cropped play and Eddie video alongside legends, gigs, and an optional fixer panel.
-- **One OBS URL.** Switch layouts without replacing your browser source. Choose Cyberpunk, Arasaka, or Edgerunners colours.
+- **One OBS URL.** Switch layouts without replacing your browser source. Choose Cyberpunk, Arasaka, or Edgerunners colors.
 - **Match controls.** Start a new match, select cards manually, and step back through up to 100 recent card plays.
 - **Recognition tools.** Inspect detections, adjust the image used by vision, and teach alternate artwork from a camera sample.
 
-## Colour schemes
+## Color schemes
 
-![Minimalist UI theme comparison with diagonal slices of Cyberpunk, Arasaka, and Edgerunners](docs/assets/broadcast-themes.png)
+![Minimalist UI theme comparison with diagonal slices of Cyberpunk, Arasaka, and Edgerunners](docs/assets/minimal-theme-comparison.png)
 
-*Cyberpunk, Arasaka, and Edgerunners, from left to right. Choose a colour scheme in **Stream settings**; it applies to both Minimal and Full board.*
+*Cyberpunk, Arasaka, and Edgerunners, from left to right. Choose a color scheme in **Stream settings**; it applies to both Minimal and Full board.*
 
 ## Getting started
 
