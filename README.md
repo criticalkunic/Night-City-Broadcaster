@@ -1,6 +1,6 @@
 # Night City Broadcaster
 
-![Live minimalist stream showing the latest card, revealed legends, and controlled gigs](docs/assets/readme-preview.png)
+![Minimalist stream showing Panam Palmer, one revealed legend, two face-down legends, and gig trays](docs/assets/readme-preview.png)
 
 *Minimal layout during webcam play.*
 
@@ -31,6 +31,12 @@ Night City Broadcaster runs locally on Linux and Windows. Use automatic card rec
 - **One OBS URL.** Switch layouts without replacing your browser source. Choose Cyberpunk, Arasaka, or Edgerunners colours.
 - **Match controls.** Start a new match, select cards manually, and step back through up to 100 recent card plays.
 - **Recognition tools.** Inspect detections, adjust the image used by vision, and teach alternate artwork from a camera sample.
+
+## Colour schemes
+
+![Full-board theme comparison with diagonal slices of Cyberpunk, Arasaka, and Edgerunners](docs/assets/broadcast-themes.png)
+
+*Cyberpunk, Arasaka, and Edgerunners, from left to right. Choose a colour scheme in **Stream settings**; it applies to both Minimal and Full board.*
 
 ## Getting started
 
