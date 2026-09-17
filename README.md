@@ -34,7 +34,7 @@ Night City Broadcaster runs locally on Linux and Windows. Use automatic card rec
 
 ## Colour schemes
 
-![Full-board theme comparison with diagonal slices of Cyberpunk, Arasaka, and Edgerunners](docs/assets/broadcast-themes.png)
+![Minimalist UI theme comparison with diagonal slices of Cyberpunk, Arasaka, and Edgerunners](docs/assets/broadcast-themes.png)
 
 *Cyberpunk, Arasaka, and Edgerunners, from left to right. Choose a colour scheme in **Stream settings**; it applies to both Minimal and Full board.*
 
