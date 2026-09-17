@@ -1,7 +1,7 @@
 "use strict";
 const $=id=>document.getElementById(id);
-let state=null,config={},searchVersion=0,searchTimer,gigRenderKey="";
-const gigDrafts=new Map();
+let state=null,config={},searchVersion=0,searchTimer;
+const gigControls=initGigControls({request:(id,value)=>api("/solo/gigs/"+id,{value}),notice});
 function notice(message){$("notice").textContent=message;}
 async function api(path,body){
  const response=await fetch("/api"+path,body===undefined?{}:{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
@@ -18,36 +18,10 @@ function render(){
  $("current-art").hidden=!card?.image;if(card?.image)$("current-art").src=card.image;
  if(document.activeElement!==$("player-name"))$("player-name").value=state.match.player1_name;
  renderLegends();
- const gigs=Object.values(state.dice).filter(d=>d.location==="p1_gig");
- const nextGigKey=JSON.stringify(gigs);
- if(nextGigKey===gigRenderKey)return;
- gigRenderKey=nextGigKey;
- $("controlled").replaceChildren();
- for(const id of gigDrafts.keys())if(!gigs.some(d=>d.id===id))gigDrafts.delete(id);
- for(const die of gigs){
-  const row=document.createElement("div");row.className="gig-row";
-  const text=document.createElement("span");text.textContent=die.type+" · "+(die.last_roll??"—")+" cred ";
-  if(die.owner===2){const badge=document.createElement("small");badge.textContent="STOLEN";text.append(badge);}
-  const remove=document.createElement("button");remove.textContent=die.owner===2?"Return gig":"Remove";
-  remove.onclick=action(()=>api("/solo/gigs/"+die.id,{value:null}));
-  const editor=document.createElement("form");editor.className="gig-editor";
-  const value=document.createElement("input");value.type="number";value.min="1";value.max=Number(die.type.slice(1));value.step="1";value.required=true;
-  value.setAttribute("aria-label",(die.owner===2?"Stolen ":"My ")+die.type+" gig value");
-  value.value=gigDrafts.get(die.id)??die.last_roll??1;
-  value.oninput=()=>gigDrafts.set(die.id,value.value);
-  const save=document.createElement("button");save.type="submit";save.textContent="Save";
-  editor.onsubmit=action(async()=>{
-   if(!editor.reportValidity())return;
-   save.disabled=true;
-   try{await api("/solo/gigs/"+die.id,{value:Number(value.value)});gigDrafts.delete(die.id);notice("Gig value updated.");}
-   finally{save.disabled=false;}
-  });
-  editor.append(value,save);
-  row.append(text,editor,remove);$("controlled").append(row);
- }
- if(!gigs.length)$("controlled").textContent="No gigs controlled.";
+ gigControls.render(state.dice);
 }
 function showConfig(){
+ gigControls.setTheme(config.overlay_theme);
  $("show-legends").checked=config.show_legends!==false;
  $("show-gigs").checked=!!config.show_dice;$("show-art").checked=!!config.show_card_art;
 }
@@ -68,12 +42,6 @@ $("search").oninput=()=>{
   if(!data.results.length)$("results").textContent="No matching cards.";
  }),180);
 };
-for(const owner of [1,2])for(const type of ["d4","d6","d8","d10","d12","d20"]){
- const option=document.createElement("option");option.value="p"+owner+"-"+type;option.textContent=(owner===1?"My ":"Stolen ")+type;$("die").append(option);
-}
-$("die").onchange=()=>{const max=Number($("die").value.split("-d")[1]);$("value").max=max;if(Number($("value").value)>max)$("value").value=max;};
-$("die").onchange();
-$("gig-form").onsubmit=action(async()=>{await api("/solo/gigs/"+$("die").value,{value:Number($("value").value)});notice("Gig updated.");});
 $("name-form").onsubmit=action(async()=>{const data=await api("/match/names",{player1_name:$("player-name").value});rememberPlayerName(data.state.match.player1_name);notice("Name saved on this browser.");});
 $("undo").onclick=action(()=>api("/undo",{}));$("redo").onclick=action(()=>api("/redo",{}));
 $("clear").onclick=action(()=>api("/solo/card/clear",{}));

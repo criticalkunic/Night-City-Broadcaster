@@ -4,6 +4,12 @@ User-facing changes are recorded here for each release. Development changes belo
 
 ## Unreleased
 
+## 1.0.11 — 2026-09-17
+
+### Added
+
+- Player console gigs now use theme-matched dice trays and a visual value picker for both your gigs and captured gigs, including a crossed-out die to remove a gig.
+
 ## 1.0.10 — 2026-09-16
 
 ### Added
