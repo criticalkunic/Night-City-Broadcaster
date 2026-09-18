@@ -33,3 +33,7 @@ function response(status,body,error=false){
  assert(destroyed);
  console.log('Update checks passed: version ordering, stable releases, trusted download URL, failures and timeout.');
 })().catch(error=>{console.error(error);process.exitCode=1;});
+
+assert.equal(availableUpdate("1.0.12", {...release, tag_name:"v1.0.12.1"}).version, "1.0.12.1");
+assert.equal(availableUpdate("1.0.12+1", {...release, tag_name:"v1.0.12.1"}), null);
+assert.equal(availableUpdate("1.0.12+1", {...release, tag_name:"v1.0.13"}).version, "1.0.13");

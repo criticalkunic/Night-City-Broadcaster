@@ -10,7 +10,7 @@ with urllib.request.urlopen(url,timeout=60) as response:
 (out/'python312._pth').write_text('python312.zip\n.\nLib/site-packages\nimport site\n')
 subprocess.run([sys.executable,'-m','pip','install','--upgrade','--target',str(out/'Lib/site-packages'),
  '--platform','win_amd64','--python-version','3.12','--implementation','cp','--only-binary=:all:',
- 'fastapi','uvicorn','websockets','pydantic','opencv-python','numpy','pygrabber','comtypes','qrcode','psutil'],check=True)
+ 'fastapi','uvicorn','websockets','pydantic','opencv-python','numpy','pygrabber','comtypes','qrcode','psutil','certifi'],check=True)
 shutil.copytree(root/'app',out/'app',dirs_exist_ok=True,ignore=shutil.ignore_patterns('cards','static','__pycache__'))
 shutil.copytree(root/'scripts',out/'scripts',dirs_exist_ok=True,ignore=shutil.ignore_patterns('__pycache__'))
 if (out/'app/static').exists():

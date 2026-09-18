@@ -4,6 +4,12 @@ User-facing changes are recorded here for each release. Development changes belo
 
 ## Unreleased
 
+## 1.0.12.1 Beta — 2026-09-18
+
+Bug-fix release; no new features.
+
+- Fixed first-launch catalog and artwork downloads failing certificate verification on Linux distributions such as Arch by bundling trusted certificates.
+
 ## 1.0.12 Beta — 2026-09-18
 
 ### Phone controls

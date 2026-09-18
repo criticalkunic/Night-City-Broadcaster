@@ -3,15 +3,15 @@ const RELEASES = 'https://github.com/criticalkunic/Night-City-Broadcaster/releas
 const API = 'https://api.github.com/repos/criticalkunic/Night-City-Broadcaster/releases/latest';
 
 function versionParts(value) {
-  const match = /^v?(\d+)\.(\d+)\.(\d+)$/.exec(value || '');
-  return match ? match.slice(1).map(Number) : null;
+  const match = /^v?(\d+)\.(\d+)\.(\d+)(?:[.+](\d+))?$/.exec(value || '');
+  return match ? match.slice(1).map(part => Number(part || 0)) : null;
 }
 function availableUpdate(current, release) {
   if (!release || release.draft || release.prerelease) return null;
   const installed = versionParts(current), latest = versionParts(release.tag_name);
   if (!installed || !latest) return null;
   let newer = false;
-  for (let i=0; i<3; i++) {
+  for (let i=0; i<4; i++) {
     if (latest[i] === installed[i]) continue;
     newer = latest[i] > installed[i]; break;
   }

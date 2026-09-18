@@ -28,6 +28,10 @@ Local schema (superset of what the operator UI and overlay read):
 """
 import argparse
 import json
+import ssl
+from functools import lru_cache
+
+import certifi
 import sys
 import time
 import urllib.error
@@ -63,12 +67,21 @@ CARD_SCHEMA_EXAMPLE = {
 
 # ------------------------------------------------------------------ fetch
 
+@lru_cache(maxsize=1)
+def _download_ssl_context() -> ssl.SSLContext:
+    # Keep system/private roots, and supply public roots independent of the
+    # build machine's OpenSSL paths (which may not exist on the user's OS).
+    context = ssl.create_default_context()
+    context.load_verify_locations(cafile=certifi.where())
+    return context
+
+
 def _get(url: str, retries: int = 3, timeout: float = 30.0) -> bytes:
     last: Optional[Exception] = None
     for attempt in range(retries):
         try:
             req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": "*/*"})
-            with urllib.request.urlopen(req, timeout=timeout) as res:
+            with urllib.request.urlopen(req, timeout=timeout, context=_download_ssl_context()) as res:
                 return res.read()
         except (urllib.error.URLError, TimeoutError, OSError) as exc:
             last = exc

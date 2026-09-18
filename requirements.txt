@@ -17,3 +17,6 @@ pygrabber>=0.2; sys_platform == "win32"
 # Local phone controls and offline QR generation
 qrcode>=8.0
 psutil>=6.0
+
+# Portable trusted certificates for catalog and artwork downloads
+certifi>=2024.7.4

@@ -17,7 +17,7 @@ subprocess.run([sys.executable, '-m', 'PyInstaller', '--noconfirm', '--clean',
     '--distpath', str(root/'desktop/backend'), '--workpath', str(root/'desktop/build'),
     '--specpath', str(root/'desktop/build'),
     '--collect-submodules', 'app', '--collect-submodules', 'scripts',
-    '--collect-all', 'uvicorn', '--collect-all', 'cv2',
+    '--collect-all', 'certifi', '--collect-all', 'uvicorn', '--collect-all', 'cv2',
     '--add-data', f'{assets / "static"}:app/static',
     '--add-data', f'{seed}:config',
     str(root/'desktop/server.py')], check=True)
