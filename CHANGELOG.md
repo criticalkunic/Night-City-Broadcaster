@@ -6,23 +6,36 @@ User-facing changes are recorded here for each release. Development changes belo
 
 ## 1.0.12 Beta — 2026-09-18
 
-- Added QR-linked phone controls over the local network, with visual gigs, legends, card search, match history, and automatic reconnection. No pairing or account required.
+### Phone controls
 
-- Full board webcam gig mode now uses one full-width top feed for your gigs and captured gigs, without a separate tracked-dice tray.
+Control your match from a phone on the same Wi-Fi or LAN. No pairing, account, or app installation required.
 
-- Integrated camera orientation and recognition sliders into matching settings panels with clear scope labels and aligned controls.
+- Set gig values and manage captured gigs.
+- Assign and flip legends, search cards, and correct the latest play.
+- Undo changes, return to a previous play, or start a new match.
+- Reconnect automatically after brief network interruptions.
 
-- Fixed live previews to render at 1920 × 1080 before scaling down, matching OBS proportions in both layouts.
+**To connect:** Open **Player console → Phone controls** on your PC, then scan the QR code.
 
-- Redesigned Full board with a compact gig strip, slimmer fixer rail, quieter framing, and more room for live video.
+### Broadcast layouts
 
-- Simplified camera controls with aligned source fields, grouped quality options, shorter exposure guidance, and a clear action/status row.
+- **Full Board:** Compact gig strip, slimmer fixer rail, and more space for live video.
+- **Webcam gigs:** One full-width top feed covers both your gigs and captured gigs.
+- **Minimal:** New option to broadcast the perspective-corrected mat while keeping the camera’s original colors.
 
-- Added a Minimal stream option to show the perspective-corrected board using saved mat corners, with original camera colors.
+### Camera setup
 
-- Fixed legend detection to always divide the legend area into three slots from left to right, regardless of the area’s proportions.
+- Grouped source and quality controls with shorter exposure guidance.
+- Matching panels for rotation, brightness, and contrast.
 
-- Added a video walkthrough and an illustrated getting-started guide covering camera zones, legends, visual gig controls, and OBS.
+### Fixes
+
+- **Live previews** now render at 1920 × 1080 before scaling down, matching OBS proportions.
+- **Legend detection** always uses three slots from left to right, regardless of the region’s shape.
+
+### Guides
+
+- Added a video walkthrough and an illustrated setup guide covering camera zones, legends, gigs, and OBS.
 
 ## 1.0.11 — 2026-09-17
 
