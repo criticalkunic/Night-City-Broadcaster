@@ -19,14 +19,18 @@ Control your match from a phone on the same Wi-Fi or LAN. No pairing, account, o
 
 ### Broadcast layouts
 
-- **Full Board:** Compact gig strip, slimmer fixer rail, and more space for live video.
-- **Webcam gigs:** One full-width top feed covers both your gigs and captured gigs.
-- **Minimal:** New option to broadcast the perspective-corrected mat while keeping the camera’s original colors.
+- **Full Board:** Optional stream layout, off by default. Includes a compact gig strip, slimmer fixer rail, and more space for live video.
+  - **Webcam gigs:** Optional camera view, also off by default. Enable **Use webcam video** under **Full board settings → Gigs and fixer area** for one full-width top feed covering your gigs and captured gigs.
+- **Minimal:** New option to broadcast the perspective-corrected mat
 
 ### Camera setup
 
 - Grouped source and quality controls with shorter exposure guidance.
 - Matching panels for rotation, brightness, and contrast.
+
+### Startup
+
+- Shortened the Windows unpacking splash to the launch heading and “Unpacking the bundled application. Please wait.”
 
 ### Fixes
 
