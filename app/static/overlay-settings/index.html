@@ -6,7 +6,7 @@
 <p><a id="live-link" href="/broadcast/live" target="_blank" rel="noopener">Open live stream ↗</a></p>
 <label for="preview-layout">Stream layout</label><select id="preview-layout"><option value="compact">Minimal</option><option value="board">Full board</option></select>
 <p>One output URL. Switch styles here; the existing OBS source and virtual camera update automatically.</p>
-<label for="overlay-theme">Colour scheme</label><select id="overlay-theme"><option value="cyberpunk">Cyberpunk · cyan / yellow</option><option value="arasaka">Arasaka · red / white</option><option value="edgerunners">Edgerunners · yellow / pink</option></select>
+<label for="overlay-theme">Color scheme</label><select id="overlay-theme"><option value="cyberpunk">Cyberpunk · cyan / yellow</option><option value="arasaka">Arasaka · red / white</option><option value="edgerunners">Edgerunners · yellow / pink</option></select>
 <p>Changes animate on the live output in either layout.</p>
 <div id="full-board-settings"><h2>Full board settings</h2>
 <p><a href="/setup">Choose play and Eddie areas</a></p>
@@ -17,7 +17,7 @@
 <p class="muted">Fixer dice are your dice still in the fixer area. Stolen dice appear only under your gigs. The play area expands when side panels are hidden.</p>
 
 </div><hr>
-<div id="minimal-settings"><label for="minimal-position">On-screen position</label><select id="minimal-position"><option value="bottom-right">Bottom right (default)</option><option value="bottom-left">Bottom left</option><option value="top-right">Top right</option><option value="top-left">Top left</option></select><p>Top corners show gigs, legends, then the latest card. Bottom corners show the latest card, legends, then gigs.</p><h2>Minimal overlay size</h2>
+<div id="minimal-settings"><h2>Camera output</h2><p><label class="switch"><input id="broadcast_corrected" type="checkbox"> Use perspective-corrected board</label></p><p class="muted">Show your straightened mat instead of the original webcam view. Uses the mat corners saved in Camera setup and keeps the original camera colors. Full board already corrects its video panels.</p><label for="minimal-position">On-screen position</label><select id="minimal-position"><option value="bottom-right">Bottom right (default)</option><option value="bottom-left">Bottom left</option><option value="top-right">Top right</option><option value="top-left">Top left</option></select><p>Top corners show gigs, legends, then the latest card. Bottom corners show the latest card, legends, then gigs.</p><h2>Minimal overlay size</h2>
 <label for="overlay_scale">Scale (%)</label>
 <input id="overlay_scale" type="range" min="25" max="150" step="5" value="100">
 <div class="actions"><input id="scale-number" type="number" min="25" max="150" step="1" value="100" aria-label="Overlay scale percentage"><button id="scale-reset" type="button">Reset to 100%</button></div>
@@ -31,4 +31,4 @@
 <h3>Full board panels</h3><p><label class="switch"><input id="board_show_fixer" type="checkbox"> Show fixer</label></p><p><label class="switch"><input id="board_show_eddies" type="checkbox"> Show Eddie video panel</label></p><p id="status" role="status" aria-live="polite">Loading settings…</p>
 <p class="muted">Starting a new match clears the latest-card panel. The next stable recognition updates it automatically, including cards already on the table.</p>
 </section><aside><h2>Live preview</h2><div class="preview" id="preview-shell"><div class="board-label">NIGHT CITY BROADCASTER</div><iframe id="overlay-preview" src="/broadcast/live" title="Live stream preview"></iframe></div></aside></div></main>
-<script src="/static/overlay-settings/settings.js"></script><script src="/static/shared/connection-status.js"></script></body></html>
+<script src="/static/overlay-settings/settings.js"></script><script src="/static/shared/connection-status.js"></script><script src="/static/shared/broadcast-preview.js"></script></body></html>

@@ -140,6 +140,7 @@ $("src-type").addEventListener("change", () => {
   $("src-device-label").textContent = $("src-type").value === "video"
     ? "Video file path"
     : $("src-type").value === "stream" ? "Stream URL" : "Device (index or /dev/video*)";
+  if ($("src-type").value !== "camera") document.querySelector(".camera-options").open = true;
   $("camera-list").disabled = $("src-type").value !== "camera";
   $("capture-mode").disabled = $("src-type").value !== "camera";
   $("exposure-mode").disabled = $("src-type").value !== "camera";

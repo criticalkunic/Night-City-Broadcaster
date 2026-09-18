@@ -359,6 +359,16 @@ def board_area_image(area: str):
     """Independent, correctly oriented native camera crops for OBS panels."""
     import numpy as np
     from app.vision.perspective import rect_to_pixels
+    if area == "board_corrected":
+        service = runtime.vision_service
+        frame = service._raw_frame()
+        image = (service._corrected(frame, 1) if frame is not None
+                 else service._placeholder("Camera unavailable"))
+        ok, encoded = cv2.imencode(".jpg", image, [cv2.IMWRITE_JPEG_QUALITY, 85])
+        if not ok:
+            raise HTTPException(status_code=500, detail="Could not encode board")
+        return Response(encoded.tobytes(), media_type="image/jpeg",
+                        headers={"Cache-Control": "no-store"})
     if area in ("raw", "p1_crop", "p1_corrected"):
         return Response(runtime.vision_service.jpeg(area), media_type="image/jpeg", headers={"Cache-Control": "no-store"})
     keys = {"play": "card_play_region", "eddies": "eddie_region", "gigs": "gig_region", "fixer": "fixer_region"}
@@ -387,7 +397,7 @@ def board_area_image(area: str):
     return Response(encoded.tobytes(), media_type="image/jpeg", headers={"Cache-Control": "no-store"})
 
 
-BOARD_AREAS = ('play', 'eddies', 'gigs', 'fixer', 'raw', 'p1_crop', 'p1_corrected')
+BOARD_AREAS = ('board_corrected', 'play', 'eddies', 'gigs', 'fixer', 'raw', 'p1_crop', 'p1_corrected')
 
 
 def _broadcast_fps():

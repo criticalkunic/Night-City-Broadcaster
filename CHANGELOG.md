@@ -4,6 +4,24 @@ User-facing changes are recorded here for each release. Development changes belo
 
 ## Unreleased
 
+## 1.0.12 Beta — 2026-09-18
+
+- Added QR-linked phone controls over the local network, with visual gigs, legends, card search, match history, and automatic reconnection. No pairing or account required.
+
+- Full board webcam gig mode now uses one full-width top feed for your gigs and captured gigs, without a separate tracked-dice tray.
+
+- Integrated camera orientation and recognition sliders into matching settings panels with clear scope labels and aligned controls.
+
+- Fixed live previews to render at 1920 × 1080 before scaling down, matching OBS proportions in both layouts.
+
+- Redesigned Full board with a compact gig strip, slimmer fixer rail, quieter framing, and more room for live video.
+
+- Simplified camera controls with aligned source fields, grouped quality options, shorter exposure guidance, and a clear action/status row.
+
+- Added a Minimal stream option to show the perspective-corrected board using saved mat corners, with original camera colors.
+
+- Fixed legend detection to always divide the legend area into three slots from left to right, regardless of the area’s proportions.
+
 - Added a video walkthrough and an illustrated getting-started guide covering camera zones, legends, visual gig controls, and OBS.
 
 ## 1.0.11 — 2026-09-17

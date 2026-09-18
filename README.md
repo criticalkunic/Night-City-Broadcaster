@@ -96,7 +96,17 @@ Recognition depends on camera resolution, sleeves, lighting, and the available a
 
 Alternate artwork can be enabled under **Stream settings → Match artwork to the detected card**. This applies to the latest card and revealed legends in both layouts and the player console. When no official alternate artwork matches, regular artwork is used.
 
+## Phone controls
+
+In **Player console**, click **Phone controls** and scan the QR code with your phone. The controls open in your browser immediately, with no pairing or account. Both devices must be on the same Wi-Fi or LAN. Keep the desktop app running.
+
+Change gigs, flip or assign legends, correct the latest card, undo changes, or start a match. Changes sync with the broadcast. Anyone on your LAN with the link can control the match; camera setup and maintenance stay on the PC. Click **Stop phone access** to disconnect phones. Phone access starts only when you open its panel and stops when the app closes.
+
+If the page won’t open, allow the app through your firewall on private networks and avoid guest Wi-Fi with device isolation. Select another network address in the QR panel if needed. Rescan after changing networks or restarting the app.
+
 ## OBS setup
+
+For a straightened mat in Minimal, enable **Use perspective-corrected board** in **Stream settings → Camera output**. Set the mat corners in Camera setup first. Full board already corrects its cropped video panels.
 
 1. Open **Stream settings** and click **Copy OBS stream link**.
 2. In OBS, add a **Browser Source** and paste the URL.

@@ -28,38 +28,39 @@
 <div class="guide-actions"><button id="guide-back" class="btn">Back</button><button id="guide-next" class="btn accent">Start walkthrough</button></div>
 </aside><div class="guide-workspace"><div id="guide-camera"></div><div id="guide-source"></div></div></div>
 </dialog>
-<section class="camera-controls">
-  <div class="vision-controls" role="group" aria-label="Vision source">
-    <label for="src-type">Source</label>
-    <select id="src-type">
-      <option value="camera">Webcam / capture device</option>
-      <option value="video">Video file</option><option value="stream">Network stream</option>
-    </select>
-    <label for="camera-list">Available cameras</label><select id="camera-list"><option value="">Enter device manually…</option></select><button id="refresh-sources" class="btn">Refresh cameras</button>
-    <details><summary>More source options</summary><label for="src-device" id="src-device-label">Device (index or /dev/video*)</label>
-    <input id="src-device" value="0" size="14">
-    <label for="capture-mode">Capture mode</label><select id="capture-mode"><option value="auto">Automatic (recommended)</option><option value="mjpeg1080">1080p · 30 FPS</option><option value="mjpeg720">720p · 30 FPS</option><option value="native">Camera default</option></select>
-<label for="exposure-mode">Camera exposure</label><select id="exposure-mode"><option value="motion">Short exposure · smoother motion (recommended)</option><option value="keep">Keep camera settings</option><option value="auto">Automatic exposure</option></select>
-<p>Short exposure helps keep motion smooth but may darken the image; add light to your mat. Automatic exposure can improve brightness, but may lower camera FPS in dim light. Click Start camera to apply. Supported cameras on Linux and Windows only.</p>
-</details>
-    <button id="btn-vision-start" class="btn accent">Start camera</button>
-    <button id="btn-vision-stop" class="btn">Stop</button>
+<section class="camera-controls" aria-label="Camera source">
+  <div class="camera-source-grid">
+    <div class="camera-field"><label for="src-type">Source</label><select id="src-type"><option value="camera">Webcam / capture device</option><option value="video">Video file</option><option value="stream">Network stream</option></select></div>
+    <div class="camera-field"><label for="camera-list">Camera</label><div class="camera-picker"><select id="camera-list"><option value="">Enter device manually…</option></select><button id="refresh-sources" class="btn">Refresh</button></div></div>
   </div>
-  <div id="vision-status" role="status" aria-live="polite">vision: stopped</div>
+  <details class="camera-options"><summary>Quality &amp; advanced options</summary>
+    <div class="camera-options-grid">
+      <div class="camera-field"><label for="capture-mode">Video quality</label><select id="capture-mode"><option value="auto">Automatic (recommended)</option><option value="mjpeg1080">1080p · 30 FPS</option><option value="mjpeg720">720p · 30 FPS</option><option value="native">Camera default</option></select></div>
+      <div class="camera-field"><label for="exposure-mode">Exposure</label><select id="exposure-mode" aria-describedby="exposure-help"><option value="motion">Short · smoother motion</option><option value="keep">Keep camera settings</option><option value="auto">Automatic · brighter image</option></select></div>
+      <div class="camera-field"><label for="src-device" id="src-device-label">Device (index or /dev/video*)</label><input id="src-device" value="0"></div>
+    </div>
+    <p class="camera-help" id="exposure-help">Short exposure is recommended for smooth motion. Add light if the image looks dark. Automatic exposure can brighten the image but may lower FPS.</p>
+    <p class="camera-help">Click <strong>Start camera</strong> to apply changes. Exposure controls require a supported Linux or Windows camera.</p>
+  </details>
+  <div class="camera-footer"><div class="camera-actions"><button id="btn-vision-start" class="btn accent">Start camera</button><button id="btn-vision-stop" class="btn">Stop</button></div><div id="vision-status" role="status" aria-live="polite">Camera stopped</div></div>
 </section>
 
-<section style="padding:12px 24px" aria-label="Camera orientation">
-<label><input id="rotate-source-180" type="checkbox"> Rotate camera 180°</label>
-<p>Turn an upside-down overhead camera upright. Applies to the preview, recognition, and both stream layouts. Set this before marking your board areas; reposition the areas if you change it later.</p>
-<p id="rotation-status" role="status" aria-live="polite"></p>
+<div class="camera-adjustments">
+<section class="camera-setting" aria-label="Camera orientation">
+  <div class="setting-heading"><h2>Orientation</h2><span class="setting-scope">Camera &amp; stream</span></div>
+  <label class="rotation-control" for="rotate-source-180"><span>Rotate camera 180°</span><input id="rotate-source-180" type="checkbox" aria-describedby="rotation-help"></label>
+  <p class="camera-help" id="rotation-help">For upside-down overhead cameras. Set this before marking your board areas; check them again if you change it.</p>
+  <p id="rotation-status" role="status" aria-live="polite"></p>
 </section>
-<section class="vision-controls" aria-label="Vision image adjustments" style="padding:12px 24px">
-<strong>Recognition image</strong>
-<label>Brightness <input id="vision-brightness" type="range" min="-100" max="100" value="0"><output id="brightness-value">0</output></label>
-<label>Contrast <input id="vision-contrast" type="range" min="0.5" max="2" step="0.05" value="1"><output id="contrast-value">1</output></label>
-<button id="vision-reset" class="btn">Reset image</button>
-<span>Helps recognition in dark or bright lighting. Saves when you release the slider; your broadcast keeps its original colours.</span>
+<section class="camera-setting" aria-label="Vision image adjustments">
+  <div class="setting-heading"><h2>Recognition image</h2><span class="setting-scope">Detection only</span><button id="vision-reset" class="btn">Reset</button></div>
+  <div class="recognition-sliders">
+    <div class="slider-field"><label for="vision-brightness">Brightness</label><output id="brightness-value" for="vision-brightness">0</output><input id="vision-brightness" type="range" min="-100" max="100" value="0" aria-describedby="recognition-help"></div>
+    <div class="slider-field"><label for="vision-contrast">Contrast</label><output id="contrast-value" for="vision-contrast">1</output><input id="vision-contrast" type="range" min="0.5" max="2" step="0.05" value="1" aria-describedby="recognition-help"></div>
+  </div>
+  <p class="camera-help" id="recognition-help">Adjust for dark or bright lighting. Saves on release; stream colors stay unchanged.</p>
 </section>
+</div>
 <main id="main">
   <section class="panel" id="edit-panel" role="region" aria-label="Calibration editor">
     <div class="panel-title">CHOOSE AN AREA</div>

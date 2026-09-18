@@ -2,11 +2,14 @@
 let activeStyle=null;
 function selectOverlay(config){
  const style=config.overlay_style==='board'?'board':'compact';
- if(style===activeStyle)return;
- activeStyle=style;
+ const selection=style+':'+(config.broadcast_corrected===true);
+ if(selection===activeStyle)return;
+ activeStyle=selection;
  const frame=document.createElement('iframe');
  frame.title=style==='board'?'Full board overlay':'Minimalist overlay';
- frame.src=(style==='board'?'/static/board/index.html':'/static/overlay/index.html')+location.search;
+ const params=new URLSearchParams(location.search);
+ params.set('camera',config.broadcast_corrected===true?'corrected':'raw');
+ frame.src=(style==='board'?'/static/board/index.html':'/static/overlay/index.html')+'?'+params;
  document.body.replaceChildren(frame);
 }
 function connectOverlay(){

@@ -1,2 +1,3 @@
 "use strict";
-startBoardFeed(document.getElementById("webcam-video"), "raw");
+const cameraArea=new URLSearchParams(location.search).get("camera")==="corrected"?"board_corrected":"raw";
+startBoardFeed(document.getElementById("webcam-video"), cameraArea);

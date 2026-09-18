@@ -1,6 +1,7 @@
 """Table-scan tests: legend face-up classification + full scan_player pass."""
 import cv2
 import numpy as np
+import pytest
 
 from app.vision.calibration import CalibrationStore
 from app.vision.card_detector import rectify_quad
@@ -126,10 +127,16 @@ def test_scan_player_no_frame(tmp_path):
     assert result["ok"] is False
 
 
-def test_legend_slot_rects_split_vertical():
-    """A tall legend region (side column on a top-down cam) stacks slots vertically."""
-    region = {"x": 0.0, "y": 0.1, "width": 0.3, "height": 0.9}
+@pytest.mark.parametrize("width,height", [(0.3, 0.9), (0.6, 0.6), (0.9, 0.3)])
+def test_legend_slots_always_run_left_to_right(width, height):
+    """Tall, square, and wide regions retain the same legend ordering."""
+    region = {"x": 0.05, "y": 0.05, "width": width, "height": height}
     rects = legend_slot_rects(region)
     assert len(rects) == 3
-    assert all(abs(r["height"] - 0.3) < 1e-9 and r["width"] == 0.3 and r["x"] == 0.0 for r in rects)
-    assert abs(rects[1]["y"] - 0.4) < 1e-9 and abs(rects[2]["y"] - 0.7) < 1e-9
+    for i, rect in enumerate(rects):
+        assert rect == pytest.approx({
+            "x": region["x"] + i * width / 3,
+            "y": region["y"],
+            "width": width / 3,
+            "height": height,
+        })

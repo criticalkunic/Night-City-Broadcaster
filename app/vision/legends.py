@@ -1,10 +1,8 @@
 """Legend slots: where they are, whether each holds a face-up card, and the
 crops recognition should look at.
 
-A player's legend region holds three cards in a row. They are stacked along
-the region's LONG axis (a vertical column at the side of the mat on a
-top-down camera, a horizontal row on a facing camera), so the region is split
-into three equal slots along whichever side is longer.
+A player's legend region holds three cards in a horizontal row. Split its
+width into three equal slots, ordered left to right, regardless of its height.
 """
 import logging
 from typing import Optional
@@ -57,14 +55,7 @@ def classify_legend_slot(view: np.ndarray, rect: dict) -> dict:
 
 
 def legend_slot_rects(legend_region: dict) -> list[dict]:
-    """Split the legend region into three equal slots along its longer side."""
-    if legend_region["height"] > legend_region["width"]:
-        height = legend_region["height"] / LEGEND_SLOTS
-        return [
-            {"x": legend_region["x"], "y": legend_region["y"] + i * height,
-             "width": legend_region["width"], "height": height}
-            for i in range(LEGEND_SLOTS)
-        ]
+    """Split the legend region into three equal slots, ordered left to right."""
     width = legend_region["width"] / LEGEND_SLOTS
     return [
         {"x": legend_region["x"] + i * width, "y": legend_region["y"],

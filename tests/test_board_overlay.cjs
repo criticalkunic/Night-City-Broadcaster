@@ -14,7 +14,7 @@ for(const owner of [1,2])for(const type of ['d4','d6','d8','d10','d12','d20'])st
 state.dice['1d6'].location='p1_gig';state.dice['1d6'].last_roll=4;
 state.dice['2d8'].location='p1_gig';state.dice['2d8'].last_roll=7;
 function render(config={}){ctx.input=state;ctx.settings=config;vm.runInContext('state=input;config=settings;render()',ctx);}
-render();assert.equal(el('latest').hidden,true);assert.equal(el('gigs').children.length,6);assert.equal(el('stolen').children.length,6);assert.equal(el('reserve-count').textContent,'5 / 6 AVAILABLE');assert.equal(el('fixer').children.length,5);assert.equal(el('.reserve').parentElement,el('stage'));assert.equal(el('.economy').parentElement,el('stage'));assert.equal(el('eddies').parentElement,el('footer'));assert.equal(el('legends').children[0].children[0].src,'/static/assets/card-back.webp');assert.equal(el('legends').children[1].children[0].src,'/visible.webp');assert.equal(el('gig-camera').hidden,true);
+render();assert.equal(el('latest').hidden,true);assert.equal(el('gigs').children.length,6);assert.equal(el('stolen').children.length,6);assert.equal(el('reserve-count').textContent,'5 / 6 READY');assert.equal(el('fixer').children.length,5);assert.equal(el('.reserve').parentElement,el('stage'));assert.equal(el('.economy').parentElement,el('stage'));assert.equal(el('eddies').parentElement,el('footer'));assert.equal(el('legends').children[0].children[0].src,'/static/assets/card-back.webp');assert.equal(el('legends').children[1].children[0].src,'/visible.webp');assert.equal(el('gig-camera').hidden,true);
 state.dice['2d8'].location='p2_fixer';render();assert.equal(el('stolen-row').hidden,true);
 render({board_dice_mode:'camera'});assert.equal(el('gigs').hidden,true);assert.equal(el('fixer').hidden,true);assert.equal(el('gig-camera').hidden,false);assert.equal(el('cred').hidden,true);
 render({board_show_eddies:false});assert.equal(el('side').hidden,true);
@@ -25,4 +25,10 @@ render({show_card_art:false,show_dice:false,show_legends:false,board_show_fixer:
 assert.equal(el('latest').hidden,true);assert.equal(el('.economy').hidden,true);assert.equal(el('.legends').hidden,true);assert.equal(el('.reserve').hidden,true);assert.equal(el('footer').hidden,true);
 render({show_dice:true,hide_empty_captured_gigs:false});assert.equal(el('stolen-row').hidden,false);assert.equal(el('stolen').children.length,6);
 render({show_dice:true,hide_empty_captured_gigs:true});assert.equal(el('stolen-row').hidden,true);
-state.dice['2d8'].location='p1_gig';render({show_dice:true,hide_empty_captured_gigs:true,board_dice_mode:'camera'});assert.equal(el('stolen-row').hidden,false);assert.equal(el('stolen').children[2].children[0].textContent,7);
+state.dice['2d8'].location='p1_gig';render({show_dice:true,hide_empty_captured_gigs:true,board_dice_mode:'camera'});assert.equal(el('stolen-row').hidden,true);assert.equal(el('stolen').children[2].children[0].textContent,7);
+
+assert.equal(el('gig-camera').hidden,false);
+assert.equal(el('gig-caption').textContent,'YOUR GIGS + CAPTURED GIGS');
+render({show_dice:true,hide_empty_captured_gigs:false,board_dice_mode:'tracked'});
+assert.equal(el('stolen-row').hidden,false);
+assert.equal(el('gig-camera').hidden,true);

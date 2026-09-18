@@ -13,3 +13,7 @@ numpy>=1.26
 
 # Windows camera names (DirectShow)
 pygrabber>=0.2; sys_platform == "win32"
+
+# Local phone controls and offline QR generation
+qrcode>=8.0
+psutil>=6.0

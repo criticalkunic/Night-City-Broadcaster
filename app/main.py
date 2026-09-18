@@ -82,6 +82,7 @@ async def lifespan(app: FastAPI):
     runtime.vision_service.on_card_removed = None
     runtime.vision_service.on_recognized = None
     runtime.vision_service.on_legend = None
+    await phone_server.stop()
     runtime.virtual_camera.stop()
     cameras_api.board_feeds.stop()
     runtime.vision_service.stop()
@@ -187,3 +188,26 @@ async def websocket_endpoint(websocket: WebSocket):
             await websocket.receive_text()
     except WebSocketDisconnect:
         await runtime.ws_manager.disconnect(websocket)
+
+
+from app.phone import phone_server, qr_image
+
+@app.get('/api/phone')
+def phone_status():
+    return phone_server.status()
+
+@app.post('/api/phone/start')
+async def phone_start():
+    return await phone_server.start()
+
+@app.post('/api/phone/stop')
+async def phone_stop():
+    await phone_server.stop()
+    return phone_server.status()
+
+@app.get('/api/phone/qr')
+def phone_qr(url: str):
+    from fastapi.responses import Response
+    if url not in phone_server.status()['urls']:
+        return Response(status_code=400)
+    return Response(qr_image(url), media_type='image/svg+xml')

@@ -57,11 +57,11 @@ function render(){
   $("stolen").replaceChildren(...DIE_ORDER.map(type=>{const d=stolen.find(d=>d.type===type);return dieTile(d||{type},!!d,true);}));
   $("fixer").replaceChildren(...own.filter(d=>d.location==="p1_fixer").map(d=>dieTile({...d,last_roll:null},true)));
  }
- $("gigs").hidden=!tracked;$("fixer").hidden=!tracked;$("stolen-row").hidden=config.show_dice===false||(config.hide_empty_captured_gigs!==false&&!stolen.length);
+ $("gigs").hidden=!tracked;$("fixer").hidden=!tracked;$("stolen-row").hidden=!tracked||config.show_dice===false||(config.hide_empty_captured_gigs!==false&&!stolen.length);
  document.querySelector(".economy").classList.toggle("no-captured",$("stolen-row").hidden);
  $("gig-camera").hidden=tracked;$("fixer-camera").hidden=tracked;
- $("gig-caption").textContent=tracked?"YOUR GIGS":"LIVE CAMERA";
- $("reserve-count").textContent=tracked?own.filter(d=>d.location==="p1_fixer").length+" / 6 AVAILABLE":"LIVE CAMERA";
+ $("gig-caption").textContent=tracked?"YOUR GIGS":"YOUR GIGS + CAPTURED GIGS";
+ $("reserve-count").textContent=tracked?own.filter(d=>d.location==="p1_fixer").length+" / 6 READY":"LIVE CAMERA";
 }
 $("latest-art").onerror=()=>{$("latest").hidden=true;};
 for(const img of document.querySelectorAll("[data-feed]"))startBoardFeed(img,img.dataset.feed);
