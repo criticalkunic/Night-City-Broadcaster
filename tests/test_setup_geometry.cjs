@@ -12,10 +12,12 @@ assert.deepEqual(size([1920,1080],full,[[.25,.25],[.75,.25],[.75,.75],[.25,.75]]
 const source=fs.readFileSync('app/static/setup/setup.js','utf8');
 const drawn=[],handles=[];let color;
 const ctx={set fillStyle(v){color=v;},fillText(){}};
-const drawing={P1:'#cyan',P2:'#red',ACCENT:'#yellow',target:'p1_legend',guideTargets:['p1_card','p1_legend'],
+const drawing={showcaseMode:false,P1:'#cyan',P2:'#red',ACCENT:'#yellow',target:'p1_legend',guideTargets:['p1_card','p1_legend'],
  cal:{regions:{player1:{regions:{card_play_region:{id:'play'},legend_region:{id:'legend'},eddie_region:{id:'eddie'},gig_region:{id:'gig'},fixer_region:{id:'fixer'}}}}},
  syncCanvas:()=>[ctx,800,450],strokeRect:(ctx,rect,w,h,color,active)=>drawn.push([rect.id,active]),rectCorners:r=>r,drawHandles:(ctx,r)=>handles.push(r.id)};
 vm.runInNewContext(source.slice(source.indexOf('const ROI_KEYS'),source.indexOf('/* ---------------- save / reload')),drawing);
 vm.runInNewContext('drawRois(1)',drawing);
 assert.deepEqual(drawn,[['play',false],['legend',true]]);assert.deepEqual(handles,['legend']);
 console.log('Setup geometry: native proportions and progressive zone drawing passed.');
+
+drawing.showcaseMode=true;drawing.cal.cameras={showcase_board_region:{id:'board'}};drawing.target='p1_board';drawing.guideTargets=['p1_board'];drawn.length=0;handles.length=0;vm.runInNewContext('drawRois(1)',drawing);assert.deepEqual(drawn,[['board',true]]);assert.deepEqual(handles,['board']);

@@ -11,7 +11,7 @@ from fastapi.responses import Response, StreamingResponse
 from pydantic import BaseModel
 
 from app import runtime
-from app.config import CAPTURES_DIR
+from app.config import CAPTURES_DIR, load_overlay_config
 from app.game.models import GameEvent
 from app.game.state_manager import StateError
 from app.vision.frame_processor import VIEWS
@@ -98,6 +98,9 @@ def apply_latest_card_match(player: int, match: Match) -> Optional[GameEvent]:
     card must not spam events). Thread-safe: called from the detection thread
     for live recognition and from the scan for the one-shot pass.
     """
+    if load_overlay_config().get("activity_mode") == "showcase":
+        from app.showcase import observe
+        return observe(match.card_id) if player == 1 else None
     state = runtime.state_manager.get_state()
     current = state.latest_cards[str(player)]
     if current is not None and current.card_id == match.card_id:
@@ -141,6 +144,8 @@ def apply_legend_finding(player: int, slot: int, face_up: bool, match: Optional[
     hide only when `legend_auto_hide` is enabled (off by default — a hand over
     the slot must never un-reveal a legend on stream).
     """
+    if load_overlay_config().get("activity_mode") == "showcase":
+        return []
     actions: list[str] = []
     legend = runtime.state_manager.get_state().legends[str(player)][slot]
     if face_up:

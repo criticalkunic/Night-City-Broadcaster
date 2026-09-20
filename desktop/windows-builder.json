@@ -36,7 +36,7 @@
   },
   "afterAllArtifactBuild": "./publish-releases.cjs",
   "portable": {
-    "artifactName": "Night City Broadcaster-1.0.12.1-Windows.exe",
+    "artifactName": "Night City Broadcaster-1.1.0-Windows.exe",
     "splashImage": "assets/portable-splash.bmp"
   },
   "beforePack": "./check-backend.cjs"

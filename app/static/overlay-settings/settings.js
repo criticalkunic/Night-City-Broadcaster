@@ -3,6 +3,7 @@ const $=id=>document.getElementById(id);
 const fields=["broadcast_corrected","show_matched_art","show_card_art","show_legends","show_dice","hide_empty_captured_gigs","board_show_eddies","board_show_fixer"];
 let config={},saving=false;
 function render(){
+ $("showcase-corrected").checked=config.broadcast_corrected===true;
  $("minimal-position").value=config.minimal_position||"bottom-right";
  $("full-board-settings").hidden=config.overlay_style!=="board";
  $("minimal-settings").hidden=config.overlay_style==="board";
@@ -82,3 +83,5 @@ $('minimal-position').onchange=async()=>{
  catch(error){$('status').textContent=error.message;render();}
  finally{$('minimal-position').disabled=false;}
 };
+
+$("showcase-corrected").onchange=async()=>{try{const r=await fetch("/api/config",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({config:{broadcast_corrected:$("showcase-corrected").checked}})});if(!r.ok)throw Error("Could not save camera output");config=await r.json();render();}catch(e){alert(e.message);render();}};

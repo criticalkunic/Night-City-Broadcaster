@@ -4,6 +4,34 @@ User-facing changes are recorded here for each release. Development changes belo
 
 ## Unreleased
 
+## 1.1.0 Beta — 2026-09-19
+
+**Beta release.** Deck Showcase is new in 1.1, and we’re looking for ideas to make it better. Tell us what would help your recordings in [GitHub Issues](https://github.com/criticalkunic/Night-City-Broadcaster/issues).
+
+## New: Deck Showcase
+
+Record a top-down deck walkthrough for YouTube using the same camera and OBS broadcast URL. Switch between **Webcam play** and **Deck showcase** from the header.
+
+- **Present your deck:** Import lists from cyberpunktcg.com or Cyberpunk TCG Simulator, click cards to show their artwork, and save timestamped deck copies for future recordings.
+- **Explain your choices:** Add reasoning to each card. Its text appears only when that card has a note and Card reasoning is enabled.
+- **Show deck metrics:** Display card types, tags, and cost curves with color breakdowns. Filter by color or type, change sorting, and choose how many tags to show from the desktop or phone.
+- **Choose your layout:** Use Full showcase or a full-screen Minimal view with floating panels styled to match webcam play. Hide individual elements, or show only the sidebar or board.
+- **Frame your mat:** Showcase has its own board detection area. Corrected video supports automatic frame filling, zoom, width, height, and position adjustments.
+- **Draw while presenting:** Add live annotations with pen color and thickness controls, then undo, hide, or clear them.
+
+## Improvements
+
+- Animated transitions between artwork and charts.
+- Manual card selection can return to camera detection when a new card appears.
+- Deck import has an in-page confirmation and reports errors beside the import button. Replacing a deck preserves display settings.
+
+## Downloads
+
+- **Linux:** Download the `.AppImage`, mark it executable, and launch it.
+- **Windows:** Download the portable `-Windows.exe` and run it. No installer is needed; saved data stays in AppData.
+
+I use Linux and test there. The Windows build is provided, but native Windows behavior has not been verified. Feedback from Windows users is welcome.
+
 ## 1.0.12.1 Beta — 2026-09-18
 
 Bug-fix release; no new features.

@@ -192,3 +192,30 @@ Project code is licensed under [GNU GPL v3.0](LICENSE) (`GPL-3.0-only`). Third-p
 Night City Broadcaster is an unofficial community project. Cyberpunk TCG, Cyberpunk, and their associated artwork and trademarks belong to their respective owners, including CD PROJEKT RED, WeirdCo, and R. Talsorian Games. This project is not affiliated with or endorsed by CD PROJEKT RED, WeirdCo, or R. Talsorian Games.
 
 Card metadata and images are downloaded from external services at runtime. The downloadable artwork library is excluded from source archives and standalone builds. Card artwork shown in the README screenshots belongs to its respective owners and is not covered by the code license. Download availability depends on those services.
+
+## Deck showcases
+
+New in **1.1 Beta**. We’re taking ideas for improving deck recordings and presentation controls. Share yours in [GitHub Issues](https://github.com/criticalkunic/Night-City-Broadcaster/issues).
+
+Choose **Showcasing a deck** using the header activity switch to prepare a top-down deck walkthrough. **Playing over webcam** keeps the existing Minimal and Full Board match layouts. Switching activities preserves your match and deck.
+
+1. Set up your overhead camera in **Camera setup**.
+2. Add cards by searching, or import a list with one entry per line, such as `3 Panam Palmer: Strength Through Family`. Exports from **cyberpunktcg.com** (`// Legends` sections) and **cyberpunk-tcg-sim.online** (`# Legends`, numbered cards, and `1x` counts) are supported. Use full names with subtitles when names repeat. An import replaces the deck only after every line passes validation.
+3. Set quantities, assign sections, reorder cards, and add on-stream reasoning with each card’s **Reasoning** button. The reasoning panel appears only for cards with a note, when **Card reasoning** is enabled.
+4. Select a card, then use **Previous** and **Next** as you talk. Turn on **Show latest detected card** to follow recognized cards in your deck. Clicking a card selects it until a new card is detected; **Follow camera** releases your selection immediately.
+5. Record the existing `/broadcast/live` Browser Source in OBS. Match its resolution to your OBS output. Your phone controls automatically become presentation controls in this activity.
+
+The showcase puts your top-down camera beside large card artwork, copy counts and section progress. Its webcam can use your saved perspective correction from **Stream settings**.
+
+### Showcase metrics
+
+Use the **Card types**, **Top tags**, and **Cost curve** tiles on your desktop or phone to put a metric in the broadcast side panel. Filter charts by card color or type, sort by count or name/cost, and choose how many tags to show. Filters apply on both the phone and desktop and are labeled on the broadcast. Choose **Card** to restore the artwork. In Full showcase, the webcam stays in its own 16:9 area; Minimal showcase places compact panels over a full-frame camera. Other source aspect ratios are letterboxed without stretching or cropping.
+
+Metrics count copies in the main deck and exclude legends, which are counted separately. Card types include a donut chart and color-split bars. The top five classification tags use color-split counts; cards with multiple tags can contribute to several bars. The cost curve shows printed costs, color splits, and the copy-weighted average. Unknown costs and missing catalog cards are labeled rather than treated as zero.
+
+
+In **Camera setup**, Deck showcase uses a single **Board area** for recognition instead of the match zones. Set your mat’s perspective, mark the board area, and enable latest-card detection if you want the camera to advance the artwork.
+
+Use **Save timestamped copy** to keep a deck for another recording. Saved copies include quantities, card reasoning, and display settings. Choose a copy by its title and date to recall it.
+
+**Display options** lets you start with Full showcase, Minimal showcase, Right bar only, or Board only, then hide individual elements. Hidden areas are transparent in OBS. Minimal showcase fills the frame with your camera and uses translucent, softly blurred panel backgrounds. Use **Draw on board** to highlight cards or explain a combo. Undo or clear drawings when you move on. Display controls are also available on your phone; drawing is done on the desktop.

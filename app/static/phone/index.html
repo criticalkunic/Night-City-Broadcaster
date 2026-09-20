@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Night City · Phone controls</title><link rel="stylesheet" href="/static/phone/phone.css"><link rel="stylesheet" href="/static/operator/gigs.css"></head><body>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Night City · Phone controls</title><link rel="stylesheet" href="/static/phone/phone.css"><link rel="stylesheet" href="/static/operator/gigs.css"><link rel="stylesheet" href="/static/showcase/controls.css"><link rel="stylesheet" href="/static/showcase/metrics.css"></head><body>
 <header><div><small>NIGHT CITY BROADCASTER</small><h1>Match controls</h1></div><span id="connection" role="status">Connecting…</span></header>
 <main><p id="notice" role="status"></p><fieldset id="controls" disabled>
 <section id="gig-controls"><h2>My gigs</h2><div id="own-gig-tray" class="gig-tray"></div><h2 class="captured">Captured gigs</h2><div id="captured-gig-tray" class="gig-tray captured"></div></section>
@@ -6,6 +6,6 @@
 <section><h2>Latest play</h2><p id="latest">No card played</p><div class="actions"><button id="undo-card">Previous play</button><button id="clear">Clear card</button></div></section>
 <section><h2>Choose a card</h2><label for="target">Use card for</label><select id="target"><option value="play">Latest play</option><option value="0">Legend 1</option><option value="1">Legend 2</option><option value="2">Legend 3</option></select><label for="search">Card name</label><input id="search" type="search" placeholder="Search cards…" autocomplete="off"><div id="results"></div></section>
 <section><h2>Match</h2><div class="actions"><button id="undo">Undo</button><button id="redo">Redo</button><button id="new-match">New match</button></div></section>
-</fieldset></main>
+</fieldset><div id="showcase-remote" hidden></div></main>
 <dialog id="gig-picker" aria-labelledby="gig-picker-title"><div class="section-head"><h2 id="gig-picker-title"></h2><button id="gig-picker-close">Close</button></div><div id="gig-values" class="gig-value-grid"></div><p id="gig-picker-error" role="alert"></p></dialog>
-<script src="/static/board/dice.js"></script><script src="/static/operator/gigs.js"></script><script src="/static/phone/phone.js"></script></body></html>
+<script src="/static/board/dice.js"></script><script src="/static/operator/gigs.js"></script><script src="/static/phone/phone.js"></script><script src="/static/showcase/metrics.js"></script><script src="/static/showcase/drawing.js"></script><script src="/static/showcase/display-controls.js"></script><script src="/static/showcase/controls.js"></script><script>mountShowcaseControls(document.getElementById("showcase-remote"),{remote:true});</script></body></html>

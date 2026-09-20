@@ -19,7 +19,7 @@ from app.api import cameras as cameras_api
 from app.api import broadcast as broadcast_api
 from app.api import cards as cards_api
 from app.api import state as state_api
-from app.config import CAPTURES_DIR, CARD_IMAGES_DIR, STATIC_DIR, env_vision_source
+from app.config import load_overlay_config, CAPTURES_DIR, CARD_IMAGES_DIR, STATIC_DIR, env_vision_source
 
 logging.basicConfig(
     level=logging.INFO,
@@ -51,7 +51,11 @@ async def lifespan(app: FastAPI):
                 runtime.ws_manager.broadcast(runtime.snapshot_payload(event)), loop)
 
     def on_card_removed(player: int) -> None:
-        event = runtime.state_manager.remove_detected_card(player)
+        if load_overlay_config().get("activity_mode") == "showcase":
+            from app.showcase import observe
+            event = observe(None) if player == 1 else None
+        else:
+            event = runtime.state_manager.remove_detected_card(player)
         if event is not None:
             asyncio.run_coroutine_threadsafe(
                 runtime.ws_manager.broadcast(runtime.snapshot_payload(event)), loop)
@@ -64,6 +68,8 @@ async def lifespan(app: FastAPI):
                 runtime.ws_manager.broadcast(runtime.snapshot_payload()), loop)
 
     def on_play_region_empty():
+        if load_overlay_config().get("activity_mode") == "showcase":
+            return
         if runtime.state_manager.observe_empty_play_region():
             asyncio.run_coroutine_threadsafe(runtime.ws_manager.broadcast(runtime.snapshot_payload()), loop)
 
@@ -122,6 +128,9 @@ async def no_cache_static(request, call_next):
         response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
         response.headers["Pragma"] = "no-cache"
     return response
+
+from app.showcase import router as showcase_router
+app.include_router(showcase_router, prefix="/api")
 
 app.include_router(state_api.router, prefix="/api")
 app.include_router(cards_api.router, prefix="/api")

@@ -61,6 +61,7 @@ def env_vision_source() -> dict | None:
 
 DEFAULT_OVERLAY_CONFIG = {
     "camera_guide_seen": False,
+    "activity_mode": "play",
     # Card removal is confirmed by vision before clearing the latest artwork.
     "overlay_style": "compact",
     "overlay_theme": "cyberpunk",
@@ -100,6 +101,8 @@ def save_overlay_config(config: dict) -> dict:
         merged["overlay_scale"] = max(25, min(150, int(merged["overlay_scale"])))
     except (ValueError, TypeError, OverflowError):
         merged["overlay_scale"] = 100
+    if merged.get("activity_mode") not in ("play", "showcase"):
+        merged["activity_mode"] = "play"
     if merged.get("overlay_style") not in ("compact", "board"):
         merged["overlay_style"] = "compact"
     if merged.get("overlay_theme") not in ("cyberpunk", "arasaka", "edgerunners"):

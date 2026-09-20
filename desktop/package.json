@@ -1,7 +1,7 @@
 {
   "name": "night-city-broadcaster",
   "productName": "Night City Broadcaster",
-  "version": "1.0.12+1",
+  "version": "1.1.0",
   "description": "Webcam board tracking and streaming companion",
   "author": "Night City Broadcaster",
   "private": true,
@@ -44,7 +44,7 @@
       ],
       "category": "AudioVideo",
       "maintainer": "Night City Broadcaster",
-      "artifactName": "Night City Broadcaster-1.0.12.1.AppImage"
+      "artifactName": "Night City Broadcaster-1.1.0.AppImage"
     },
     "win": {
       "target": [
@@ -54,7 +54,7 @@
     },
     "afterAllArtifactBuild": "./publish-releases.cjs",
     "portable": {
-      "artifactName": "Night City Broadcaster-1.0.12.1-Windows.exe",
+      "artifactName": "Night City Broadcaster-1.1.0-Windows.exe",
       "splashImage": "assets/portable-splash.bmp"
     },
     "beforePack": "./check-backend.cjs"

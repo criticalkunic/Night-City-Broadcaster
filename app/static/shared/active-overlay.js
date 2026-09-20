@@ -1,15 +1,15 @@
 "use strict";
 let activeStyle=null;
 function selectOverlay(config){
- const style=config.overlay_style==='board'?'board':'compact';
+ const style=config.activity_mode==='showcase'?'showcase':config.overlay_style==='board'?'board':'compact';
  const selection=style+':'+(config.broadcast_corrected===true);
  if(selection===activeStyle)return;
  activeStyle=selection;
  const frame=document.createElement('iframe');
- frame.title=style==='board'?'Full board overlay':'Minimalist overlay';
+ frame.title=style==='showcase'?'Deck showcase':style==='board'?'Full board overlay':'Minimalist overlay';
  const params=new URLSearchParams(location.search);
  params.set('camera',config.broadcast_corrected===true?'corrected':'raw');
- frame.src=(style==='board'?'/static/board/index.html':'/static/overlay/index.html')+'?'+params;
+ frame.src=(style==='showcase'?'/static/showcase/broadcast.html':style==='board'?'/static/board/index.html':'/static/overlay/index.html')+'?'+params;
  document.body.replaceChildren(frame);
 }
 function connectOverlay(){

@@ -17,6 +17,7 @@ DEFAULT_CAMERAS = {
     "source": {"type": "camera", "index": 0, "path": "", "exposure_mode": "motion"},
     "corrected_size": [800, 600],
     "rotate_source_180": False,
+    "showcase_board_region": {"x": 0.0, "y": 0.0, "width": 1.0, "height": 1.0},
     # Card detection tuning — single source of truth is DEFAULT_DETECTION in
     # app/vision/card_detector.py; never duplicate values here.
     "detection": dict(DEFAULT_DETECTION),
@@ -97,6 +98,7 @@ class CalibrationStore:
     def save_cameras(self, data: dict) -> dict:
         merged = json.loads(json.dumps(DEFAULT_CAMERAS))
         merged.update(data)
+        merged["showcase_board_region"] = _sanitize_rect(merged.get("showcase_board_region") or DEFAULT_CAMERAS["showcase_board_region"])
         merged["rotate_source_180"] = merged.get("rotate_source_180") is True
         size = merged.get("corrected_size", [800, 600])
         merged["corrected_size"] = [max(64, int(size[0])), max(64, int(size[1]))]

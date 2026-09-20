@@ -1,7 +1,7 @@
 'use strict';
-window.initCameraGuide = function({selectTarget, save, cameraReady, setVisibleTargets = ()=>{}}) {
+window.initCameraGuide = function({selectTarget, save, cameraReady, setVisibleTargets = ()=>{}, getActivity = ()=>"play"}) {
  const el=id=>document.getElementById(id);
- const steps=[
+ const playSteps=[
   {title:'Start with your webcam', target:'p1_rect', camera:true, demo:'camera', text:'Use a game mat, keep it fully in view, then start your camera. Even lighting helps avoid glare.'},
   {title:'Straighten the board', target:'p1_corners', demo:'perspective', text:'Drag the four handles onto the corners of your game mat, clockwise from top left. This straightens an angled camera view.'},
   {title:'Your played cards go here', target:'p1_card', demo:'play', text:'Fit the box around your play area. Cards can go anywhere inside it. Keep legends outside this box. Match printed mat zones, or use the same spots each game.'},
@@ -11,6 +11,8 @@ window.initCameraGuide = function({selectTarget, save, cameraReady, setVisibleTa
   {title:'Frame your fixer dice', target:'p1_fixer', demo:'fixer', text:'Mark your available dice. Using tracked dice or hiding this panel? You can continue.'},
   {title:'Ready for your first play', target:'p1_card', demo:'play', text:'Place a card in the play area. After finishing, check its artwork in Player console. Keep your camera and mat in place.'}
  ];
+ const showcaseSteps=[playSteps[0],playSteps[1],{title:'Your showcase board',target:'p1_board',demo:'play',text:'Fit this box around the board where you will show cards. Enable Show latest detected card to let a new card update the right panel.'}];
+ let steps=getActivity()==='showcase'?showcaseSteps:playSteps;
  const panel=el('camera-guide'), moved=[];
  function openWindow(){
   if(!panel.open){
@@ -43,7 +45,7 @@ window.initCameraGuide = function({selectTarget, save, cameraReady, setVisibleTa
   el('guide-next').textContent=!active?'Start walkthrough':index===steps.length-1?'Save & finish':step.target&&!step.camera?'Save & continue':'Continue';
   for(const id of ['guide-back','guide-next','guide-close','guide-open'])el(id).disabled=busy;
  }
- function show(next){index=next;openWindow();el('guide-error').textContent='';setVisibleTargets(steps.slice(0,index+1).map(s=>s.target).filter(Boolean));if(steps[index]?.target)selectTarget(steps[index].target);render();el('guide-copy').animate([{opacity:0,transform:'translateX(16px)'},{opacity:1,transform:'translateX(0)'}],{duration:matchMedia('(prefers-reduced-motion: reduce)').matches?0:240});el('guide-title').focus();}
+ function show(next){steps=getActivity()==='showcase'?showcaseSteps:playSteps;index=Math.min(next,steps.length-1);openWindow();el('guide-error').textContent='';setVisibleTargets(steps.slice(0,index+1).map(s=>s.target).filter(Boolean));if(steps[index]?.target)selectTarget(steps[index].target);render();el('guide-copy').animate([{opacity:0,transform:'translateX(16px)'},{opacity:1,transform:'translateX(0)'}],{duration:matchMedia('(prefers-reduced-motion: reduce)').matches?0:240});el('guide-title').focus();}
  el('guide-open').onclick=()=>show(-1);
  el('guide-back').onclick=()=>show(index-1);
  el('guide-close').onclick=async()=>{busy=true;render();try{await remember();closeWindow();}catch(e){el('guide-error').textContent=e.message;}finally{busy=false;render();}};

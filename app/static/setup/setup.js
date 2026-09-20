@@ -6,6 +6,7 @@
 const $ = (id) => document.getElementById(id);
 const P1 = "#23d2c3", P2 = "#ff4d5e", ACCENT = "#ffd23f";
 
+let showcaseMode = false;
 let cal = null;      // {cameras, regions} — local working copy
 let target = "p1_rect";
 let guideTargets = null;
@@ -13,6 +14,7 @@ let cameraResolution = null;
 
 /* Target registry: where each editable element lives and how to edit it. */
 const TARGETS = {
+  p1_board: {label:"Board area",kind:"rect",canvas:"p1_corrected",get:()=>cal.cameras.showcase_board_region},
   p1_rect: { label: "Camera framing", kind: "rect", canvas: "raw",
              get: () => cal.regions.player1.source_rect },
   p1_corners: { label: "Straighten the board", kind: "corners", canvas: "p1_crop",
@@ -67,6 +69,7 @@ function setSaveStatus(msg, isError = false) {
 async function loadCalibration() {
   const res = await fetch("/api/vision/calibration");
   cal = await res.json();
+  cal.cameras.showcase_board_region ||= {x:0,y:0,width:1,height:1};
   $("rotate-source-180").checked=cal.cameras.rotate_source_180===true;
   for(const key of ['brightness','contrast']){
     $('vision-'+key).value=cal.cameras.vision_adjustments?.[key]??(key==='contrast'?1:0);
@@ -150,16 +153,18 @@ $("src-type").addEventListener("change", () => {
 
 function initTargetSelect() {
   const sel = $("target-select");
+  sel.replaceChildren();
   for (const [id, t] of Object.entries(TARGETS)) {
+    if(showcaseMode ? !["p1_rect","p1_corners","p1_board"].includes(id) : id==="p1_board")continue;
     const opt = document.createElement("option");
     opt.value = id;
     opt.textContent = t.label;
     sel.appendChild(opt);
   }
-  sel.addEventListener("change", () => {
+  sel.onchange = () => {
     target = sel.value;
     renderNumericInputs();
-  });
+  };
 }
 
 function renderNumericInputs() {
@@ -433,11 +438,11 @@ function drawCorners(player) {
   if (target === `p${player}_corners`) drawHandles(ctx, points, w, h);
 }
 
-const ROI_KEYS = { eddie_region: "eddie", card_play_region: "card", fixer_region: "fixer", gig_region: "gig", legend_region: "legend" };
+const ROI_KEYS = { board_region:"board", eddie_region: "eddie", card_play_region: "card", fixer_region: "fixer", gig_region: "gig", legend_region: "legend" };
 
 function drawRois(player) {
   const [ctx, w, h] = syncCanvas(`p${player}_corrected`);
-  const regions = cal.regions[`player${player}`].regions;
+  const regions = showcaseMode ? {board_region:cal.cameras.showcase_board_region} : cal.regions[`player${player}`].regions;
   const colors = { card_play_region: ACCENT, fixer_region: P1, gig_region: P2, legend_region: "#c064ff" };
   for (const [name, rect] of Object.entries(regions)) {
     const id = `p${player}_${ROI_KEYS[name] || name}`;
@@ -478,7 +483,9 @@ $("btn-reload").addEventListener("click", async () => {
 
 initTargetSelect();
 initCanvases();
-loadCalibration().then(() => {
+loadCalibration().then(async () => {
+  try{const cfg=await (await fetch('/api/config')).json();showcaseMode=cfg.activity_mode==='showcase';}catch{}
+  applySetupActivity();
   const src = cal.cameras.source || {};
   $("src-type").value = src.type || "camera";
   $("capture-mode").value = src.capture_mode || "auto";
@@ -487,6 +494,7 @@ loadCalibration().then(() => {
   $("src-type").dispatchEvent(new Event("change"));
   refreshSources();
   window.initCameraGuide({
+    getActivity:()=>showcaseMode?"showcase":"play",
     selectTarget(id){
       target=id;$("target-select").value=id;
       if(id==='p1_corners'&&!cal.regions.player1.homography_points){
@@ -549,3 +557,16 @@ $('rotate-source-180').onchange=async()=>{
     $('rotation-status').textContent='Could not save rotation: '+error.message;
   }finally{toggle.disabled=false;}
 };
+
+function applySetupActivity(){
+ initTargetSelect();
+ if(showcaseMode&&!['p1_rect','p1_corners','p1_board'].includes(target))target='p1_board';
+ if(!showcaseMode&&target==='p1_board')target='p1_card';
+ $('target-select').value=target;
+ let panel=$('showcase-detection-settings');
+ if(!panel){panel=document.createElement('section');panel.id='showcase-detection-settings';panel.innerHTML='<label><input type="checkbox" id="showcase-detect"> Show latest detected card</label><p>Cards inside your board area can appear on the right. Click a deck card to select it manually; a new detection takes over. This does not change your match zones.</p>';document.querySelector('.guide-launch').after(panel);$('showcase-detect').onchange=async()=>{try{await api('/api/showcase/present',{action:'detection',enabled:$('showcase-detect').checked});}catch(e){$('showcase-detect').checked=!$('showcase-detect').checked;}};}
+ panel.hidden=!showcaseMode;
+ if(showcaseMode)fetch('/api/showcase').then(r=>r.json()).then(d=>{$('showcase-detect').checked=d.detect_latest;}).catch(()=>{});
+ if(cal)renderNumericInputs();
+}
+window.addEventListener('activity-mode-change',e=>{showcaseMode=e.detail==='showcase';if(cal)applySetupActivity();});

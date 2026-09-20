@@ -63,11 +63,18 @@ for route in state.router.routes:
         phone_app.add_api_route('/api' + route.path, route.endpoint, methods=list(route.methods))
 phone_app.add_api_route('/api/cards/search', cards.search_cards, methods=['GET'])
 
+from app.showcase import get_showcase, present, set_display, draw, set_charts
+phone_app.add_api_route('/api/showcase/charts', set_charts, methods=['POST'])
+phone_app.add_api_route('/api/showcase/display', set_display, methods=['POST'])
+phone_app.add_api_route('/api/showcase/draw', draw, methods=['POST'])
+phone_app.add_api_route('/api/showcase', get_showcase, methods=['GET'])
+phone_app.add_api_route('/api/showcase/present', present, methods=['POST'])
+
 @phone_app.get('/')
 def index():
     return FileResponse(STATIC_DIR / 'phone' / 'index.html')
 
-ASSETS = {'phone/phone.js', 'phone/phone.css', 'operator/gigs.js', 'operator/gigs.css', 'board/dice.js'}
+ASSETS = {'showcase/display-controls.js', 'showcase/drawing.js', 'showcase/metrics.js', 'showcase/metrics.css', 'showcase/controls.js', 'showcase/controls.css', 'phone/phone.js', 'phone/phone.css', 'operator/gigs.js', 'operator/gigs.css', 'board/dice.js'}
 @phone_app.get('/static/{asset:path}')
 def asset(asset: str):
     if asset not in ASSETS:

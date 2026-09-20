@@ -1,3 +1,4 @@
+from app.vision.showcase_regions import detection_regions
 """One-shot table scan, run at stream start (and on demand).
 
 Pure vision: reports what the table looks like right now — which legend slots
@@ -27,7 +28,7 @@ def scan_player(service, player: int) -> dict:
     frame, view = service.frame_and_view(player)
     if view is None:
         return {"ok": False, "error": "no frame"}
-    regions = service.store.player(player)["regions"]
+    regions = detection_regions(service.store, player)
     detector = CardDetector({**(service.store.cameras.get("detection") or {})})
     rcfg = service.recognition_config()
 

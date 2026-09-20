@@ -25,7 +25,10 @@ def snapshot_payload(event=None) -> dict:
         for card in cards:
             if card and card.get("matched_image"):
                 card["image"] = card["matched_image"]
+    from app.showcase import snapshot
     return {
+        "activity_mode": load_overlay_config().get("activity_mode", "play"),
+        "showcase": snapshot(),
         "type": event.type if event is not None else "state_snapshot",
         "event": event.model_dump() if event is not None else None,
         "state": state,

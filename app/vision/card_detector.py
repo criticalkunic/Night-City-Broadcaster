@@ -1,3 +1,4 @@
+from app.vision.showcase_regions import detection_regions
 """Milestone 3: detect card-shaped quads inside the card-play ROI.
 
 Detection only — no recognition. Finds a convex 4-sided contour with a
@@ -529,7 +530,7 @@ class DetectionWorker(threading.Thread):
                 self._candidates[player] = []
                 self._matches[player] = None
             return
-        roi = self.service.store.player(player)['regions'].get('card_play_region')
+        roi = detection_regions(self.service.store, player).get('card_play_region')
         if roi is None:
             tracker.absent_since = None
             tracker.empty_frames = 0
@@ -649,7 +650,7 @@ class DetectionWorker(threading.Thread):
         frame, view = self.service.frame_and_view(player)
         if view is None:
             return
-        region = self.service.store.player(player)["regions"].get("legend_region")
+        region = detection_regions(self.service.store, player).get("legend_region")
         if not region:
             return
         region_key = repr(region)
